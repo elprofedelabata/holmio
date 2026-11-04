@@ -124,7 +124,11 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
    - El elemento respondido se marca en la tabla (en rojo lacre, con una pequeña sacudida).
    - **El juego se detiene**, como al subir de nivel en un *roguelike*: la pantalla se oscurece casi a negro y aparece la ficha del elemento con el sello **«COARTADA»**, el texto «*X tiene coartada*», las acusaciones que quedan y **3 tarjetas de pista** que entran escalonadas.
    - Hay que **elegir 1** para continuar (no se puede cerrar sin elegir).
-   - Al elegir, la tarjeta se destaca, las otras desaparecen y se vuelve a la partida: la tabla se sombrea con una transición y la pista nueva destella en la lista.
+   - Al elegir, la tarjeta se destaca, las otras desaparecen y se vuelve a la partida: la tabla se sombrea con una transición y la pista aparece donde le toca (ver abajo).
+   - **Dónde se ven las pistas** (no hay lista de pistas):
+     - Las pistas de **texto** (curiosidad y etimología) **amplían el informe del caso**, cada una en un párrafo con su icono.
+     - Las demás colocan **su icono sobre la casilla del elemento acusado** desde el que se pidieron, en lugar del símbolo (con un pequeño «salto» al aparecer). En las direcciones se ve la flecha; si la respuesta es «no», la flecha sale tachada.
+     - **Tocar esa casilla** muestra el texto de la pista en un aviso flotante.
    - La pista se aplica respecto a su **último intento** (cuando es relativa).
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
 6. Al terminar se muestran la solución, una **curiosidad** del elemento y el botón de **compartir**.
@@ -171,7 +175,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 
 **Notas:**
 - **Iconos:** en la interfaz cada pista usa un **icono SVG propio** (trazo fino, color de acento): flechas que salen de una casilla tenue (tu última acusación), una Z en una casilla (número atómico), la silueta de la tabla (bloque), un matraz (familia), un termómetro (estado), el trébol radiactivo, un libro abierto (etimología) y una bombilla (curiosidad). Los **emojis** de la tabla solo se usan en el **texto de compartir**, que es texto plano.
-- Si la respuesta a una pista de dirección es **«no»**, su icono aparece **atenuado y tachado** en la lista de pistas.
+- Si la respuesta a una pista de dirección es **«no»**, la flecha aparece **atenuada y tachada** sobre la casilla.
 - Las cuatro pistas de **dirección** son preguntas de **sí o no** sobre el último acusado. Al ser cuatro tipos distintos (cada uno usable una vez), dan más juego que dos pistas de eje completo: hay que decidir qué dirección preguntar y desde qué elemento. Una dirección imposible desde el último acusado (p. ej., «arriba» desde el periodo 1) no se ofrece, porque no descartaría nada.
 - Las pistas **comparativas** (🔥 ⚡ #️⃣) no se ofrecen si falta el dato para el elemento secreto o para el último intento (p. ej., elementos superpesados sin punto de fusión medido).
 - Las pistas **escritas a mano** (🔤 💡) no "sombrean" la tabla: aportan información que el jugador interpreta.

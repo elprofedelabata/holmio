@@ -39,10 +39,41 @@ function construirTabla() {
   }
 }
 
-function pintarTabla(candidatos) {
+// ---------- Iconos ----------
+const icono = (id) => `<svg class="ico-svg" viewBox="0 0 24 24"><use href="#${id}"/></svg>`;
+
+// Pistas de texto: amplían el informe del caso. El resto se muestran como icono
+// sobre la casilla del elemento desde el que se pidieron.
+const PISTAS_DE_TEXTO = new Set(['curiosidad', 'etimologia']);
+// En la casilla, las direcciones usan una flecha sola (sin la casilla de referencia).
+const iconoCelda = (p) => (p.svg.replace(/^i-(arriba|abajo|izquierda|derecha)$/, 'f-$1'));
+
+function pintarTabla(candidatos, resueltas) {
   const posibles = new Set(candidatos.map((el) => el.z));
+  const pistaDesde = new Map(
+    resueltas.filter((p) => !PISTAS_DE_TEXTO.has(p.tipo)).map((p) => [p.desde, p]),
+  );
   for (const [z, c] of celdas) {
-    c.classList.remove('off', 'fallo', 'acierto', 'revelado');
+    const el = ELEMENTOS[z - 1];
+    const pista = pistaDesde.get(z);
+    c.classList.remove('off', 'fallo', 'acierto', 'revelado', 'con-pista', 'negada');
+    c.removeAttribute('role');
+    c.removeAttribute('tabindex');
+    c.dataset.pista = '';
+    c.setAttribute('aria-label', `${el.nombre} (${el.z})`);
+
+    if (pista) {
+      c.innerHTML = icono(iconoCelda(pista));
+      c.classList.add('con-pista');
+      c.classList.toggle('negada', pista.negativa);
+      c.dataset.pista = pista.texto;
+      c.setAttribute('role', 'button');
+      c.setAttribute('tabindex', '0');
+      c.setAttribute('aria-label', `${el.nombre}: ${pista.texto}`);
+    } else if (c.textContent !== el.simbolo) {
+      c.textContent = el.simbolo;
+    }
+
     if (partida.intentos.includes(z)) {
       c.classList.add(z === partida.secreto.z ? 'acierto' : 'fallo');
     } else if (partida.perdida && z === partida.secreto.z) {
@@ -53,26 +84,47 @@ function pintarTabla(candidatos) {
   }
 }
 
-// ---------- Iconos ----------
-const icono = (id) => `<svg class="ico-svg" viewBox="0 0 24 24"><use href="#${id}"/></svg>`;
+// Tocar una casilla con pista muestra su texto.
+function verPistaDeCelda(e) {
+  const c = e.target.closest('.celda.con-pista');
+  if (!c) return;
+  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  toast(c.dataset.pista, 3500);
+}
+
+function renderInforme(resueltas) {
+  $('informe-extra').replaceChildren(
+    ...resueltas
+      .filter((p) => PISTAS_DE_TEXTO.has(p.tipo))
+      .map((p) => {
+        const parrafo = document.createElement('p');
+        parrafo.className = 'informe-extra';
+        parrafo.dataset.tipo = p.tipo;
+        parrafo.innerHTML = `<span class="ico" aria-hidden="true">${icono(p.svg)}</span><span></span>`;
+        parrafo.lastChild.textContent = p.texto;
+        return parrafo;
+      }),
+  );
+}
+
+/** Tras elegir una pista: destaca dónde ha aparecido. */
+function destacarPista(p) {
+  if (!p) return;
+  const objetivo = PISTAS_DE_TEXTO.has(p.tipo)
+    ? $('informe-extra').querySelector(`[data-tipo="${p.tipo}"]`)
+    : celdas.get(p.desde);
+  objetivo?.classList.add('nueva');
+  objetivo?.addEventListener('animationend', () => objetivo.classList.remove('nueva'), { once: true });
+}
 
 // ---------- Render general ----------
 function render() {
   const resueltas = partida.pistasResueltas();
   const candidatos = partida.candidatos(resueltas);
 
-  // Pistas recibidas
-  const lista = $('pistas');
-  lista.replaceChildren(
-    ...resueltas.map((p) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="ico${p.negativa ? ' negada' : ''}" aria-hidden="true">${icono(p.svg)}</span><span></span>`;
-      li.lastChild.textContent = p.texto;
-      return li;
-    }),
-  );
-
-  pintarTabla(candidatos);
+  renderInforme(resueltas);
+  pintarTabla(candidatos, resueltas);
 
   // Estado
   const n = partida.intentos.length;
@@ -161,7 +213,7 @@ function cerrarElegir() {
     dlgElegir.classList.remove('saliendo');
     // Al volver a la partida, la tabla se apaga con transición y la pista nueva destella.
     render();
-    $('pistas').lastElementChild?.classList.add('nueva');
+    destacarPista(partida.pistasResueltas().at(-1));
     enfocarEntrada();
   }, sinAnimaciones() ? 0 : 260);
 }
@@ -339,13 +391,16 @@ $('form-acusar').addEventListener('submit', (e) => {
 });
 
 // ---------- Compartir ----------
-function toast(texto) {
+function toast(texto, ms = 2000) {
   const t = $('toast');
   t.textContent = texto;
   t.classList.add('visible');
   clearTimeout(toast.t);
-  toast.t = setTimeout(() => t.classList.remove('visible'), 2000);
+  toast.t = setTimeout(() => t.classList.remove('visible'), ms);
 }
+
+$('tabla').addEventListener('click', verPistaDeCelda);
+$('tabla').addEventListener('keydown', verPistaDeCelda);
 
 $('btn-compartir').addEventListener('click', async () => {
   const url = location.origin + location.pathname;

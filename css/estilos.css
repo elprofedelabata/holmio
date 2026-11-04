@@ -156,26 +156,38 @@ button { cursor: pointer; }
 }
 #informe-texto { font-family: var(--f-titulo); font-size: 15px; line-height: 1.42; }
 
-/* ---------- Pistas recibidas ---------- */
-.pistas { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.pistas:empty { display: none; }
-.pistas li {
-  display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: start;
-  font-size: 13.5px; line-height: 1.35;
+/* ---------- Pistas de texto: amplían el informe ---------- */
+#informe-extra { display: grid; gap: 6px; }
+#informe-extra:empty { display: none; }
+.informe-extra {
+  display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start;
+  padding-top: 7px; border-top: 1px dashed var(--linea);
+  font-family: var(--f-titulo); font-size: 14px; line-height: 1.4;
+  border-radius: 4px;
 }
-.pistas li .ico { position: relative; width: 18px; height: 18px; margin-top: 0; color: var(--acento); }
+.informe-extra .ico { width: 17px; height: 17px; margin-top: 2px; color: var(--acento); }
+.informe-extra.nueva { animation: destello 1.6s ease-out; }
 
 /* Iconos de pista: trazo fino con el color del contenedor */
 .ico-svg {
   display: block; width: 100%; height: 100%;
   fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
 }
-/* Respuesta «no» en una pista de dirección: icono atenuado y tachado */
-.ico.negada .ico-svg { opacity: .45; }
-.ico.negada::after {
+/* Casilla acusada con pista: el icono sustituye al símbolo */
+.celda.con-pista { position: relative; cursor: pointer; }
+.celda.con-pista .ico-svg { width: 74%; height: 74%; stroke-width: 2.6; }
+/* Respuesta «no» en una pista de dirección: flecha atenuada y tachada */
+.celda.negada .ico-svg { opacity: .55; }
+.celda.negada::after {
   content: ""; position: absolute; left: 50%; top: 50%;
-  width: 125%; height: 2px; border-radius: 1px; background: var(--lacre);
+  width: 92%; height: 2px; border-radius: 1px; background: currentColor;
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.celda.nueva { animation: aparecer-pista .6s cubic-bezier(.2, 1.6, .4, 1); z-index: 1; }
+@keyframes aparecer-pista {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.7); box-shadow: 0 0 0 3px var(--acento); }
+  100% { transform: scale(1); }
 }
 
 /* ---------- Tabla ---------- */
@@ -339,9 +351,7 @@ button { cursor: pointer; }
   80% { transform: translateX(1px); }
 }
 
-/* Pista recién recibida: destello */
-.pistas li { border-radius: 6px; padding: 2px 4px; margin: -2px -4px; }
-.pistas li.nueva { animation: destello 1.6s ease-out; }
+/* Pista de texto recién recibida: destello */
 @keyframes destello {
   0%, 35% { background: var(--resalte); }
   100% { background: transparent; }
@@ -386,7 +396,8 @@ button { cursor: pointer; }
 /* ---------- Aviso flotante ---------- */
 .toast {
   position: fixed; left: 50%; top: 16px; transform: translate(-50%, calc(-100% - 24px));
-  background: var(--texto); color: var(--fondo); padding: 8px 16px; border-radius: 999px;
+  background: var(--texto); color: var(--fondo); padding: 8px 16px; border-radius: 16px;
+  width: max-content; max-width: min(420px, calc(100% - 32px)); text-align: center;
   font-size: 14px; font-weight: 600; transition: transform .25s; z-index: 10; pointer-events: none;
 }
 .toast.visible { transform: translate(-50%, 0); }
@@ -394,7 +405,7 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .celda, .toast, .opcion { transition: none; }
   .sello, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
-  .celda.recien, .pistas li.nueva { animation: none; }
+  .celda.recien, .celda.nueva, .informe-extra.nueva { animation: none; }
 }
 
 /* Pantallas bajas (teclado abierto): compactar */
@@ -402,5 +413,4 @@ button { cursor: pointer; }
   .meta { display: none; }
   .informe { padding: 8px 10px; }
   #informe-texto { font-size: 13.5px; }
-  .pistas li { font-size: 12.5px; }
 }
