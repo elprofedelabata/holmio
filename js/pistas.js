@@ -11,37 +11,44 @@ import { TIPOS, ESTADOS } from './elementos.js';
 
 const cmp = (a, b) => Math.sign(a - b);
 
+/**
+ * Pista de dirección: pregunta de sí o no respecto al último acusado.
+ * Vertical = periodo; horizontal = columna en la tabla larga de 32 columnas.
+ * El «no» incluye la misma fila/columna, y así se explica en el texto.
+ */
+function direccion({ icono, nombre, eje, signo, frase, siNo }) {
+  const valor = (el) => (eje === 'periodo' ? el.periodo : el.col32);
+  const cumple = (el, u) => cmp(valor(el), valor(u)) === signo;
+  return {
+    icono,
+    nombre,
+    pregunta: (u) => `¿Está ${frase} que ${u.simbolo}?`,
+    disponible: () => true,
+    resolver(s, u) {
+      const si = cumple(s, u);
+      const texto = si ? `Está ${frase} que ${u.nombre}` : `No está ${frase} que ${u.nombre} (${siNo})`;
+      return { texto, filtro: (el) => cumple(el, u) === si };
+    },
+  };
+}
+
 export const TIPOS_PISTA = {
-  horizontal: {
-    icono: '↔️',
-    nombre: 'Horizontal',
-    pregunta: (u) => `¿Más a la izquierda o a la derecha que ${u.simbolo}?`,
-    disponible: () => true,
-    resolver(s, u) {
-      const c = cmp(s.col32, u.col32);
-      const texto = [
-        `Está más a la izquierda que ${u.nombre}`,
-        `Está en la misma columna que ${u.nombre}`,
-        `Está más a la derecha que ${u.nombre}`,
-      ][c + 1];
-      return { texto, filtro: (el) => cmp(el.col32, u.col32) === c };
-    },
-  },
-  vertical: {
-    icono: '↕️',
-    nombre: 'Vertical',
-    pregunta: (u) => `¿Más arriba o más abajo que ${u.simbolo}?`,
-    disponible: () => true,
-    resolver(s, u) {
-      const c = cmp(s.periodo, u.periodo);
-      const texto = [
-        `Está más arriba que ${u.nombre}`,
-        `Está en el mismo periodo que ${u.nombre}`,
-        `Está más abajo que ${u.nombre}`,
-      ][c + 1];
-      return { texto, filtro: (el) => cmp(el.periodo, u.periodo) === c };
-    },
-  },
+  arriba: direccion({
+    icono: '⬆️', nombre: 'Arriba', eje: 'periodo', signo: -1,
+    frase: 'más arriba', siNo: 'mismo periodo o más abajo',
+  }),
+  abajo: direccion({
+    icono: '⬇️', nombre: 'Abajo', eje: 'periodo', signo: 1,
+    frase: 'más abajo', siNo: 'mismo periodo o más arriba',
+  }),
+  izquierda: direccion({
+    icono: '⬅️', nombre: 'Izquierda', eje: 'col32', signo: -1,
+    frase: 'más a la izquierda', siNo: 'misma columna o más a la derecha',
+  }),
+  derecha: direccion({
+    icono: '➡️', nombre: 'Derecha', eje: 'col32', signo: 1,
+    frase: 'más a la derecha', siNo: 'misma columna o más a la izquierda',
+  }),
   numero: {
     icono: '#️⃣',
     nombre: 'Número atómico',

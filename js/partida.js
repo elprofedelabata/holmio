@@ -47,7 +47,8 @@ export class Partida {
   /** Pistas recibidas, ya resueltas: [{ tipo, icono, texto, filtro, desde }] */
   pistasResueltas() {
     // tipo null = no quedaba ninguna pista útil y se siguió sin pista.
-    return this.pistas.filter((p) => p.tipo).map(({ tipo, desde }) => {
+    // Los tipos desconocidos (partidas guardadas con versiones anteriores) se ignoran.
+    return this.pistas.filter((p) => TIPOS_PISTA[p.tipo]).map(({ tipo, desde }) => {
       const def = TIPOS_PISTA[tipo];
       const { texto, filtro } = def.resolver(this.secreto, porZ(desde), this.caso);
       return { tipo, icono: def.icono, texto, filtro, desde };
@@ -101,7 +102,8 @@ export class Partida {
     const lineas = this.intentos.map((z, i) => {
       if (z === this.secreto.z) return '✅';
       const pista = this.pistas[i];
-      return pista?.tipo ? `❌ ${TIPOS_PISTA[pista.tipo].icono}` : '❌';
+      const def = TIPOS_PISTA[pista?.tipo];
+      return def ? `❌ ${def.icono}` : '❌';
     });
     return [`🔎 Holmio · Caso nº ${this.caso.numero} · ${marcador}`, ...lineas, url].join('\n');
   }

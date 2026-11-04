@@ -154,8 +154,10 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 
 | Icono | Tipo | Ejemplo | Relativa al intento | Origen del dato |
 |---|---|---|---|---|
-| ↔️ | Horizontal | "Más a la derecha" / "Misma columna" | Sí | Calculado |
-| ↕️ | Vertical | "Más abajo" / "Mismo periodo" | Sí | Calculado |
+| ⬆️ | Arriba | "¿Está más arriba que Fe?" → "Sí" / "No (mismo periodo o más abajo)" | Sí | Calculado |
+| ⬇️ | Abajo | "¿Está más abajo que Fe?" → "Sí" / "No (mismo periodo o más arriba)" | Sí | Calculado |
+| ⬅️ | Izquierda | "¿Está más a la izquierda que Fe?" → "Sí" / "No (misma columna o más a la derecha)" | Sí | Calculado |
+| ➡️ | Derecha | "¿Está más a la derecha que Fe?" → "Sí" / "No (misma columna o más a la izquierda)" | Sí | Calculado |
 | 🧱 | Bloque | "Bloque d" | No | Calculado |
 | 🔩 | Tipo de elemento | Metal / no metal / metaloide / gas noble… | No | Calculado |
 | 🌡️ | Estado a 25 °C | Sólido / líquido / gas | No | Calculado |
@@ -168,17 +170,18 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 | 💡 | Curiosidad extra | Otra pista rebuscada | No | **Escrito a mano** |
 
 **Notas:**
+- Las cuatro pistas de **dirección** son preguntas de **sí o no** sobre el último acusado. Al ser cuatro tipos distintos (cada uno usable una vez), dan más juego que dos pistas de eje completo: hay que decidir qué dirección preguntar y desde qué elemento. Una dirección imposible desde el último acusado (p. ej., «arriba» desde el periodo 1) no se ofrece, porque no descartaría nada.
 - Las pistas **comparativas** (🔥 ⚡ #️⃣) no se ofrecen si falta el dato para el elemento secreto o para el último intento (p. ej., elementos superpesados sin punto de fusión medido).
 - Las pistas **escritas a mano** (🔤 💡) no "sombrean" la tabla: aportan información que el jugador interpreta.
 - 🟡 Decidir la lista final (8–10 tipos) tras probar el prototipo.
 
 ## 7. Reglas de posición *(pendiente 🟡)*
 
-Se decidirán junto con el diseño de la interfaz. Propuesta de partida:
-- **Vertical** = comparar el **periodo** (fila). Resultados: ↑ / = / ↓.
-- **Horizontal** = comparar la columna en la **tabla larga de 32 columnas**, para que lantánidos y actínidos tengan una posición coherente. Resultados: ← / = / →.
-- Decidir la colocación de **La/Ac vs. Lu/Lr** en el grupo 3 y mantenerla fija.
-- Explicar estas reglas en la pantalla "¿Cómo se juega?".
+Implementado así en el prototipo (pendiente de confirmar tras probarlo):
+- **Arriba / abajo** = comparar el **periodo** (fila). Los lantánidos son periodo 6 y los actínidos periodo 7, aunque se dibujen debajo.
+- **Izquierda / derecha** = comparar la columna en la **tabla larga de 32 columnas**, para que lantánidos y actínidos tengan una posición coherente (entre los grupos 2 y 3).
+- **Lu y Lr en el grupo 3**; el bloque f son La–Yb y Ac–No.
+- Explicado en la pantalla "¿Cómo se juega?".
 
 ## 8. Sombreado automático
 
