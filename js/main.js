@@ -213,7 +213,7 @@ function render() {
 
   // Panel inferior (durante la elección de pista, el diálogo lo tapa todo)
   $('form-acusar').hidden = fase === 'fin';
-  $('fin').hidden = fase !== 'fin';
+  $('fin-barra').hidden = fase !== 'fin';
   if (fase === 'fin') renderFin();
 }
 
@@ -286,27 +286,62 @@ function cerrarElegir() {
   }, sinAnimaciones() ? 0 : 260);
 }
 
+// ---------- Resultado: misma puesta en escena que la elección de pista ----------
+const dlgFin = $('fin');
 let temporizador = null;
+
 function renderFin() {
   const s = partida.secreto;
-  const fin = $('fin');
-  fin.classList.toggle('ganada', partida.ganada);
-  $('fin-sello').textContent = partida.ganada ? 'CASO CERRADO' : 'SE HA FUGADO';
-  $('fin-casilla').innerHTML = `<small>${s.z}</small>${s.simbolo}`;
-  $('fin-titulo').textContent = partida.ganada
-    ? `¡Bien visto! El culpable era: ${s.nombre}`
-    : `El culpable era: ${s.nombre}`;
-  $('fin-dato').textContent = caso.curiosidad;
+  const n = partida.intentos.length;
+  dlgFin.classList.toggle('ganada', partida.ganada);
+  dlgFin.classList.toggle('perdida', partida.perdida);
+  $('fin-casilla').innerHTML =
+    `<small>${s.z}</small>${s.simbolo}<span class="sello-fin">${partida.ganada ? 'CASO CERRADO' : 'SE HA FUGADO'}</span>`;
+  $('fin-titulo').textContent = partida.ganada ? (n === 1 ? '¡A la primera!' : '¡Bien visto!') : 'Se te ha escapado';
+  $('fin-sub').innerHTML = partida.ganada
+    ? `El culpable era <strong></strong> · resuelto en ${n} acusaci${n === 1 ? 'ón' : 'ones'}`
+    : 'El culpable era <strong></strong>';
+  $('fin-sub').querySelector('strong').textContent = s.nombre;
+  $('fin-dato').innerHTML = `<span class="ico" aria-hidden="true">${icono('i-curiosidad')}</span><span></span>`;
+  $('fin-dato').lastChild.textContent = caso.curiosidad;
 
   const tick = () => {
-    const ms = msHastaManana();
-    const t = Math.floor(ms / 1000);
+    const t = Math.floor(msHastaManana() / 1000);
     const p = (x) => String(x).padStart(2, '0');
-    $('cuenta-atras').textContent = `${p(Math.floor(t / 3600))}:${p(Math.floor((t % 3600) / 60))}:${p(t % 60)}`;
+    const texto = `${p(Math.floor(t / 3600))}:${p(Math.floor((t % 3600) / 60))}:${p(t % 60)}`;
+    document.querySelectorAll('.cuenta-atras').forEach((el) => (el.textContent = texto));
   };
   tick();
   clearInterval(temporizador);
   temporizador = setInterval(tick, 1000);
+}
+
+function abrirFin() {
+  if (partida.fase !== 'fin' || dlgFin.open) return;
+  dlgFin.classList.remove('saliendo');
+  dlgFin.showModal();
+  dlgFin.focus();
+}
+
+function cerrarFin() {
+  dlgFin.classList.add('saliendo');
+  setTimeout(() => {
+    dlgFin.close();
+    dlgFin.classList.remove('saliendo');
+  }, sinAnimaciones() ? 0 : 260);
+}
+
+dlgFin.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  cerrarFin();
+});
+$('btn-ver-tabla').addEventListener('click', cerrarFin);
+$('btn-ver-resultado').addEventListener('click', abrirFin);
+
+/** Al cargar: si la partida estaba a medias de algo, se vuelve a esa pantalla. */
+function abrirSegunFase() {
+  if (partida.fase === 'elegir') abrirElegir();
+  else if (partida.fase === 'fin') abrirFin();
 }
 
 // ---------- Entrada y autocompletado ----------
@@ -455,6 +490,10 @@ $('form-acusar').addEventListener('submit', (e) => {
     // Primero se ve el fallo en la tabla; después se detiene el juego para elegir pista.
     celdas.get(el.z).classList.add('recien');
     setTimeout(abrirElegir, sinAnimaciones() ? 0 : 700);
+  } else if (partida.fase === 'fin') {
+    // Primero se ve el acierto (o el culpable revelado) en la tabla; después, el resultado.
+    celdas.get(partida.ganada ? el.z : partida.secreto.z).classList.add(partida.ganada ? 'nueva' : 'recien');
+    setTimeout(abrirFin, sinAnimaciones() ? 0 : 900);
   }
 });
 
@@ -478,12 +517,16 @@ $('btn-compartir').addEventListener('click', async () => {
       if (err?.name === 'AbortError') return;
     }
   }
+  // El aviso va en el propio botón: el diálogo tapa cualquier aviso flotante.
+  const boton = $('btn-compartir');
   try {
     await navigator.clipboard.writeText(texto);
-    toast('Resultado copiado');
+    boton.textContent = '¡Copiado! Pégalo donde quieras';
   } catch {
-    toast('No se pudo copiar el resultado');
+    boton.textContent = 'No se pudo copiar';
   }
+  clearTimeout(boton.t);
+  boton.t = setTimeout(() => (boton.textContent = 'Compartir resultado'), 2500);
 });
 
 // ---------- Tema ----------
@@ -511,6 +554,6 @@ $('fecha-caso').textContent = new Date().toLocaleDateString('es-ES', {
 $('informe-texto').textContent = caso.informe;
 construirTabla();
 render();
-// Si se cerró la página a mitad de elección, se vuelve a la pantalla de elegir.
-if (!$('ayuda').open) abrirElegir();
-else $('ayuda').addEventListener('close', abrirElegir, { once: true });
+// Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
+if (!$('ayuda').open) abrirSegunFase();
+else $('ayuda').addEventListener('close', abrirSegunFase, { once: true });

@@ -72,18 +72,10 @@
         </div>
       </form>
 
-      <!-- Fase: fin -->
-      <section class="fin" id="fin" hidden aria-labelledby="fin-sello">
-        <div class="sello" id="fin-sello"></div>
-        <div class="culpable">
-          <div class="casilla-grande" id="fin-casilla"></div>
-          <div>
-            <p class="culpable-titulo" id="fin-titulo"></p>
-            <p class="culpable-dato" id="fin-dato"></p>
-          </div>
-        </div>
-        <button class="btn-principal btn-ancho" id="btn-compartir" type="button">Compartir resultado</button>
-        <p class="proximo">Próximo caso en <span id="cuenta-atras">--:--:--</span></p>
+      <!-- Fase: fin (tras cerrar la pantalla de resultado) -->
+      <section class="fin-barra" id="fin-barra" hidden>
+        <p class="proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
+        <button class="btn-principal" id="btn-ver-resultado" type="button">Ver resultado</button>
       </section>
     </footer>
   </div>
@@ -112,6 +104,19 @@
       <p id="elegir-sub"></p>
     </div>
     <div class="opciones" id="opciones"></div>
+  </dialog>
+
+  <!-- Resultado: misma puesta en escena que la elección de pista -->
+  <dialog class="subida resultado" id="fin" tabindex="-1" aria-labelledby="fin-titulo" aria-describedby="fin-sub">
+    <div class="ficha ficha-grande" id="fin-casilla" aria-hidden="true"></div>
+    <h2 id="fin-titulo"></h2>
+    <p class="fin-sub" id="fin-sub"></p>
+    <p class="fin-dato" id="fin-dato"></p>
+    <div class="fin-botones">
+      <button class="btn-principal btn-ancho" id="btn-compartir" type="button">Compartir resultado</button>
+      <button class="btn-secundario btn-ancho" id="btn-ver-tabla" type="button">Ver la tabla</button>
+    </div>
+    <p class="proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

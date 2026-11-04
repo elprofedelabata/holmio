@@ -366,30 +366,52 @@ button { cursor: pointer; }
   100% { background: transparent; }
 }
 
-/* Fin */
-.fin { display: grid; gap: 12px; justify-items: center; padding-top: 4px; }
-.sello {
-  font-family: var(--f-simbolo); font-weight: 600; font-size: 20px; letter-spacing: .16em;
-  color: var(--lacre); border: 3px solid var(--lacre); border-radius: 8px;
-  padding: 6px 16px; transform: rotate(-4deg);
-  animation: estampar .45s cubic-bezier(.2, 1.4, .4, 1) both;
-}
-.fin.ganada .sello { color: var(--acierto-fondo); border-color: var(--acierto-fondo); }
-@keyframes estampar {
-  from { transform: rotate(-12deg) scale(1.8); opacity: 0; }
-  to { transform: rotate(-4deg) scale(1); opacity: 1; }
-}
-.culpable { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; width: 100%; }
-.casilla-grande {
-  width: 64px; height: 64px; border-radius: 8px; border: 2px solid var(--texto);
-  display: grid; place-items: center; position: relative; background: var(--tarjeta);
-  font-family: var(--f-simbolo); font-weight: 600; font-size: 26px;
-}
-.casilla-grande small { position: absolute; top: 4px; left: 6px; font-size: 10px; font-weight: 500; }
-.culpable-titulo { font-weight: 700; font-size: 16px; }
-.culpable-dato { font-size: 13.5px; color: var(--suave); }
+/* Fin: barra del panel inferior (cuando se cierra la pantalla de resultado) */
+.fin-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .proximo { font-size: 13px; color: var(--suave); }
-#cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
+.cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
+
+/* Fin: pantalla de resultado (sobre fondo casi negro, como la elección de pista).
+   El fondo es siempre oscuro, así que los colores de texto son fijos. */
+.resultado[open] { align-items: center; justify-content: center; text-align: center; gap: 12px; }
+.resultado > * { animation: aparecer .4s cubic-bezier(.2, 1.1, .4, 1) backwards; }
+.resultado > :nth-child(2) { animation-delay: .35s; }
+.resultado > :nth-child(3) { animation-delay: .42s; }
+.resultado > :nth-child(4) { animation-delay: .5s; }
+.resultado > :nth-child(5) { animation-delay: .58s; }
+.resultado > :nth-child(6) { animation-delay: .64s; }
+.ficha-grande { width: 108px; height: 108px; font-size: 46px; margin-bottom: 30px; border-radius: 10px; }
+.ficha-grande small { top: 6px; left: 9px; font-size: 13px; }
+.ficha .sello-fin {
+  position: absolute; left: 50%; top: 96%; white-space: nowrap;
+  font-size: 16px; letter-spacing: .16em; padding: 4px 12px;
+  border: 2.5px solid currentColor; border-radius: 6px; background: rgba(12, 14, 20, .9);
+  transform: translate(-50%, -50%) rotate(-8deg);
+  animation: estampar-fin .45s .2s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.resultado.ganada .sello-fin { color: #7cc59a; }
+.resultado.perdida .sello-fin { color: #e0664f; }
+@keyframes estampar-fin {
+  from { transform: translate(-50%, -50%) rotate(-20deg) scale(2.2); opacity: 0; }
+  to { transform: translate(-50%, -50%) rotate(-8deg) scale(1); opacity: 1; }
+}
+#fin-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.fin-sub { font-size: 15px; color: #d8cfba; }
+.fin-sub strong { color: #f3ead6; }
+.fin-dato {
+  display: grid; grid-template-columns: 18px 1fr; gap: 8px; text-align: left;
+  max-width: 36ch; margin: 4px 0 6px; padding: 10px 12px;
+  border: 1px dashed rgba(243, 234, 214, .25); border-radius: 10px;
+  font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; color: #d8cfba;
+}
+.fin-dato .ico { width: 16px; height: 16px; margin-top: 1px; color: #e7ad45; }
+.fin-botones { display: grid; gap: 10px; width: 100%; max-width: 340px; }
+.btn-secundario {
+  min-height: 44px; border-radius: 10px; background: transparent;
+  border: 1.5px solid rgba(243, 234, 214, .3); color: #f3ead6; font-weight: 600; font-size: 15px;
+}
+.resultado .proximo { color: #a39b86; }
+.resultado .cuenta-atras { color: #f3ead6; }
 
 /* ---------- Ayuda ---------- */
 .ayuda {
@@ -432,7 +454,7 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
   .celda, .toast, .opcion { transition: none; }
-  .sello, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
+  .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
   .celda.recien, .celda.nueva, .informe-extra.nueva { animation: none; }
 }
 
