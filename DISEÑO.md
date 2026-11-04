@@ -121,9 +121,11 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 2. El jugador **escribe** el nombre de un elemento con ayuda del autocompletado y envía su **acusación**.
 3. **Si acierta**, gana y se muestra la pantalla de resultado.
 4. **Si falla**:
-   - El elemento respondido se marca en la tabla como descartado.
-   - Se le ofrecen **3 tipos de pista** y debe **elegir 1** (es obligatorio elegir antes del siguiente intento).
-   - La pista se aplica respecto a su **último intento** (cuando es relativa) y la tabla se sombrea en consecuencia.
+   - El elemento respondido se marca en la tabla (en rojo lacre, con una pequeña sacudida).
+   - **El juego se detiene**, como al subir de nivel en un *roguelike*: la pantalla se oscurece casi a negro y aparece la ficha del elemento con el sello **«COARTADA»**, el texto «*X tiene coartada*», las acusaciones que quedan y **3 tarjetas de pista** que entran escalonadas.
+   - Hay que **elegir 1** para continuar (no se puede cerrar sin elegir).
+   - Al elegir, la tarjeta se destaca, las otras desaparecen y se vuelve a la partida: la tabla se sombrea con una transición y la pista nueva destella en la lista.
+   - La pista se aplica respecto a su **último intento** (cuando es relativa).
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
 6. Al terminar se muestran la solución, una **curiosidad** del elemento y el botón de **compartir**.
 

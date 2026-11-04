@@ -88,51 +88,79 @@ function render() {
     }),
   );
 
-  // Panel inferior
-  $('form-acusar').hidden = fase !== 'acusar';
-  $('elegir').hidden = fase !== 'elegir';
+  // Panel inferior (durante la elección de pista, el diálogo lo tapa todo)
+  $('form-acusar').hidden = fase === 'fin';
   $('fin').hidden = fase !== 'fin';
-  if (fase === 'elegir') renderElegir();
   if (fase === 'fin') renderFin();
 }
 
-function renderElegir() {
+// ---------- Elegir pista: el juego se detiene, como al subir de nivel ----------
+const dlgElegir = $('elegir');
+const sinAnimaciones = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+dlgElegir.addEventListener('cancel', (e) => e.preventDefault()); // Esc no la cierra: hay que elegir
+
+function abrirElegir() {
+  if (partida.fase !== 'elegir' || dlgElegir.open) return;
   const u = partida.ultimo;
-  $('elegir-titulo').textContent = `${u.nombre} tiene coartada. Elige una pista:`;
+  const restantes = MAX_INTENTOS - partida.intentos.length;
   const opciones = partida.opciones();
-  $('opciones').replaceChildren(
-    ...opciones.map((o) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'opcion';
-      b.innerHTML = `<span class="ico" aria-hidden="true">${o.icono}</span><span><strong></strong><span></span></span>`;
-      b.querySelector('strong').textContent = o.nombre;
-      b.querySelector('span > span').textContent = o.pregunta;
-      b.addEventListener('click', () => {
-        if (partida.elegirPista(o.tipo)) {
-          persistir();
-          render();
-          enfocarEntrada();
-        }
-      });
-      return b;
-    }),
-  );
-  // Caso raro: no queda ninguna pista útil → se pasa directamente a acusar.
-  if (opciones.length === 0) {
-    $('elegir-titulo').textContent = `${u.nombre} tiene coartada. No quedan pistas nuevas.`;
-    $('opciones').innerHTML = '';
+
+  $('elegir-ficha').innerHTML = `<small>${u.z}</small>${u.simbolo}<span class="sello-mini">COARTADA</span>`;
+  $('elegir-titulo').textContent = `${u.nombre} tiene coartada`;
+  $('elegir-sub').innerHTML = opciones.length
+    ? `Elige una pista · Te quedan <strong>${restantes}</strong> acusaci${restantes === 1 ? 'ón' : 'ones'}`
+    : 'No queda ninguna pista que aporte algo nuevo.';
+
+  const botones = opciones.map((o, i) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'btn-principal btn-ancho';
+    b.className = 'opcion';
+    b.style.setProperty('--i', i);
+    b.innerHTML = `<span class="ico" aria-hidden="true">${o.icono}</span><span><strong></strong><span class="preg"></span></span>`;
+    b.querySelector('strong').textContent = o.nombre;
+    b.querySelector('.preg').textContent = o.pregunta;
+    b.addEventListener('click', () => {
+      if (!partida.elegirPista(o.tipo)) return;
+      persistir();
+      botones.forEach((x) => {
+        x.disabled = true;
+        x.classList.add(x === b ? 'elegida' : 'apartada');
+      });
+      setTimeout(() => cerrarElegir(), sinAnimaciones() ? 0 : 420);
+    });
+    return b;
+  });
+
+  // Caso raro: no queda ninguna pista útil → se sigue acusando sin pista.
+  if (!opciones.length) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn-principal seguir';
     b.textContent = 'Seguir acusando';
     b.addEventListener('click', () => {
       partida.pistas.push({ tipo: null, desde: u.z });
       persistir();
-      render();
+      cerrarElegir();
     });
-    $('opciones').append(b);
+    botones.push(b);
   }
+
+  $('opciones').replaceChildren(...botones);
+  dlgElegir.classList.remove('saliendo');
+  dlgElegir.showModal();
+  dlgElegir.focus();
+}
+
+function cerrarElegir() {
+  dlgElegir.classList.add('saliendo');
+  setTimeout(() => {
+    dlgElegir.close();
+    dlgElegir.classList.remove('saliendo');
+    // Al volver a la partida, la tabla se apaga con transición y la pista nueva destella.
+    render();
+    $('pistas').lastElementChild?.classList.add('nueva');
+    enfocarEntrada();
+  }, sinAnimaciones() ? 0 : 260);
 }
 
 let temporizador = null;
@@ -300,6 +328,11 @@ $('form-acusar').addEventListener('submit', (e) => {
   cerrarDesplegable();
   entrada.blur();
   render();
+  if (partida.fase === 'elegir') {
+    // Primero se ve el fallo en la tabla; después se detiene el juego para elegir pista.
+    celdas.get(el.z).classList.add('recien');
+    setTimeout(abrirElegir, sinAnimaciones() ? 0 : 700);
+  }
 });
 
 // ---------- Compartir ----------
@@ -352,3 +385,6 @@ $('fecha-caso').textContent = new Date().toLocaleDateString('es-ES', {
 $('informe-texto').textContent = caso.informe;
 construirTabla();
 render();
+// Si se cerró la página a mitad de elección, se vuelve a la pantalla de elegir.
+if (!$('ayuda').open) abrirElegir();
+else $('ayuda').addEventListener('close', abrirElegir, { once: true });

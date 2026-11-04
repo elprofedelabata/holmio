@@ -73,12 +73,6 @@
         </div>
       </form>
 
-      <!-- Fase: elegir pista -->
-      <section class="elegir" id="elegir" hidden aria-labelledby="elegir-titulo">
-        <h2 class="etiqueta" id="elegir-titulo"></h2>
-        <div class="opciones" id="opciones"></div>
-      </section>
-
       <!-- Fase: fin -->
       <section class="fin" id="fin" hidden aria-labelledby="fin-sello">
         <div class="sello" id="fin-sello"></div>
@@ -108,6 +102,16 @@
       <p class="nota">La pista horizontal usa la tabla larga: el bloque f (las dos filas de abajo) va entre los grupos 2 y 3.</p>
       <button class="btn-principal btn-ancho" value="cerrar">Entendido</button>
     </form>
+  </dialog>
+
+  <!-- Tras un fallo: el juego se detiene y hay que elegir una de tres pistas -->
+  <dialog class="subida" id="elegir" tabindex="-1" aria-labelledby="elegir-titulo" aria-describedby="elegir-sub">
+    <div class="subida-cabecera">
+      <div class="ficha" id="elegir-ficha" aria-hidden="true"></div>
+      <h2 id="elegir-titulo"></h2>
+      <p id="elegir-sub"></p>
+    </div>
+    <div class="opciones" id="opciones"></div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
