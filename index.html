@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+  <title>Holmio · El elemento culpable del día</title>
+  <meta name="description" content="Juego diario de deducción: lee el informe del caso, elige tus pistas y acusa al elemento químico culpable en 6 intentos.">
+  <meta name="theme-color" content="#141821" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#efe6d2" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <script>
+    // Aplica el tema guardado antes de pintar, para evitar parpadeos.
+    try {
+      const t = localStorage.getItem('holmio-tema');
+      if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+    } catch {}
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="cabecera">
+      <h1 class="marca" aria-label="Holmio">
+        <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><use href="#ho-lupa"/></svg>
+        <span class="marca-texto">HOLMIO</span>
+      </h1>
+      <div class="cabecera-botones">
+        <button class="icono-btn" id="btn-ayuda" type="button" aria-label="Cómo se juega">?</button>
+        <button class="icono-btn" id="btn-tema" type="button" aria-label="Cambiar entre modo día y noche">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-luna" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><g class="ico-sol"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="meta">
+      <span id="num-caso">Caso nº —</span>
+      <span id="fecha-caso"></span>
+    </div>
+
+    <main class="contenido">
+      <section class="informe" aria-labelledby="informe-titulo">
+        <h2 class="etiqueta" id="informe-titulo">Informe del caso</h2>
+        <p id="informe-texto"></p>
+      </section>
+
+      <ol class="pistas" id="pistas" aria-label="Pistas recibidas"></ol>
+
+      <div class="tablero">
+        <div class="tabla" id="tabla" role="img" aria-label="Tabla periódica con los sospechosos"></div>
+      </div>
+
+      <div class="estado">
+        <span id="estado-intento"></span>
+        <span class="puntos" id="puntos" aria-hidden="true"></span>
+        <span id="estado-quedan"></span>
+      </div>
+    </main>
+
+    <footer class="panel" id="panel">
+      <!-- Fase: acusar -->
+      <form class="acusar" id="form-acusar" autocomplete="off" hidden>
+        <div class="sugerencias" id="sugerencias" role="listbox" aria-label="Sugerencias"></div>
+        <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
+        <div class="fila-entrada">
+          <label class="visualmente-oculto" for="entrada">Nombre o símbolo del elemento</label>
+          <input id="entrada" type="text" placeholder="Nombre o símbolo…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+          <button class="btn-principal" type="submit">Acusar</button>
+        </div>
+      </form>
+
+      <!-- Fase: elegir pista -->
+      <section class="elegir" id="elegir" hidden aria-labelledby="elegir-titulo">
+        <h2 class="etiqueta" id="elegir-titulo"></h2>
+        <div class="opciones" id="opciones"></div>
+      </section>
+
+      <!-- Fase: fin -->
+      <section class="fin" id="fin" hidden aria-labelledby="fin-sello">
+        <div class="sello" id="fin-sello"></div>
+        <div class="culpable">
+          <div class="casilla-grande" id="fin-casilla"></div>
+          <div>
+            <p class="culpable-titulo" id="fin-titulo"></p>
+            <p class="culpable-dato" id="fin-dato"></p>
+          </div>
+        </div>
+        <button class="btn-principal btn-ancho" id="btn-compartir" type="button">Compartir resultado</button>
+        <p class="proximo">Próximo caso en <span id="cuenta-atras">--:--:--</span></p>
+      </section>
+    </footer>
+  </div>
+
+  <dialog class="ayuda" id="ayuda" aria-labelledby="ayuda-titulo">
+    <form method="dialog">
+      <h2 id="ayuda-titulo">Cómo se juega</h2>
+      <p>Cada día hay un <strong>elemento culpable</strong>. Lee el informe del caso y acúsalo escribiendo su nombre o su símbolo.</p>
+      <ul>
+        <li>Tienes <strong>6 acusaciones</strong>.</li>
+        <li>Si fallas, eliges <strong>una de tres pistas</strong>. Cada tipo de pista solo se puede usar una vez.</li>
+        <li>Las pistas de posición y de número atómico se comparan con <strong>tu última acusación</strong>: elige bien desde dónde las pides.</li>
+        <li>La tabla <strong>apaga</strong> los sospechosos con coartada. Los que siguen encendidos aún pueden ser el culpable.</li>
+      </ul>
+      <p class="nota">La pista horizontal usa la tabla larga: el bloque f (las dos filas de abajo) va entre los grupos 2 y 3.</p>
+      <button class="btn-principal btn-ancho" value="cerrar">Entendido</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Logo: «Ho» con la o convertida en lupa -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ho-lupa" viewBox="0 0 100 100">
+      <g fill="currentColor">
+        <rect x="10" y="26" width="9" height="48"/>
+        <rect x="37" y="26" width="9" height="48"/>
+        <rect x="10" y="45.5" width="36" height="9"/>
+        <rect x="5" y="26" width="19" height="5"/>
+        <rect x="32" y="26" width="19" height="5"/>
+        <rect x="5" y="69" width="19" height="5"/>
+        <rect x="32" y="69" width="19" height="5"/>
+      </g>
+      <!-- Los colores llegan por variables CSS, que sí atraviesan <use> -->
+      <g fill="none" stroke-linecap="round" style="stroke: var(--lupa)">
+        <circle cx="68" cy="57" r="13.5" stroke-width="9"/>
+        <line x1="80" y1="69" x2="92" y2="81" stroke-width="10"/>
+      </g>
+      <path d="M61 51.5a8 8 0 0 1 6-4" fill="none" stroke-width="3" stroke-linecap="round" style="stroke: var(--fondo); opacity: .9"/>
+    </symbol>
+  </svg>
+</body>
+</html>
