@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identidad del juego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@400;600;700&family=Playfair+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+/* Página de presentación: neutra y fría, para que cada propuesta luzca su propia paleta.
+   Layout: cabecera + recomendación + reglas comunes, luego una sección por dirección (ficha | maqueta móvil). */
+:root {
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --ink: #161920;
+  --muted: #5a606c;
+  --line: #dde0e6;
+  --accent: #2f5bd0;
+  --font-display: "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101217; --surface: #181b22; --ink: #e8eaef; --muted: #9aa0ac; --line: #292d37; --accent: #8fb0ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101217; --surface: #181b22; --ink: #e8eaef; --muted: #9aa0ac; --line: #292d37; --accent: #8fb0ff;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 40px 20px 80px; display: grid; gap: 40px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
+p { margin: 0; }
+.lead { color: var(--muted); max-width: 68ch; margin-top: 10px; }
+
+.callout {
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: 10px; padding: 20px 22px; display: grid; gap: 8px;
+}
+.callout h2 { font-size: 18px; font-weight: 600; }
+.callout p { max-width: 75ch; }
+
+.rules { display: grid; gap: 14px; }
+.rules h2, .others h2 { font-size: 20px; font-weight: 600; }
+.rules ul, .others ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 18px; height: 18px; border-radius: 3px; display: inline-block; border: 1px solid var(--line); }
+
+/* ---------- Secciones de dirección ---------- */
+.dir {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; align-items: start;
+}
+@media (max-width: 900px) { .dir { grid-template-columns: minmax(0, 1fr); padding: 20px 16px; } }
+.dir-info { display: grid; gap: 22px; min-width: 0; }
+.dir-head { display: grid; gap: 6px; }
+.dir-tag { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.dir-head h2 { font-size: clamp(30px, 4vw, 42px); font-family: var(--f-d); font-weight: 800; }
+.dir-head .sub { color: var(--muted); }
+.block-title { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+.vocab { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.vocab td { padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.vocab td:first-child { color: var(--muted); width: 42%; padding-right: 12px; }
+
+.logos { display: grid; grid-template-columns: minmax(0, 1fr) 112px; gap: 12px; }
+@media (max-width: 480px) { .logos { grid-template-columns: minmax(0, 1fr); } }
+.logo-box {
+  background: var(--t-bg); color: var(--t-ink); border-radius: 12px; padding: 20px;
+  display: grid; place-items: center; min-height: 120px; border: 1px solid var(--line);
+}
+.logo-box svg { width: 72px; height: 72px; display: block; }
+
+.swatches { display: grid; gap: 10px; }
+.sw-row { display: grid; gap: 6px; }
+.sw-row > span { font-size: 13px; color: var(--muted); }
+.sw-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+@media (max-width: 480px) { .sw-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sw { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12px; background: var(--surface); }
+.sw b { display: block; height: 38px; }
+.sw div { padding: 5px 7px; line-height: 1.3; }
+.sw em { font-style: normal; color: var(--muted); display: block; }
+.sw code { font-size: 11px; color: var(--muted); }
+
+.fonts { font-size: 14.5px; display: grid; gap: 4px; }
+.fonts span { color: var(--muted); }
+
+.proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14.5px; }
+@media (max-width: 560px) { .proscons { grid-template-columns: 1fr; } }
+.proscons ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+/* ---------- Maqueta móvil ---------- */
+.mock { display: grid; gap: 10px; justify-items: center; position: sticky; top: 16px; }
+@media (max-width: 900px) { .mock { position: static; } }
+.mock-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 360px; gap: 8px; }
+.mock-bar small { color: var(--muted); font-size: 12.5px; }
+.toggle {
+  font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+}
+.toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.caption { font-size: 13px; color: var(--muted); max-width: 360px; text-align: center; }
+
+.phone {
+  width: 100%; max-width: 360px; border-radius: 30px; padding: 14px 13px 16px;
+  background: var(--t-bg); color: var(--t-ink); font-family: var(--f-b);
+  border: 6px solid #0b0c0f; box-shadow: 0 18px 40px -18px rgba(0,0,0,.45);
+  display: grid; gap: 11px; transition: background .25s, color .25s;
+}
+@media (prefers-reduced-motion: reduce) { .phone { transition: none; } }
+.ph-top { display: flex; align-items: center; gap: 8px; padding-bottom: 9px; border-bottom: 1px solid var(--t-line); }
+.ph-top svg { width: 26px; height: 26px; flex: none; }
+.ph-name { font-family: var(--f-d); font-size: 19px; font-weight: 800; flex: 1; line-height: 1; }
+.ph-ico { display: flex; gap: 6px; }
+.ph-ico i { width: 24px; height: 24px; border-radius: 7px; border: 1.5px solid var(--t-line); display: grid; place-items: center; font-style: normal; font-size: 12px; color: var(--t-muted); }
+.ph-meta { font-size: 12px; color: var(--t-muted); display: flex; justify-content: space-between; }
+.ph-clue { background: var(--t-surface); border: 1px solid var(--t-line); border-radius: 12px; padding: 11px 12px; display: grid; gap: 4px; }
+.ph-label { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--t-accent); font-weight: 700; }
+.ph-clue p { font-size: 13.5px; line-height: 1.42; }
+.ph-hints { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 11.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--t-line); background: var(--t-surface); white-space: nowrap; }
+.chip.count { border-color: var(--t-accent); color: var(--t-accent); font-weight: 600; }
+
+.pt {
+  display: grid; grid-template-columns: repeat(18, minmax(0, 1fr));
+  grid-template-rows: repeat(7, auto) 5px repeat(2, auto); gap: 2px;
+}
+.pt .c {
+  aspect-ratio: 1; display: grid; place-items: center; border-radius: 2px;
+  font-family: var(--f-sym); font-size: 7.6px; font-weight: 600; line-height: 1;
+  background: var(--cand-bg); color: var(--cand-fg); box-shadow: inset 0 0 0 1px var(--cand-bd);
+}
+.pt .c.off { background: var(--off-bg); color: var(--off-fg); box-shadow: none; font-weight: 400; }
+.pt .c.guess { background: var(--guess-bg); color: var(--guess-fg); box-shadow: none; position: relative; }
+.pt .c.ph { background: transparent; box-shadow: inset 0 0 0 1px var(--t-line); color: var(--t-muted); }
+
+.ph-att { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--t-muted); }
+.dots { display: flex; gap: 4px; }
+.dots b { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--t-line); }
+.dots b.used { background: var(--t-hot); border-color: var(--t-hot); }
+.dots b.now { border-color: var(--t-accent); }
+.ph-sug { background: var(--t-surface); border: 1px solid var(--t-line); border-radius: 10px; padding: 7px 11px; font-size: 13px; display: flex; justify-content: space-between; }
+.ph-sug span { color: var(--t-muted); }
+.ph-in { display: flex; gap: 8px; }
+.ph-in .field { flex: 1; border: 1.5px solid var(--t-accent); border-radius: 10px; padding: 9px 11px; font-size: 14px; background: var(--t-surface); }
+.ph-in .field::after { content: ""; display: inline-block; width: 1.5px; height: 15px; background: var(--t-ink); vertical-align: -2px; margin-left: 1px; }
+.ph-in .btn { border-radius: 10px; padding: 0 14px; display: grid; place-items: center; background: var(--t-accent); color: var(--t-bg); font-weight: 700; font-size: 13.5px; }
+
+/* ---------- Dirección A: Quimisterio (noir por defecto, papel como alternativa) ---------- */
+.dir-a {
+  --f-d: "Special Elite", "Courier New", monospace; --f-b: "IBM Plex Sans", system-ui, sans-serif; --f-sym: "IBM Plex Mono", monospace;
+  --t-bg: #141821; --t-surface: #1c212d; --t-ink: #ece3cf; --t-muted: #9a937f; --t-accent: #e7ad45; --t-hot: #e0664f; --t-line: #2c3342;
+  --cand-bg: #262d3b; --cand-fg: #f3ead6; --cand-bd: #3a4356; --off-bg: #181c25; --off-fg: #353c4c; --guess-bg: #e0664f; --guess-fg: #141821;
+}
+.dir-a .phone.alt {
+  --t-bg: #efe6d2; --t-surface: #f8f2e4; --t-ink: #1a1d27; --t-muted: #6b6455; --t-accent: #a66d0c; --t-hot: #b9412f; --t-line: #d6c9ac;
+  --cand-bg: #fffaf0; --cand-fg: #1a1d27; --cand-bd: #cbbd9c; --off-bg: #e6dcc5; --off-fg: #bcb093; --guess-bg: #b9412f; --guess-fg: #fff8ea;
+}
+.dir-a .dir-head h2 { font-weight: 400; letter-spacing: .04em; }
+.dir-a .ph-name { font-weight: 400; letter-spacing: .05em; font-size: 17px; }
+.dir-a .ph-clue p { font-family: var(--f-d); font-size: 13px; }
+.wm-a { display: grid; justify-items: center; gap: 6px; }
+.wm-a .word { font-family: "Special Elite", monospace; font-size: clamp(24px, 3.4vw, 32px); letter-spacing: .1em; color: var(--t-ink); }
+.wm-a .word b { color: var(--t-accent); font-weight: 400; }
+.wm-a .stamp { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .14em; color: var(--t-hot); border: 1.5px solid var(--t-hot); padding: 2px 8px; transform: rotate(-3deg); }
+
+/* ---------- Dirección B: La Gaceta Periódica (papel prensa por defecto, edición nocturna como alternativa) ---------- */
+.dir-b {
+  --f-d: "Playfair Display", Georgia, serif; --f-b: "Source Serif 4", Georgia, serif; --f-sym: "Source Serif 4", Georgia, serif;
+  --t-bg: #f1ece0; --t-surface: #f9f6ee; --t-ink: #1c1b19; --t-muted: #6f6a5f; --t-accent: #c0262d; --t-hot: #c0262d; --t-line: #cfc6b2;
+  --cand-bg: #fffdf7; --cand-fg: #1c1b19; --cand-bd: #bfb59d; --off-bg: #e7e1d3; --off-fg: #bdb6a5; --guess-bg: #1c1b19; --guess-fg: #f1ece0;
+}
+.dir-b .phone.alt {
+  --t-bg: #171614; --t-surface: #201f1c; --t-ink: #ece6d8; --t-muted: #9b9586; --t-accent: #ff6a60; --t-hot: #ff6a60; --t-line: #34312b;
+  --cand-bg: #2c2a26; --cand-fg: #f4efe3; --cand-bd: #45413a; --off-bg: #1b1a17; --off-fg: #3a3732; --guess-bg: #ece6d8; --guess-fg: #171614;
+}
+.dir-b .dir-head h2 { font-weight: 900; }
+.dir-b .phone { border-radius: 30px; }
+.dir-b .ph-top { flex-direction: column; gap: 4px; border-bottom: 3px double var(--t-ink); }
+.dir-b .ph-top .row { display: flex; width: 100%; align-items: center; justify-content: space-between; }
+.dir-b .ph-name { font-weight: 900; font-size: 22px; text-align: center; }
+.dir-b .ph-clue { background: transparent; border: 0; border-bottom: 1px solid var(--t-line); border-radius: 0; padding: 0 0 10px; }
+.dir-b .ph-clue p { font-family: var(--f-d); font-weight: 700; font-size: 16px; line-height: 1.25; }
+.dir-b .pt .c { border-radius: 0; }
+.dir-b .ph-in .field, .dir-b .ph-in .btn, .dir-b .ph-sug, .dir-b .chip { border-radius: 2px; }
+.wm-b { display: grid; justify-items: center; gap: 4px; width: 100%; max-width: 360px; }
+.wm-b .rule { width: 100%; border-top: 3px double var(--t-ink); }
+.wm-b .word { font-family: "Playfair Display", serif; font-weight: 900; font-size: clamp(24px, 3.4vw, 32px); line-height: 1.05; text-align: center; color: var(--t-ink); }
+.wm-b .tag { font-family: "Source Serif 4", serif; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--t-muted); text-align: center; }
+
+/* ---------- Dirección C: Elementario (laboratorio claro por defecto, oscuro como alternativa) ---------- */
+.dir-c {
+  --f-d: "Bricolage Grotesque", system-ui, sans-serif; --f-b: "Manrope", system-ui, sans-serif; --f-sym: "Manrope", system-ui, sans-serif;
+  --t-bg: #eef3f3; --t-surface: #ffffff; --t-ink: #0e1d22; --t-muted: #56686d; --t-accent: #0b6e69; --t-hot: #f0592b; --t-line: #d3dfe0;
+  --cand-bg: #ffffff; --cand-fg: #0e1d22; --cand-bd: #9cc7c4; --off-bg: #e2eaea; --off-fg: #b2c0c2; --guess-bg: #f0592b; --guess-fg: #ffffff;
+}
+.dir-c .phone.alt {
+  --t-bg: #0c1416; --t-surface: #132024; --t-ink: #e3eff0; --t-muted: #8aa0a4; --t-accent: #3fc1b8; --t-hot: #ff7d55; --t-line: #22353a;
+  --cand-bg: #18302f; --cand-fg: #e9f6f5; --cand-bd: #2d5754; --off-bg: #0f1a1c; --off-fg: #253538; --guess-bg: #ff7d55; --guess-fg: #0c1416;
+}
+.dir-c .pt .c { border-radius: 3px; }
+.dir-c .chip, .dir-c .ph-sug, .dir-c .ph-in .field, .dir-c .ph-in .btn { border-radius: 12px; }
+.wm-c { display: flex; align-items: center; gap: 10px; }
+.wm-c .word { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -0.02em; color: var(--t-ink); }
+.wm-c .word b { color: var(--t-hot); font-weight: 800; }
+.wm-c .tag { font-family: "Manrope", sans-serif; font-size: 12px; color: var(--t-muted); display: block; letter-spacing: 0; font-weight: 600; }
+
+.others { display: grid; gap: 12px; }
+.next { display: grid; gap: 10px; }
+.next h2 { font-size: 20px; font-weight: 600; }
+.next ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 80ch; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header>
+    <h1>Nombre e identidad: tres direcciones</h1>
+    <p class="lead">Cada propuesta trae un nombre, una temática que da vocabulario al juego, un logo, una paleta con modo claro y oscuro, tipografías y una maqueta de móvil con la misma partida de ejemplo. Puedes mezclarlas: el nombre de una con la estética de otra.</p>
+  </header>
+
+  <section class="callout" aria-labelledby="rec">
+    <h2 id="rec">Mi recomendación: Quimisterio</h2>
+    <p>Es la temática que mejor cuenta lo que pasa en el juego. Tienes un caso, una pista principal, sospechosos que vas descartando en el tablero y una acusación final. Cada mecánica tiene ya su nombre natural. El nombre es corto, en español, se pronuncia sin dudar y se recuerda. La Gaceta Periódica es la alternativa si te gana el juego de palabras entre «periódico» y «tabla periódica».</p>
+  </section>
+
+  <section class="rules" aria-labelledby="rules">
+    <h2 id="rules">Reglas comunes a cualquier dirección</h2>
+    <ul>
+      <li>La tabla <strong>no se colorea por familias</strong>. El color se reserva para el estado de cada casilla; con diez colores de familias, el sombreado se perdería.</li>
+      <li>Los tres estados se distinguen también <strong>sin depender del color</strong>: candidata (clara y con borde), descartada (apagada, sin borde) e intento (relleno sólido).</li>
+      <li>Símbolos legibles a 7–10 px: letra con buena forma a tamaño pequeño y peso semibold.</li>
+      <li>Modo claro y oscuro desde el primer día, cada uno con su propia paleta (no un simple negativo).</li>
+    </ul>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:#fff;border-color:#9aa"></i>Candidata</span>
+      <span><i style="background:#e2e6ea;border-color:transparent"></i>Descartada</span>
+      <span><i style="background:#e0664f;border-color:transparent"></i>Tu intento</span>
+    </div>
+  </section>
+
+  <!-- ===================== A ===================== -->
+  <section class="dir dir-a" aria-labelledby="a-name">
+    <div class="dir-info">
+      <div class="dir-head">
+        <span class="dir-tag">Dirección A · Detective</span>
+        <h2 id="a-name">Quimisterio</h2>
+        <p class="sub">Química + misterio. Cada día hay un caso nuevo y un elemento culpable. La tabla es el tablero de sospechosos.</p>
+      </div>
+
+      <div>
+        <div class="block-title">Vocabulario del juego</div>
+        <table class="vocab">
+          <tr><td>Reto del día</td><td>Caso nº 12</td></tr>
+          <tr><td>Pista principal</td><td>Informe del caso</td></tr>
+          <tr><td>Pistas a elegir</td><td>Pistas (cada tipo, una «línea de investigación»)</td></tr>
+          <tr><td>Intento</td><td>Acusación</td></tr>
+          <tr><td>Casillas descartadas</td><td>Sospechosos con coartada</td></tr>
+          <tr><td>Acertar / fallar</td><td>«Caso cerrado» / «Se ha fugado: era el Wolframio»</td></tr>
+          <tr><td>Compartir</td><td>🔎 Quimisterio · Caso nº 12 · 4/6</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="block-title">Logo</div>
+        <div class="logos">
+          <div class="logo-box">
+            <div class="wm-a"><span class="word">QUIMISTERI<b>O</b></span><span class="stamp">CASO Nº 12</span></div>
+          </div>
+          <div class="logo-box">
+            <svg viewBox="0 0 100 100" role="img" aria-label="Icono: lupa sobre una casilla de elemento">
+              <rect x="0" y="0" width="100" height="100" rx="22" fill="var(--t-surface)"/>
+              <line x1="64" y1="64" x2="84" y2="84" stroke="var(--t-accent)" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="44" cy="44" r="28" fill="var(--t-bg)" stroke="var(--t-accent)" stroke-width="6"/>
+              <text x="29" y="33" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" fill="var(--t-hot)">?</text>
+              <text x="44" y="54" text-anchor="middle" font-family="Special Elite, monospace" font-size="25" fill="var(--t-ink)">Qm</text>
+            </svg>
+          </div>
+        </div>
+        <p class="caption" style="text-align:left;max-width:none;margin-top:8px">Icono: una lupa sobre una casilla de elemento inventada, «Qm», con número atómico «?».</p>
+      </div>
+
+      <div class="swatches" data-pal="a"></div>
+
+      <div class="fonts">
+        <div class="block-title">Tipografías</div>
+        <div><strong style="font-family:'Special Elite',monospace;font-weight:400">Special Elite</strong> <span>· máquina de escribir, solo en títulos y en el texto del informe</span></div>
+        <div><strong style="font-family:'IBM Plex Sans'">IBM Plex Sans</strong> <span>· interfaz y textos</span></div>
+        <div><strong style="font-family:'IBM Plex Mono'">IBM Plex Mono</strong> <span>· símbolos de la tabla</span></div>
+      </div>
+
+      <div class="proscons">
+        <div><div class="block-title">A favor</div><ul>
+          <li>La temática encaja con la mecánica: deducir y descartar.</li>
+          <li>Nombre corto, original y en español.</li>
+          <li>Da tono y humor a todos los mensajes.</li>
+        </ul></div>
+        <div><div class="block-title">En contra</div><ul>
+          <li>El estilo noir se recarga si se abusa; hay que contenerlo.</li>
+          <li>«Qm» no es un símbolo real; a algún purista le puede chirriar.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar"><small>Maqueta · modo noche</small><button class="toggle" type="button" id="tg-a" data-alt="Ver modo día" data-def="Ver modo noche">Ver modo día</button></div>
+      <div class="phone" id="ph-a">
+        <div class="ph-top">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><line x1="64" y1="64" x2="86" y2="86" stroke="var(--t-accent)" stroke-width="12" stroke-linecap="round"/><circle cx="44" cy="44" r="30" fill="none" stroke="var(--t-accent)" stroke-width="9"/><text x="44" y="56" text-anchor="middle" font-family="Special Elite, monospace" font-size="30" fill="var(--t-ink)">?</text></svg>
+          <span class="ph-name">QUIMISTERIO</span>
+          <span class="ph-ico"><i>?</i><i>▤</i></span>
+        </div>
+        <div class="ph-meta"><span>Caso nº 12</span><span>miércoles 4 nov</span></div>
+        <div class="ph-clue">
+          <span class="ph-label">Informe del caso</span>
+          <p>Dos hermanos lo aislaron en Bergara en 1783. Su símbolo viene de un nombre que el mundo anglosajón no usa.</p>
+        </div>
+        <div class="ph-hints"><span class="chip">↕️ Más abajo que Fe</span><span class="chip">🧱 Bloque d</span><span class="chip count" data-count></span></div>
+        <div class="pt" data-table></div>
+        <div class="ph-att"><span>Acusación 3 de 6</span><span class="dots"><b class="used"></b><b class="used"></b><b class="now"></b><b></b><b></b><b></b></span></div>
+        <div class="ph-sug"><strong>Wolframio</strong><span>W · 74</span></div>
+        <div class="ph-in"><span class="field">wol</span><span class="btn">Acusar</span></div>
+      </div>
+      <p class="caption">Ejemplo de partida: tras acusar a Fe (pista: más abajo) y a Pt (pista: bloque d) quedan pocos sospechosos.</p>
+    </div>
+  </section>
+
+  <!-- ===================== B ===================== -->
+  <section class="dir dir-b" aria-labelledby="b-name">
+    <div class="dir-info">
+      <div class="dir-head">
+        <span class="dir-tag">Dirección B · Periódico</span>
+        <h2 id="b-name">La Gaceta Periódica</h2>
+        <p class="sub">Un periódico es, literalmente, algo que sale cada día. Cada reto es una edición nueva y la pista principal es el titular.</p>
+      </div>
+
+      <div>
+        <div class="block-title">Vocabulario del juego</div>
+        <table class="vocab">
+          <tr><td>Reto del día</td><td>Edición nº 12</td></tr>
+          <tr><td>Pista principal</td><td>Titular del día</td></tr>
+          <tr><td>Pistas a elegir</td><td>Breves de última hora</td></tr>
+          <tr><td>Intento</td><td>Intento</td></tr>
+          <tr><td>Casillas descartadas</td><td>Desmentidos</td></tr>
+          <tr><td>Acertar / fallar</td><td>«Exclusiva: era el Wolframio» / «Fe de erratas»</td></tr>
+          <tr><td>Compartir</td><td>🗞️ La Gaceta Periódica nº 12 · 4/6</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="block-title">Logo</div>
+        <div class="logos">
+          <div class="logo-box">
+            <div class="wm-b"><div class="rule"></div><span class="word">La Gaceta Periódica</span><span class="tag">Diario de los 118 elementos</span><div class="rule"></div></div>
+          </div>
+          <div class="logo-box">
+            <svg viewBox="0 0 100 100" role="img" aria-label="Icono: casilla de elemento Gp con el número de edición">
+              <rect x="5" y="5" width="90" height="90" rx="4" fill="var(--t-surface)" stroke="var(--t-ink)" stroke-width="4"/>
+              <text x="13" y="24" font-family="Source Serif 4, serif" font-size="13" fill="var(--t-ink)">12</text>
+              <text x="50" y="66" text-anchor="middle" font-family="Playfair Display, serif" font-weight="900" font-size="40" fill="var(--t-accent)">Gp</text>
+              <text x="50" y="85" text-anchor="middle" font-family="Source Serif 4, serif" font-size="9.5" fill="var(--t-ink)">Gaceta Periódica</text>
+            </svg>
+          </div>
+        </div>
+        <p class="caption" style="text-align:left;max-width:none;margin-top:8px">Icono: una casilla de elemento donde el número atómico es el número de edición.</p>
+      </div>
+
+      <div class="swatches" data-pal="b"></div>
+
+      <div class="fonts">
+        <div class="block-title">Tipografías</div>
+        <div><strong style="font-family:'Playfair Display';font-weight:900">Playfair Display</strong> <span>· cabecera y titular</span></div>
+        <div><strong style="font-family:'Source Serif 4'">Source Serif 4</strong> <span>· textos y símbolos de la tabla</span></div>
+      </div>
+
+      <div class="proscons">
+        <div><div class="block-title">A favor</div><ul>
+          <li>El juego de palabras cuadra con el reto diario.</li>
+          <li>Estética editorial elegante y reconocible.</li>
+          <li>El titular críptico es un formato natural para la pista.</li>
+        </ul></div>
+        <div><div class="block-title">En contra</div><ul>
+          <li>Nombre largo para el icono y para compartir.</li>
+          <li>Papel crema con letra serif es un estilo muy visto.</li>
+          <li>Hay que evitar parecerse a cabeceras de periódicos reales.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar"><small>Maqueta · papel prensa</small><button class="toggle" type="button" id="tg-b" data-alt="Ver papel prensa" data-def="Ver edición nocturna">Ver edición nocturna</button></div>
+      <div class="phone" id="ph-b">
+        <div class="ph-top">
+          <div class="row"><span style="font-size:11px;color:var(--t-muted)">Edición nº 12</span><span class="ph-ico"><i>?</i><i>▤</i></span></div>
+          <span class="ph-name">La Gaceta Periódica</span>
+          <span style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--t-muted)">Miércoles, 4 de noviembre de 2026</span>
+        </div>
+        <div class="ph-clue">
+          <span class="ph-label">Titular del día</span>
+          <p>Dos hermanos lo aíslan en Bergara en 1783; los ingleses siguen sin llamarlo por su nombre</p>
+        </div>
+        <div class="ph-hints"><span class="chip">↕️ Más abajo que Fe</span><span class="chip">🧱 Bloque d</span><span class="chip count" data-count></span></div>
+        <div class="pt" data-table></div>
+        <div class="ph-att"><span>Intento 3 de 6</span><span class="dots"><b class="used"></b><b class="used"></b><b class="now"></b><b></b><b></b><b></b></span></div>
+        <div class="ph-sug"><strong>Wolframio</strong><span>W · 74</span></div>
+        <div class="ph-in"><span class="field">wol</span><span class="btn">Enviar</span></div>
+      </div>
+      <p class="caption">Misma partida de ejemplo. La edición nocturna es el modo oscuro.</p>
+    </div>
+  </section>
+
+  <!-- ===================== C ===================== -->
+  <section class="dir dir-c" aria-labelledby="c-name">
+    <div class="dir-info">
+      <div class="dir-head">
+        <span class="dir-tag">Dirección C · Laboratorio limpio</span>
+        <h2 id="c-name">Elementario</h2>
+        <p class="sub">Elemento + diario, y un guiño a «elemental». Estética de laboratorio moderno: limpia, clara y sin disfraz.</p>
+      </div>
+
+      <div>
+        <div class="block-title">Vocabulario del juego</div>
+        <table class="vocab">
+          <tr><td>Reto del día</td><td>Día 12</td></tr>
+          <tr><td>Pista principal</td><td>Pista del día</td></tr>
+          <tr><td>Pistas a elegir</td><td>Pistas</td></tr>
+          <tr><td>Intento</td><td>Intento</td></tr>
+          <tr><td>Casillas descartadas</td><td>Descartados</td></tr>
+          <tr><td>Acertar / fallar</td><td>«¡Elemental!» / «Hoy era el Wolframio»</td></tr>
+          <tr><td>Compartir</td><td>⚗️ Elementario #12 · 4/6</td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="block-title">Logo</div>
+        <div class="logos">
+          <div class="logo-box">
+            <div class="wm-c">
+              <svg viewBox="0 0 100 100" aria-hidden="true" style="width:46px;height:46px"><rect x="10" y="16" width="80" height="76" rx="14" fill="var(--t-surface)" stroke="var(--t-accent)" stroke-width="6"/><path d="M10 30a14 14 0 0 1 14-14h52a14 14 0 0 1 14 14v10H10z" fill="var(--t-accent)"/><rect x="29" y="6" width="8" height="20" rx="4" fill="var(--t-ink)"/><rect x="63" y="6" width="8" height="20" rx="4" fill="var(--t-ink)"/><text x="50" y="83" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="38" fill="var(--t-hot)">?</text></svg>
+              <span class="word">element<b>ario</b><span class="tag">un elemento al día</span></span>
+            </div>
+          </div>
+          <div class="logo-box">
+            <svg viewBox="0 0 100 100" role="img" aria-label="Icono: casilla de elemento con anillas de calendario">
+              <rect x="10" y="16" width="80" height="76" rx="14" fill="var(--t-surface)" stroke="var(--t-accent)" stroke-width="5"/>
+              <path d="M10 30a14 14 0 0 1 14-14h52a14 14 0 0 1 14 14v10H10z" fill="var(--t-accent)"/>
+              <rect x="29" y="6" width="8" height="20" rx="4" fill="var(--t-ink)"/>
+              <rect x="63" y="6" width="8" height="20" rx="4" fill="var(--t-ink)"/>
+              <text x="20" y="55" font-family="Manrope, sans-serif" font-weight="700" font-size="10" fill="var(--t-muted)">12</text>
+              <text x="50" y="83" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="36" fill="var(--t-hot)">?</text>
+            </svg>
+          </div>
+        </div>
+        <p class="caption" style="text-align:left;max-width:none;margin-top:8px">Icono: una casilla de elemento con anillas de calendario. El número es el día del reto.</p>
+      </div>
+
+      <div class="swatches" data-pal="c"></div>
+
+      <div class="fonts">
+        <div class="block-title">Tipografías</div>
+        <div><strong style="font-family:'Bricolage Grotesque';font-weight:800">Bricolage Grotesque</strong> <span>· nombre y títulos</span></div>
+        <div><strong style="font-family:'Manrope';font-weight:700">Manrope</strong> <span>· interfaz, textos y símbolos</span></div>
+      </div>
+
+      <div class="proscons">
+        <div><div class="block-title">A favor</div><ul>
+          <li>«¡Elemental!» como mensaje de victoria.</li>
+          <li>La más sencilla de construir y de mantener coherente.</li>
+          <li>Funciona en cualquier contexto, también en clase.</li>
+        </ul></div>
+        <div><div class="block-title">En contra</div><ul>
+          <li>Menos personalidad; se parece más a otros juegos de este tipo.</li>
+          <li>«Elementario» puede leerse como «básico».</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar"><small>Maqueta · modo claro</small><button class="toggle" type="button" id="tg-c" data-alt="Ver modo claro" data-def="Ver modo oscuro">Ver modo oscuro</button></div>
+      <div class="phone" id="ph-c">
+        <div class="ph-top">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="16" width="80" height="76" rx="14" fill="var(--t-surface)" stroke="var(--t-accent)" stroke-width="7"/><path d="M10 30a14 14 0 0 1 14-14h52a14 14 0 0 1 14 14v10H10z" fill="var(--t-accent)"/><rect x="29" y="6" width="9" height="20" rx="4.5" fill="var(--t-ink)"/><rect x="62" y="6" width="9" height="20" rx="4.5" fill="var(--t-ink)"/><text x="50" y="83" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="40" fill="var(--t-hot)">?</text></svg>
+          <span class="ph-name">elementario</span>
+          <span class="ph-ico"><i>?</i><i>▤</i></span>
+        </div>
+        <div class="ph-meta"><span>Día 12</span><span>miércoles 4 nov</span></div>
+        <div class="ph-clue">
+          <span class="ph-label">Pista del día</span>
+          <p>Dos hermanos lo aislaron en Bergara en 1783. Su símbolo viene de un nombre que el mundo anglosajón no usa.</p>
+        </div>
+        <div class="ph-hints"><span class="chip">↕️ Más abajo que Fe</span><span class="chip">🧱 Bloque d</span><span class="chip count" data-count></span></div>
+        <div class="pt" data-table></div>
+        <div class="ph-att"><span>Intento 3 de 6</span><span class="dots"><b class="used"></b><b class="used"></b><b class="now"></b><b></b><b></b><b></b></span></div>
+        <div class="ph-sug"><strong>Wolframio</strong><span>W · 74</span></div>
+        <div class="ph-in"><span class="field">wol</span><span class="btn">Probar</span></div>
+      </div>
+      <p class="caption">Misma partida de ejemplo, con estética de laboratorio.</p>
+    </div>
+  </section>
+
+  <section class="others" aria-labelledby="others">
+    <h2 id="others">Otros nombres que he descartado</h2>
+    <ul>
+      <li><strong>Uno de 118</strong>: claro y con número, pero se queda viejo si algún día se descubre el elemento 119.</li>
+      <li><strong>Elemento X</strong>: sencillo, aunque genérico y difícil de encontrar en un buscador.</li>
+      <li><strong>Átomo del día</strong>: descriptivo, pero sin gancho.</li>
+      <li><strong>Tabla rasa</strong>: juego de palabras simpático, pero no dice de qué va el juego.</li>
+      <li>Nombres terminados en <strong>-dle</strong>: hay muchísimos juegos así, y algunos de química ya existen.</li>
+    </ul>
+  </section>
+
+  <section class="next" aria-labelledby="next">
+    <h2 id="next">Para decidir</h2>
+    <ol>
+      <li>Dirección (o mezcla) que te convence.</li>
+      <li>Comprobar que el nombre está libre: búsqueda en Google, en GitHub y, si queréis dominio propio, el .com/.es.</li>
+      <li>Con eso cerrado, lo apunto en DISEÑO.md y el prototipo se construye ya con esa identidad.</li>
+    </ol>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  var SYM = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og".split(" ");
+
+  // Posición en la tabla de 18 columnas (filas 9 y 10 = bloque f, separado por la fila 8).
+  function pos(z) {
+    if (z === 1) return { r: 1, c: 1 };
+    if (z === 2) return { r: 1, c: 18 };
+    if (z <= 10) return { r: 2, c: z <= 4 ? z - 2 : z + 8 };
+    if (z <= 18) return { r: 3, c: z <= 12 ? z - 10 : z };
+    if (z <= 36) return { r: 4, c: z - 18 };
+    if (z <= 54) return { r: 5, c: z - 36 };
+    if (z <= 56) return { r: 6, c: z - 54 };
+    if (z <= 71) return { r: 9, c: z - 54 };
+    if (z <= 86) return { r: 6, c: z - 68 };
+    if (z <= 88) return { r: 7, c: z - 86 };
+    if (z <= 103) return { r: 10, c: z - 86 };
+    return { r: 7, c: z - 100 };
+  }
+  function period(p) { return p.r === 9 ? 6 : p.r === 10 ? 7 : p.r; }
+  function isD(p) { return p.r >= 4 && p.r <= 7 && p.c >= 3 && p.c <= 12; }
+
+  // Partida de ejemplo: solución W (74). Fe (26) → "más abajo"; Pt (78) → "bloque d".
+  var guesses = [26, 78];
+  function candidate(z) {
+    var p = pos(z);
+    return guesses.indexOf(z) < 0 && period(p) > 4 && isD(p);
+  }
+
+  var count = 0;
+  for (var z = 1; z <= 118; z++) if (candidate(z)) count++;
+
+  document.querySelectorAll("[data-table]").forEach(function (el) {
+    var frag = document.createDocumentFragment();
+    for (var z = 1; z <= 118; z++) {
+      var p = pos(z), d = document.createElement("div");
+      d.className = "c" + (guesses.indexOf(z) >= 0 ? " guess" : candidate(z) ? "" : " off");
+      d.style.gridRow = p.r; d.style.gridColumn = p.c;
+      d.textContent = SYM[z - 1];
+      frag.appendChild(d);
+    }
+    [[6, 3, "57–71"], [7, 3, "89–103"]].forEach(function (ph) {
+      var d = document.createElement("div");
+      d.className = "c ph"; d.style.gridRow = ph[0]; d.style.gridColumn = ph[1]; d.textContent = "·";
+      d.title = ph[2];
+      frag.appendChild(d);
+    });
+    el.appendChild(frag);
+  });
+  document.querySelectorAll("[data-count]").forEach(function (el) { el.textContent = count + " posibles"; });
+
+  var PAL = {
+    a: [
+      ["Noche (principal)", [["Tinta noche", "#141821", "fondo"], ["Expediente", "#1c212d", "tarjetas"], ["Papel", "#ece3cf", "texto"], ["Lámpara", "#e7ad45", "acento"], ["Lacre", "#e0664f", "intento"]]],
+      ["Día", [["Papel", "#efe6d2", "fondo"], ["Folio", "#f8f2e4", "tarjetas"], ["Tinta", "#1a1d27", "texto"], ["Ámbar", "#a66d0c", "acento"], ["Lacre", "#b9412f", "intento"]]]
+    ],
+    b: [
+      ["Papel prensa (principal)", [["Papel", "#f1ece0", "fondo"], ["Hoja", "#f9f6ee", "tarjetas"], ["Tinta", "#1c1b19", "texto"], ["Rojo cabecera", "#c0262d", "acento"], ["Gris filete", "#cfc6b2", "líneas"]]],
+      ["Edición nocturna", [["Noche", "#171614", "fondo"], ["Hoja", "#201f1c", "tarjetas"], ["Papel", "#ece6d8", "texto"], ["Rojo", "#ff6a60", "acento"], ["Filete", "#34312b", "líneas"]]]
+    ],
+    c: [
+      ["Claro (principal)", [["Bata", "#eef3f3", "fondo"], ["Blanco", "#ffffff", "tarjetas"], ["Tinta", "#0e1d22", "texto"], ["Verde matraz", "#0b6e69", "acento"], ["Llama", "#f0592b", "intento"]]],
+      ["Oscuro", [["Noche", "#0c1416", "fondo"], ["Mesa", "#132024", "tarjetas"], ["Texto", "#e3eff0", "texto"], ["Verde", "#3fc1b8", "acento"], ["Llama", "#ff7d55", "intento"]]]
+    ]
+  };
+  document.querySelectorAll("[data-pal]").forEach(function (el) {
+    var html = '<div class="block-title">Paleta</div>';
+    PAL[el.getAttribute("data-pal")].forEach(function (row) {
+      html += '<div class="sw-row"><span>' + row[0] + '</span><div class="sw-list">';
+      row[1].forEach(function (s) {
+        html += '<div class="sw"><b style="background:' + s[1] + '"></b><div>' + s[0] + '<em>' + s[2] + '</em><code>' + s[1] + '</code></div></div>';
+      });
+      html += '</div></div>';
+    });
+    el.innerHTML = html;
+  });
+
+  ["a", "b", "c"].forEach(function (k) {
+    var btn = document.getElementById("tg-" + k), ph = document.getElementById("ph-" + k);
+    var label = btn.parentNode.querySelector("small"), base = label.textContent;
+    btn.addEventListener("click", function () {
+      var on = ph.classList.toggle("alt");
+      btn.textContent = on ? btn.getAttribute("data-alt") : btn.getAttribute("data-def");
+      label.textContent = on ? "Maqueta · " + btn.getAttribute("data-def").replace(/^Ver /, "") : base;
+    });
+  });
+})();
+</script>
+</body>
+</html>
