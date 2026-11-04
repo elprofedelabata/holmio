@@ -44,14 +44,14 @@ export class Partida {
     return this.intentos.length > this.pistas.length ? 'elegir' : 'acusar';
   }
 
-  /** Pistas recibidas, ya resueltas: [{ tipo, icono, texto, filtro, desde }] */
+  /** Pistas recibidas, ya resueltas: [{ tipo, svg, texto, filtro, negativa, desde }] */
   pistasResueltas() {
     // tipo null = no quedaba ninguna pista útil y se siguió sin pista.
     // Los tipos desconocidos (partidas guardadas con versiones anteriores) se ignoran.
     return this.pistas.filter((p) => TIPOS_PISTA[p.tipo]).map(({ tipo, desde }) => {
       const def = TIPOS_PISTA[tipo];
-      const { texto, filtro } = def.resolver(this.secreto, porZ(desde), this.caso);
-      return { tipo, icono: def.icono, texto, filtro, desde };
+      const { texto, filtro, negativa = false } = def.resolver(this.secreto, porZ(desde), this.caso);
+      return { tipo, svg: def.svg, texto, filtro, negativa, desde };
     });
   }
 

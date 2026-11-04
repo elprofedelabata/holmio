@@ -170,6 +170,8 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 | 💡 | Curiosidad extra | Otra pista rebuscada | No | **Escrito a mano** |
 
 **Notas:**
+- **Iconos:** en la interfaz cada pista usa un **icono SVG propio** (trazo fino, color de acento): flechas que salen de una casilla tenue (tu última acusación), una Z en una casilla (número atómico), la silueta de la tabla (bloque), un matraz (familia), un termómetro (estado), el trébol radiactivo, un libro abierto (etimología) y una bombilla (curiosidad). Los **emojis** de la tabla solo se usan en el **texto de compartir**, que es texto plano.
+- Si la respuesta a una pista de dirección es **«no»**, su icono aparece **atenuado y tachado** en la lista de pistas.
 - Las cuatro pistas de **dirección** son preguntas de **sí o no** sobre el último acusado. Al ser cuatro tipos distintos (cada uno usable una vez), dan más juego que dos pistas de eje completo: hay que decidir qué dirección preguntar y desde qué elemento. Una dirección imposible desde el último acusado (p. ej., «arriba» desde el periodo 1) no se ofrece, porque no descartaría nada.
 - Las pistas **comparativas** (🔥 ⚡ #️⃣) no se ofrecen si falta el dato para el elemento secreto o para el último intento (p. ej., elementos superpesados sin punto de fusión medido).
 - Las pistas **escritas a mano** (🔤 💡) no "sombrean" la tabla: aportan información que el jugador interpreta.

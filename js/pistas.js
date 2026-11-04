@@ -1,10 +1,14 @@
 // Tipos de pista adicional. Cada tipo se recibe como mucho una vez por partida.
 //
 // Cada tipo define:
-//   icono, nombre      → para la tarjeta de elección y para compartir
+//   nombre             → para la tarjeta de elección
+//   icono              → emoji, solo para el texto de compartir
+//   svg                → id del icono SVG en index.html (i-<clave>), se añade abajo
 //   pregunta(ultimo)   → qué averiguarás si la eliges
 //   disponible(s)      → si tiene sentido para este elemento secreto
-//   resolver(s, u)     → { texto, filtro? }  (filtro(el) = true si `el` sigue siendo posible)
+//   resolver(s, u)     → { texto, filtro?, negativa? }
+//                        filtro(el) = true si `el` sigue siendo posible;
+//                        negativa = la respuesta es «no» (se marca el icono tachado)
 // s = elemento secreto, u = último elemento acusado (para las pistas relativas).
 
 import { TIPOS, ESTADOS } from './elementos.js';
@@ -27,7 +31,7 @@ function direccion({ icono, nombre, eje, signo, frase, siNo }) {
     resolver(s, u) {
       const si = cumple(s, u);
       const texto = si ? `Está ${frase} que ${u.nombre}` : `No está ${frase} que ${u.nombre} (${siNo})`;
-      return { texto, filtro: (el) => cumple(el, u) === si };
+      return { texto, filtro: (el) => cumple(el, u) === si, negativa: !si };
     },
   };
 }
@@ -110,6 +114,8 @@ export const TIPOS_PISTA = {
     resolver: (s, u, caso) => ({ texto: caso.curiosidad }),
   },
 };
+
+for (const [clave, def] of Object.entries(TIPOS_PISTA)) def.svg = `i-${clave}`;
 
 // --- Azar determinista -------------------------------------------------------
 

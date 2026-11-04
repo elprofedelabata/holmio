@@ -53,6 +53,9 @@ function pintarTabla(candidatos) {
   }
 }
 
+// ---------- Iconos ----------
+const icono = (id) => `<svg class="ico-svg" viewBox="0 0 24 24"><use href="#${id}"/></svg>`;
+
 // ---------- Render general ----------
 function render() {
   const resueltas = partida.pistasResueltas();
@@ -63,7 +66,7 @@ function render() {
   lista.replaceChildren(
     ...resueltas.map((p) => {
       const li = document.createElement('li');
-      li.innerHTML = `<span class="ico" aria-hidden="true">${p.icono}</span><span></span>`;
+      li.innerHTML = `<span class="ico${p.negativa ? ' negada' : ''}" aria-hidden="true">${icono(p.svg)}</span><span></span>`;
       li.lastChild.textContent = p.texto;
       return li;
     }),
@@ -116,7 +119,7 @@ function abrirElegir() {
     b.type = 'button';
     b.className = 'opcion';
     b.style.setProperty('--i', i);
-    b.innerHTML = `<span class="ico" aria-hidden="true">${o.icono}</span><span><strong></strong><span class="preg"></span></span>`;
+    b.innerHTML = `<span class="ico" aria-hidden="true">${icono(o.svg)}</span><span><strong></strong><span class="preg"></span></span>`;
     b.querySelector('strong').textContent = o.nombre;
     b.querySelector('.preg').textContent = o.pregunta;
     b.addEventListener('click', () => {
