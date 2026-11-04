@@ -114,6 +114,11 @@ function destacarPista(p) {
   const objetivo = PISTAS_DE_TEXTO.has(p.tipo)
     ? $('informe-extra').querySelector(`[data-tipo="${p.tipo}"]`)
     : celdas.get(p.desde);
+  // Si el informe ya no cabe, se desplaza por dentro hasta la pista nueva.
+  if (PISTAS_DE_TEXTO.has(p.tipo)) {
+    const informe = document.querySelector('.informe');
+    informe.scrollTo({ top: informe.scrollHeight, behavior: sinAnimaciones() ? 'auto' : 'smooth' });
+  }
   objetivo?.classList.add('nueva');
   objetivo?.addEventListener('animationend', () => objetivo.classList.remove('nueva'), { once: true });
 }

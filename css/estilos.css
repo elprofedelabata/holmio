@@ -106,9 +106,13 @@ button { cursor: pointer; }
   clip: rect(0 0 0 0); white-space: nowrap;
 }
 
+/* La app ocupa exactamente la pantalla: el informe se lleva el espacio libre (y hace
+   scroll por dentro si no cabe), así la tabla queda anclada abajo y no se mueve
+   cuando el informe crece con las pistas de texto. */
 .app {
   max-width: 480px;
-  min-height: 100%;
+  height: 100%;
+  height: 100dvh;
   margin: 0 auto;
   padding: 10px 14px 0;
   display: flex;
@@ -143,29 +147,34 @@ button { cursor: pointer; }
 .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--suave); }
 #num-caso { font-family: var(--f-simbolo); font-weight: 600; letter-spacing: .04em; color: var(--lacre); }
 
-.contenido { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.app > * { flex: none; }
+.app > .contenido { flex: 1; min-height: 0; }
+.contenido { display: flex; flex-direction: column; gap: 10px; }
 
 /* ---------- Informe ---------- */
 .informe {
   background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 12px;
-  padding: 11px 13px; display: grid; gap: 4px;
+  padding: 10px 12px; display: grid; gap: 4px; align-content: start;
+  flex: 0 1 auto; min-height: 64px; overflow-y: auto; overscroll-behavior: contain;
 }
+.tablero, .estado { flex: none; }
+.tablero { margin-top: auto; }
 .etiqueta {
   font-family: var(--f-texto); font-size: 11px; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase; color: var(--acento);
 }
-#informe-texto { font-family: var(--f-titulo); font-size: 15px; line-height: 1.42; }
+#informe-texto { font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; }
 
 /* ---------- Pistas de texto: amplían el informe ---------- */
 #informe-extra { display: grid; gap: 6px; }
 #informe-extra:empty { display: none; }
 .informe-extra {
   display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start;
-  padding-top: 7px; border-top: 1px dashed var(--linea);
-  font-family: var(--f-titulo); font-size: 14px; line-height: 1.4;
+  padding-top: 6px; border-top: 1px dashed var(--linea);
+  font-family: var(--f-titulo); font-size: 12.5px; line-height: 1.4;
   border-radius: 4px;
 }
-.informe-extra .ico { width: 17px; height: 17px; margin-top: 2px; color: var(--acento); }
+.informe-extra .ico { width: 15px; height: 15px; margin-top: 1px; color: var(--acento); }
 .informe-extra.nueva { animation: destello 1.6s ease-out; }
 
 /* Iconos de pista: trazo fino con el color del contenedor */
@@ -411,6 +420,6 @@ button { cursor: pointer; }
 /* Pantallas bajas (teclado abierto): compactar */
 @media (max-height: 560px) {
   .meta { display: none; }
-  .informe { padding: 8px 10px; }
-  #informe-texto { font-size: 13.5px; }
+  .informe { padding: 8px 10px; min-height: 48px; }
+  #informe-texto { font-size: 12.5px; }
 }
