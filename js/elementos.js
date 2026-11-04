@@ -199,34 +199,44 @@ export const ELEMENTOS = CRUDO.trim().split('\n').map((linea, i) => {
 
 export const porZ = (z) => ELEMENTOS[z - 1];
 
-const indiceBusqueda = ELEMENTOS.flatMap((el) => [
-  ...el.nombres.map((n) => ({ clave: quitarTildes(n), el, tipo: 'nombre' })),
-  { clave: quitarTildes(el.simbolo), el, tipo: 'simbolo' },
-]);
+// Solo se busca por nombre (incluidos los nombres alternativos), nunca por símbolo.
+// Quitar tildes no cambia la longitud del texto (cada letra sigue siendo una letra),
+// así que las posiciones en la clave valen también para el nombre original.
+const indiceBusqueda = ELEMENTOS.flatMap((el) =>
+  el.nombres.map((nombre, i) => ({ clave: quitarTildes(nombre), nombre, el, principal: i === 0 })),
+).sort((a, b) => a.clave.localeCompare(b.clave, 'es'));
 
-/** Busca un elemento exacto por nombre (sin tildes) o símbolo. */
+/** Busca un elemento por su nombre exacto (sin importar mayúsculas ni tildes). */
 export function buscarExacto(texto) {
   const q = quitarTildes(texto);
   if (!q) return null;
   return indiceBusqueda.find((e) => e.clave === q)?.el ?? null;
 }
 
-/** Sugerencias para el autocompletado: símbolo exacto primero, luego nombres que empiezan por el texto. */
+/**
+ * Sugerencias para el autocompletado, en orden alfabético: primero los nombres que
+ * empiezan por el texto y, desde 3 letras, los que lo contienen.
+ * Devuelve [{ el, nombre, inicio, fin }], donde nombre[inicio, fin) es lo que coincide.
+ */
 export function sugerencias(texto, max = 5) {
   const q = quitarTildes(texto);
   if (!q) return [];
   const vistos = new Set();
   const out = [];
-  const add = (el) => {
-    if (!vistos.has(el.z) && out.length < max) {
-      vistos.add(el.z);
-      out.push(el);
-    }
+  const add = (e, inicio) => {
+    if (vistos.has(e.el.z) || out.length >= max) return;
+    vistos.add(e.el.z);
+    out.push({ el: e.el, nombre: e.nombre, inicio, fin: inicio + q.length });
   };
-  indiceBusqueda.filter((e) => e.tipo === 'simbolo' && e.clave === q).forEach((e) => add(e.el));
-  indiceBusqueda.filter((e) => e.tipo === 'nombre' && e.clave.startsWith(q)).forEach((e) => add(e.el));
+  // Si el nombre principal y uno alternativo coinciden, se muestra el principal.
+  const prefijo = indiceBusqueda.filter((e) => e.clave.startsWith(q));
+  prefijo.filter((e) => e.principal).forEach((e) => add(e, 0));
+  prefijo.forEach((e) => add(e, 0));
   if (q.length >= 3) {
-    indiceBusqueda.filter((e) => e.tipo === 'nombre' && e.clave.includes(q)).forEach((e) => add(e.el));
+    indiceBusqueda.forEach((e) => {
+      const i = e.clave.indexOf(q);
+      if (i > 0) add(e, i);
+    });
   }
   return out;
 }

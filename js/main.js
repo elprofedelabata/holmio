@@ -1,6 +1,6 @@
 // Holmio — interfaz
 
-import { ELEMENTOS, porZ, buscarExacto, sugerencias } from './elementos.js';
+import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.js';
 import { casoDelDia, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
 
@@ -167,36 +167,101 @@ function enfocarEntrada() {
   if (matchMedia('(pointer: fine)').matches) entrada.focus();
 }
 
+// Desplegable de sugerencias (hacia arriba). `activa` es la opción resaltada, que es
+// la que se elige con Intro; la 0 es la mejor coincidencia, la más cercana al campo.
+const desplegable = $('sugerencias');
+let lista = [];
+let activa = -1;
+
+function cerrarDesplegable() {
+  lista = [];
+  activa = -1;
+  desplegable.hidden = true;
+  desplegable.replaceChildren();
+  entrada.setAttribute('aria-expanded', 'false');
+  entrada.removeAttribute('aria-activedescendant');
+}
+
+function marcarActiva(i) {
+  activa = i;
+  [...desplegable.children].forEach((li, j) => {
+    li.classList.toggle('activo', j === i);
+    li.setAttribute('aria-selected', String(j === i));
+  });
+  if (i >= 0) entrada.setAttribute('aria-activedescendant', `sug-${i}`);
+}
+
+function elegirSugerencia(i) {
+  entrada.value = lista[i].nombre;
+  cerrarDesplegable();
+  entrada.focus();
+}
+
 function renderSugerencias() {
-  const lista = sugerencias(entrada.value, 6);
+  lista = sugerencias(entrada.value, 5);
+  // Si lo escrito ya es exactamente la única sugerencia, no hace falta el desplegable.
+  const yaElegido =
+    lista.length === 1 && quitarTildes(lista[0].nombre) === quitarTildes(entrada.value);
+  if (!lista.length || yaElegido) return cerrarDesplegable();
+
   const posibles = new Set(partida.candidatos().map((el) => el.z));
-  $('sugerencias').replaceChildren(
-    ...lista.map((el) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'sug';
-      b.setAttribute('role', 'option');
-      if (partida.intentos.includes(el.z)) b.classList.add('ya');
-      else if (!posibles.has(el.z)) b.classList.add('descartado');
-      b.textContent = el.nombre;
-      const sym = document.createElement('b');
+  desplegable.replaceChildren(
+    ...lista.map(({ el, nombre, inicio, fin }, i) => {
+      const li = document.createElement('li');
+      li.id = `sug-${i}`;
+      li.setAttribute('role', 'option');
+      if (partida.intentos.includes(el.z)) li.classList.add('ya');
+      else if (!posibles.has(el.z)) li.classList.add('descartado');
+
+      const nom = document.createElement('span');
+      nom.className = 'nombre';
+      const coincide = document.createElement('b');
+      coincide.textContent = nombre.slice(inicio, fin);
+      nom.append(nombre.slice(0, inicio), coincide, nombre.slice(fin));
+      li.append(nom);
+
+      if (nombre !== el.nombre) {
+        const alias = document.createElement('span');
+        alias.className = 'alias';
+        alias.textContent = `(${el.nombre})`;
+        li.append(alias);
+      }
+      const sym = document.createElement('span');
+      sym.className = 'sym';
       sym.textContent = el.simbolo;
-      b.append(sym);
-      // pointerdown evita que el input pierda el foco y se cierre el teclado.
-      b.addEventListener('pointerdown', (e) => e.preventDefault());
-      b.addEventListener('click', () => {
-        entrada.value = el.nombre;
-        renderSugerencias();
-        entrada.focus();
-      });
-      return b;
+      li.append(sym);
+
+      // pointerdown evita que el campo pierda el foco y se cierre el teclado.
+      li.addEventListener('pointerdown', (e) => e.preventDefault());
+      li.addEventListener('click', () => elegirSugerencia(i));
+      return li;
     }),
   );
+  desplegable.hidden = false;
+  entrada.setAttribute('aria-expanded', 'true');
+  marcarActiva(0);
 }
 
 entrada.addEventListener('input', () => {
   aviso.textContent = '';
   renderSugerencias();
+});
+entrada.addEventListener('focus', () => {
+  if (entrada.value) renderSugerencias();
+});
+entrada.addEventListener('blur', cerrarDesplegable);
+entrada.addEventListener('keydown', (e) => {
+  if (desplegable.hidden) return;
+  // El desplegable crece hacia arriba: la flecha arriba se aleja del campo.
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    marcarActiva(Math.min(activa + 1, lista.length - 1));
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    marcarActiva(Math.max(activa - 1, 0));
+  } else if (e.key === 'Escape') {
+    cerrarDesplegable();
+  }
 });
 
 // Con el teclado abierto queda poca altura: desplazamos la página para que la tabla
@@ -214,15 +279,13 @@ window.addEventListener('resize', mostrarTablaSobreTeclado);
 
 $('form-acusar').addEventListener('submit', (e) => {
   e.preventDefault();
-  let el = buscarExacto(entrada.value);
+  const el = buscarExacto(entrada.value);
   if (!el) {
-    const lista = sugerencias(entrada.value, 2);
-    if (lista.length === 1) el = lista[0];
-  }
-  if (!el) {
+    // Intro con el desplegable abierto: completa con la sugerencia resaltada.
+    if (!desplegable.hidden && lista.length) return elegirSugerencia(Math.max(activa, 0));
     aviso.textContent = entrada.value.trim()
       ? 'No reconozco ese elemento. Elige uno de la lista.'
-      : 'Escribe el nombre o el símbolo de un elemento.';
+      : 'Escribe el nombre de un elemento.';
     return;
   }
   const r = partida.acusar(el.z);
@@ -234,7 +297,7 @@ $('form-acusar').addEventListener('submit', (e) => {
   persistir();
   entrada.value = '';
   aviso.textContent = '';
-  renderSugerencias();
+  cerrarDesplegable();
   entrada.blur();
   render();
 });

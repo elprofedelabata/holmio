@@ -63,11 +63,12 @@
     <footer class="panel" id="panel">
       <!-- Fase: acusar -->
       <form class="acusar" id="form-acusar" autocomplete="off" hidden>
-        <div class="sugerencias" id="sugerencias" role="listbox" aria-label="Sugerencias"></div>
         <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
         <div class="fila-entrada">
-          <label class="visualmente-oculto" for="entrada">Nombre o símbolo del elemento</label>
-          <input id="entrada" type="text" placeholder="Nombre o símbolo…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+          <ul class="desplegable" id="sugerencias" role="listbox" aria-label="Sugerencias" hidden></ul>
+          <label class="visualmente-oculto" for="entrada">Nombre del elemento</label>
+          <input id="entrada" type="text" placeholder="Nombre del sospechoso…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"
+                 role="combobox" aria-autocomplete="list" aria-controls="sugerencias" aria-expanded="false">
           <button class="btn-principal" type="submit">Acusar</button>
         </div>
       </form>
@@ -97,7 +98,7 @@
   <dialog class="ayuda" id="ayuda" aria-labelledby="ayuda-titulo">
     <form method="dialog">
       <h2 id="ayuda-titulo">Cómo se juega</h2>
-      <p>Cada día hay un <strong>elemento culpable</strong>. Lee el informe del caso y acúsalo escribiendo su nombre o su símbolo.</p>
+      <p>Cada día hay un <strong>elemento culpable</strong>. Lee el informe del caso y acúsalo escribiendo su nombre.</p>
       <ul>
         <li>Tienes <strong>6 acusaciones</strong>.</li>
         <li>Si fallas, eliges <strong>una de tres pistas</strong>. Cada tipo de pista solo se puede usar una vez.</li>

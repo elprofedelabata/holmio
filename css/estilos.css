@@ -25,6 +25,7 @@
   --acierto-texto: #f4fbf6;
 
   --sombra: 0 10px 30px -18px rgba(40, 30, 10, .45);
+  --resalte: #efe2c4;
 
   --f-titulo: "Special Elite", "Courier New", monospace;
   --f-texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -54,6 +55,7 @@
     --acierto-fondo: #7cc59a;
     --acierto-texto: #10251a;
     --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
+    --resalte: #2b3346;
     color-scheme: dark;
   }
 }
@@ -78,6 +80,7 @@
   --acierto-fondo: #7cc59a;
   --acierto-texto: #10251a;
   --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
+  --resalte: #2b3346;
   color-scheme: dark;
 }
 
@@ -209,18 +212,33 @@ button { cursor: pointer; }
 }
 
 .acusar { display: grid; gap: 6px; }
-.sugerencias { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; min-height: 34px; }
-.sugerencias::-webkit-scrollbar { display: none; }
-.sug {
-  flex: none; border: 1px solid var(--linea); background: var(--tarjeta);
-  border-radius: 999px; padding: 6px 12px; font-size: 14px; white-space: nowrap;
-}
-.sug b { font-family: var(--f-simbolo); font-weight: 600; color: var(--acento); margin-left: 4px; }
-.sug.descartado { opacity: .55; }
-.sug.ya { text-decoration: line-through; opacity: .5; }
 .aviso { font-size: 13px; color: var(--lacre); min-height: 0; }
 .aviso:empty { display: none; }
-.fila-entrada { display: flex; gap: 8px; }
+.fila-entrada { display: flex; gap: 8px; position: relative; }
+
+/* Desplegable de sugerencias: se abre hacia arriba, con la mejor coincidencia
+   pegada al campo de texto. */
+.desplegable {
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 6px); z-index: 5;
+  margin: 0; padding: 4px; list-style: none;
+  display: flex; flex-direction: column-reverse;
+  background: var(--tarjeta); border: 1.5px solid var(--linea); border-radius: 12px;
+  box-shadow: 0 -12px 30px -16px rgba(0, 0, 0, .55);
+}
+.desplegable li {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  font-size: 16px; font-weight: 400; color: var(--suave);
+}
+.desplegable li b { font-weight: 700; color: var(--texto); }
+.desplegable li .alias { font-size: 13px; }
+.desplegable li .sym {
+  margin-left: auto; font-family: var(--f-simbolo); font-size: 13px; font-weight: 600; color: var(--acento);
+}
+.desplegable li.activo { background: var(--resalte); }
+.desplegable li.descartado { opacity: .5; }
+.desplegable li.ya .nombre { text-decoration: line-through; }
+.desplegable li.ya { opacity: .45; }
 #entrada {
   flex: 1; min-width: 0;
   border: 1.5px solid var(--linea); border-radius: 10px;

@@ -118,7 +118,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 ## 4. Flujo de una partida
 
 1. Se muestra el **informe del caso** (pista principal) y la tabla periódica completa (sin sombrear).
-2. El jugador **escribe** un elemento (nombre o símbolo) con ayuda del autocompletado y envía su **acusación**.
+2. El jugador **escribe** el nombre de un elemento con ayuda del autocompletado y envía su **acusación**.
 3. **Si acierta**, gana y se muestra la pantalla de resultado.
 4. **Si falla**:
    - El elemento respondido se marca en la tabla como descartado.
@@ -188,9 +188,11 @@ Se decidirán junto con el diseño de la interfaz. Propuesta de partida:
 ## 9. Entrada de la respuesta
 
 - **Siempre por texto**, con **autocompletado**. La tabla **no** es pulsable para responder.
-- Acepta **nombre o símbolo** ("hierro", "Fe").
+- Solo se acepta el **nombre** (y nombres alternativos: "tungsteno", "cinc"…). **No se busca por símbolo**.
 - No distingue **mayúsculas ni tildes** ("fosforo" = "fósforo").
-- 🟡 Decidir si el autocompletado marca visualmente los elementos ya sombreados (sin ocultarlos).
+- Las sugerencias salen en un **desplegable hacia arriba**, con la mejor coincidencia pegada al campo y las **letras buscadas en negrita**. Primero los nombres que empiezan por lo escrito y, desde 3 letras, los que lo contienen.
+- Tocar una sugerencia **completa el campo**, no acusa: hay que pulsar «Acusar» (evita acusaciones accidentales).
+- Los elementos ya sombreados se muestran **atenuados** en el desplegable y los ya acusados, **tachados**; no se ocultan.
 
 ## 10. Interfaz (móvil primero)
 
@@ -265,7 +267,7 @@ Por elemento hacen falta:
 - [ ] Dibujar el logo según §3.3.
 - [ ] Lista final de tipos de pista (§6), y si se incluye la de número atómico.
 - [ ] Reglas exactas de posición y colocación de La/Ac–Lu/Lr (§7).
-- [ ] Comportamiento del autocompletado con elementos sombreados (§9).
+- [x] Comportamiento del autocompletado (§9).
 - [ ] Disposición de la interfaz con el teclado abierto (§10).
 - [ ] Frecuencia de los superpesados en el calendario (§11).
 - [ ] Stack técnico definitivo (§15).
