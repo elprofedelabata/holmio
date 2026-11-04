@@ -42,17 +42,20 @@ function construirTabla() {
 // ---------- Iconos ----------
 const icono = (id) => `<svg class="ico-svg" viewBox="0 0 24 24"><use href="#${id}"/></svg>`;
 
-// Pistas de texto: amplían el informe del caso. El resto se muestran como icono
-// sobre la casilla del elemento desde el que se pidieron.
+// Todas las pistas dejan su icono sobre la casilla del elemento desde el que se pidieron.
+// Las de texto, además, amplían el informe del caso; su bocadillo remite a él.
 const PISTAS_DE_TEXTO = new Set(['curiosidad', 'etimologia']);
+const BOCADILLO_TEXTO = {
+  curiosidad: 'Al interrogarlo, reveló una curiosidad del culpable. La tienes en el informe.',
+  etimologia: 'Al interrogarlo, reveló de dónde viene el nombre del culpable. Lo tienes en el informe.',
+};
+const textoBocadillo = (p) => BOCADILLO_TEXTO[p.tipo] ?? p.texto;
 // En la casilla, las direcciones usan una flecha sola (sin la casilla de referencia).
 const iconoCelda = (p) => (p.svg.replace(/^i-(arriba|abajo|izquierda|derecha)$/, 'f-$1'));
 
 function pintarTabla(candidatos, resueltas) {
   const posibles = new Set(candidatos.map((el) => el.z));
-  const pistaDesde = new Map(
-    resueltas.filter((p) => !PISTAS_DE_TEXTO.has(p.tipo)).map((p) => [p.desde, p]),
-  );
+  const pistaDesde = new Map(resueltas.map((p) => [p.desde, p]));
   for (const [z, c] of celdas) {
     const el = ELEMENTOS[z - 1];
     const pista = pistaDesde.get(z);
@@ -66,10 +69,11 @@ function pintarTabla(candidatos, resueltas) {
       c.innerHTML = icono(iconoCelda(pista));
       c.classList.add('con-pista');
       c.classList.toggle('negada', pista.negativa);
-      c.dataset.pista = pista.texto;
+      c.dataset.pista = textoBocadillo(pista);
+      c.dataset.tipo = pista.tipo;
       c.setAttribute('role', 'button');
       c.setAttribute('tabindex', '0');
-      c.setAttribute('aria-label', `${el.nombre}: ${pista.texto}`);
+      c.setAttribute('aria-label', `${el.nombre}: ${textoBocadillo(pista)}`);
     } else if (c.textContent !== el.simbolo) {
       c.textContent = el.simbolo;
     }
@@ -84,14 +88,72 @@ function pintarTabla(candidatos, resueltas) {
   }
 }
 
-// Tocar una casilla con pista muestra su texto.
+// ---------- Bocadillo: tocar una casilla con pista muestra su texto encima ----------
+const bocadillo = $('bocadillo');
+let celdaBocadillo = null;
+
+function ocultarBocadillo() {
+  bocadillo.hidden = true;
+  bocadillo.classList.remove('visible');
+  celdaBocadillo = null;
+  clearTimeout(ocultarBocadillo.t);
+}
+
+function mostrarBocadillo(celda, texto) {
+  if (celdaBocadillo === celda) return ocultarBocadillo(); // segundo toque: se cierra
+  celdaBocadillo = celda;
+  bocadillo.textContent = texto;
+  bocadillo.classList.remove('visible', 'abajo');
+  bocadillo.style.left = '0px';
+  bocadillo.style.top = '0px';
+  bocadillo.hidden = false;
+
+  const r = celda.getBoundingClientRect();
+  const b = bocadillo.getBoundingClientRect();
+  const margen = 8;
+  const centro = r.left + r.width / 2;
+  const left = Math.max(margen, Math.min(centro - b.width / 2, innerWidth - b.width - margen));
+  let top = r.top - b.height - 9;
+  if (top < margen) {
+    top = r.bottom + 9; // sin sitio encima: debajo de la casilla
+    bocadillo.classList.add('abajo');
+  }
+  bocadillo.style.left = `${left}px`;
+  bocadillo.style.top = `${top}px`;
+  bocadillo.style.setProperty('--flecha', `${centro - left}px`);
+  void bocadillo.offsetWidth; // reinicia la animación
+  bocadillo.classList.add('visible');
+  clearTimeout(ocultarBocadillo.t);
+  ocultarBocadillo.t = setTimeout(ocultarBocadillo, 4500);
+}
+
 function verPistaDeCelda(e) {
   const c = e.target.closest('.celda.con-pista');
   if (!c) return;
   if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   e.preventDefault();
-  toast(c.dataset.pista, 3500);
+  mostrarBocadillo(c, c.dataset.pista);
+  // Las pistas de texto, además, señalan su párrafo en el informe.
+  if (PISTAS_DE_TEXTO.has(c.dataset.tipo)) {
+    const parrafo = $('informe-extra').querySelector(`[data-tipo="${c.dataset.tipo}"]`);
+    if (parrafo) {
+      parrafo.scrollIntoView({ block: 'nearest', behavior: sinAnimaciones() ? 'auto' : 'smooth' });
+      parrafo.classList.remove('nueva');
+      void parrafo.offsetWidth;
+      parrafo.classList.add('nueva');
+    }
+  }
 }
+
+// Se cierra al tocar fuera, al desplazar o al cambiar el tamaño.
+document.addEventListener('pointerdown', (e) => {
+  if (celdaBocadillo && !celdaBocadillo.contains(e.target)) ocultarBocadillo();
+}, true);
+window.addEventListener('resize', ocultarBocadillo);
+// (el desplazamiento interno del informe no cuenta: lo provocamos al señalar un párrafo)
+document.addEventListener('scroll', (e) => {
+  if (!e.target.closest?.('.informe')) ocultarBocadillo();
+}, true);
 
 function renderInforme(resueltas) {
   $('informe-extra').replaceChildren(
@@ -111,16 +173,17 @@ function renderInforme(resueltas) {
 /** Tras elegir una pista: destaca dónde ha aparecido. */
 function destacarPista(p) {
   if (!p) return;
-  const objetivo = PISTAS_DE_TEXTO.has(p.tipo)
-    ? $('informe-extra').querySelector(`[data-tipo="${p.tipo}"]`)
-    : celdas.get(p.desde);
-  // Si el informe ya no cabe, se desplaza por dentro hasta la pista nueva.
+  const objetivos = [celdas.get(p.desde)];
   if (PISTAS_DE_TEXTO.has(p.tipo)) {
+    objetivos.push($('informe-extra').querySelector(`[data-tipo="${p.tipo}"]`));
+    // Si el informe ya no cabe, se desplaza por dentro hasta la pista nueva.
     const informe = document.querySelector('.informe');
     informe.scrollTo({ top: informe.scrollHeight, behavior: sinAnimaciones() ? 'auto' : 'smooth' });
   }
-  objetivo?.classList.add('nueva');
-  objetivo?.addEventListener('animationend', () => objetivo.classList.remove('nueva'), { once: true });
+  for (const o of objetivos) {
+    o?.classList.add('nueva');
+    o?.addEventListener('animationend', () => o.classList.remove('nueva'), { once: true });
+  }
 }
 
 // ---------- Render general ----------

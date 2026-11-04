@@ -411,7 +411,26 @@ button { cursor: pointer; }
 }
 .toast.visible { transform: translate(-50%, 0); }
 
+/* ---------- Bocadillo sobre la casilla pulsada ---------- */
+.bocadillo {
+  position: fixed; z-index: 20; pointer-events: none;
+  width: max-content; max-width: min(260px, calc(100vw - 16px));
+  padding: 7px 11px; border-radius: 10px;
+  background: var(--texto); color: var(--fondo);
+  font-size: 13px; font-weight: 600; line-height: 1.35; text-align: center;
+  box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .6);
+}
+.bocadillo::after {
+  content: ""; position: absolute; left: var(--flecha, 50%); bottom: -5px;
+  width: 11px; height: 11px; background: inherit; border-radius: 2px;
+  transform: translateX(-50%) rotate(45deg);
+}
+.bocadillo.abajo::after { bottom: auto; top: -5px; }
+.bocadillo.visible { animation: bocadillo .18s ease-out; }
+@keyframes bocadillo { from { opacity: 0; transform: translateY(4px) scale(.96); } }
+
 @media (prefers-reduced-motion: reduce) {
+  .bocadillo.visible { animation: none; }
   .celda, .toast, .opcion { transition: none; }
   .sello, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
   .celda.recien, .celda.nueva, .informe-extra.nueva { animation: none; }

@@ -126,9 +126,10 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
    - Hay que **elegir 1** para continuar (no se puede cerrar sin elegir).
    - Al elegir, la tarjeta se destaca, las otras desaparecen y se vuelve a la partida: la tabla se sombrea con una transición y la pista aparece donde le toca (ver abajo).
    - **Dónde se ven las pistas** (no hay lista de pistas):
-     - Las pistas de **texto** (curiosidad y etimología) **amplían el informe del caso**, cada una en un párrafo con su icono.
-     - Las demás colocan **su icono sobre la casilla del elemento acusado** desde el que se pidieron, en lugar del símbolo (con un pequeño «salto» al aparecer). En las direcciones se ve la flecha; si la respuesta es «no», la flecha sale tachada.
-     - **Tocar esa casilla** muestra el texto de la pista en un aviso flotante.
+     - **Todas** colocan **su icono sobre la casilla del elemento acusado** desde el que se pidieron, en lugar del símbolo (con un pequeño «salto» al aparecer). En las direcciones se ve la flecha; si la respuesta es «no», la flecha sale tachada.
+     - Las pistas de **texto** (curiosidad y etimología), además, **amplían el informe del caso**, cada una en un párrafo con su icono.
+     - **Tocar esa casilla** abre un **bocadillo encima de la propia casilla** (o debajo, si no cabe) con el texto de la pista. Se cierra con otro toque, tocando fuera o a los pocos segundos.
+     - En las pistas de texto el bocadillo remite al informe («*Al interrogarlo, reveló una curiosidad del culpable. La tienes en el informe.*») y el párrafo correspondiente destella.
    - La pista se aplica respecto a su **último intento** (cuando es relativa).
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
 6. Al terminar se muestran la solución, una **curiosidad** del elemento y el botón de **compartir**.
