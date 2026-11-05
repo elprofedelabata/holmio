@@ -344,8 +344,16 @@ button { cursor: pointer; }
   to { transform: translate(-50%, -50%) rotate(-14deg) scale(1); opacity: 1; }
 }
 #elegir-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 26px; line-height: 1.15; text-wrap: balance; }
-#elegir-sub { font-size: 14px; color: #a39b86; }
-#elegir-sub strong { color: #e7ad45; font-weight: 600; }
+/* «Elige una pista»: en ámbar, mayúsculas espaciadas y filetes a los lados */
+#elegir-sub {
+  display: flex; align-items: center; gap: 12px; margin-top: 4px;
+  font-size: 15px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #e7ad45;
+}
+#elegir-sub::before, #elegir-sub::after {
+  content: ""; width: 28px; height: 1.5px; background: currentColor; opacity: .55;
+}
+#elegir-sub.sin-pistas { font-size: 13px; letter-spacing: .08em; text-transform: none; color: #a39b86; }
+#elegir-sub.sin-pistas::before, #elegir-sub.sin-pistas::after { display: none; }
 
 .opciones { display: grid; gap: 12px; }
 .opcion {

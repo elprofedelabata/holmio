@@ -241,14 +241,12 @@ dlgElegir.addEventListener('cancel', (e) => e.preventDefault()); // Esc no la ci
 function abrirElegir() {
   if (partida.fase !== 'elegir' || dlgElegir.open) return;
   const u = partida.ultimo;
-  const restantes = MAX_INTENTOS - partida.intentos.length;
   const opciones = partida.opciones();
 
   $('elegir-ficha').innerHTML = `<small>${u.z}</small>${u.simbolo}<span class="sello-mini">COARTADA</span>`;
   $('elegir-titulo').textContent = `${u.nombre} tiene coartada`;
-  $('elegir-sub').innerHTML = opciones.length
-    ? `Elige una pista · Te quedan <strong>${restantes}</strong> acusaci${restantes === 1 ? 'ón' : 'ones'}`
-    : 'No queda ninguna pista que aporte algo nuevo.';
+  $('elegir-sub').textContent = opciones.length ? 'Elige una pista' : 'No queda ninguna pista que aporte algo nuevo';
+  $('elegir-sub').classList.toggle('sin-pistas', !opciones.length);
 
   const botones = opciones.map((o, i) => {
     const b = document.createElement('button');
