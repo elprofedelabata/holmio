@@ -505,24 +505,23 @@ button { cursor: pointer; }
 .diapo p strong { font-weight: 600; }
 .diapo .nota { font-size: 12px; color: var(--suave); }
 
-/* Flechas: circulares, iguales, flotando a media altura sobre los bordes de la diapositiva */
+/* Flechas: solo el chevrón, discreto, en el margen del diálogo y a media altura */
 .diapos-marco { position: relative; min-width: 0; } /* sin esto, la pista de diapositivas ensancha el diálogo */
 .diapo-flecha {
   position: absolute; top: 50%; z-index: 3;
-  width: 42px; height: 42px; border-radius: 50%; padding: 0;
+  width: 24px; height: 48px; padding: 0; border: 0; border-radius: 6px;
   display: grid; place-items: center;
-  background: var(--tarjeta); color: var(--texto);
-  border: 1.5px solid var(--linea);
-  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .55);
+  background: transparent; color: var(--suave); opacity: .75;
   transform: translateY(-50%);
-  transition: opacity .25s, transform .25s, border-color .2s;
+  transition: opacity .25s, transform .25s, color .2s;
 }
-.diapo-flecha .ico-svg { width: 22px; height: 22px; stroke-width: 2.4; }
-.diapo-flecha:hover { border-color: var(--acento); }
-.diapo-flecha:active { transform: translateY(-50%) scale(.92); }
-.diapo-anterior { left: -10px; }
-.diapo-siguiente { right: -10px; }
-.diapo-flecha.oculta { opacity: 0; pointer-events: none; transform: translateY(-50%) scale(.6); }
+.diapo-flecha .ico-svg { width: 18px; height: 18px; stroke-width: 2.6; }
+.diapo-flecha:hover, .diapo-flecha:focus-visible { color: var(--acento); opacity: 1; }
+.diapo-anterior { left: -18px; }
+.diapo-siguiente { right: -18px; }
+.diapo-anterior:active { transform: translateY(-50%) translateX(-2px); }
+.diapo-siguiente:active { transform: translateY(-50%) translateX(2px); }
+.diapo-flecha.oculta { opacity: 0; pointer-events: none; }
 
 /* Pie: los puntos y, en la última diapositiva, el botón noir en su lugar */
 .diapos-pie { display: grid; place-items: center; min-height: 52px; }
