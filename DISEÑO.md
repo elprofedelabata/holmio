@@ -216,7 +216,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - La tabla es un **mapa visual**, no un control táctil: puede ser pequeña.
 - **Tabla estándar de 18 columnas** + bloque f debajo, **ajustada al ancho** de la pantalla (≈19 px por casilla en 375 px; solo símbolo, letra 10–11 px).
 - **Ampliación opcional** (tocar o pellizcar) para ver detalles; el arrastre solo dentro del modo ampliado.
-- Distribución vertical: **informe del caso y pistas recibidas** arriba → **tabla** en el centro → **campo de respuesta** abajo (al alcance del pulgar).
+- Distribución vertical: **informe del caso** arriba → **tabla** (con la línea de acusaciones) **centrada en el hueco libre** → **campo de respuesta** abajo (al alcance del pulgar). La app ocupa justo la pantalla: si el informe crece, la tabla baja la mitad de lo que crece; si el informe no cabe, se desplaza por dentro.
 - ⚠️ **Teclado abierto:** ocupa ~la mitad de la pantalla. Mientras se escribe, deben seguir visibles al menos la tabla y, si es posible, la pista. Es el principal riesgo de diseño: **validar con el prototipo**.
 - Selector de las 3 pistas: tarjetas grandes y pulsables (aquí sí hacen falta zonas táctiles cómodas).
 - Temas noche/día: ver §3.4.
