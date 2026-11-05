@@ -249,7 +249,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 
 ### 11.1 Archivo de casos
 
-- Pantalla mínima: solo el título **«Archivo de casos»** y un **calendario por meses** (del más reciente al más antiguo, semanas de lunes a domingo). Sin resumen, filtros ni botón de volver: se navega con el menú (☰).
+- Pantalla mínima: solo el título **«Archivo de casos»** y un **calendario por meses** (más estrecho que la pantalla, con aire a los lados) (del más reciente al más antiguo, semanas de lunes a domingo). Sin resumen, filtros ni botón de volver: se navega con el menú (☰).
 - Cada día con caso es una **casilla de elemento**: el día arriba a la izquierda (como el número atómico), en el centro **«?»** si no está terminado o el **símbolo del culpable** si ya lo está, y debajo una rayita por acusación usada.
 - Colores según el estado: pendiente (casilla clara), en curso (borde ámbar discontinuo), **cerrado** (verde), **fugado** (lacre). El caso de **hoy** lleva un contorno ámbar que late.
 - Los días sin caso (antes del primero o en el futuro) muestran solo el número, apagado. **Nunca se puede abrir un caso futuro.**
@@ -313,6 +313,7 @@ Por elemento hacen falta:
 - [ ] Disposición de la interfaz con el teclado abierto (§10).
 - [ ] Frecuencia de los superpesados en el calendario (§11).
 - [ ] Stack técnico definitivo (§15).
+- [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js` y su import en `main.js`, y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
 
 ## 17. Plan de trabajo
 

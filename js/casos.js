@@ -49,7 +49,8 @@ export const CASOS = [
 ];
 
 // Fecha del Caso nº 1 (provisional para el prototipo).
-export const FECHA_CASO_1 = '2026-11-01';
+// ⚠️ TEMPORAL: adelantada al 1 de octubre para tener un mes y pico de casos en el archivo de prueba.
+export const FECHA_CASO_1 = '2026-10-01';
 
 const DIA_MS = 86_400_000;
 

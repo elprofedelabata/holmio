@@ -220,12 +220,13 @@ button { cursor: pointer; }
   overflow-y: auto; overscroll-behavior: contain;
   display: grid; gap: 22px; align-content: start; padding: 6px 0 28px;
 }
-.archivo-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 25px; line-height: 1.15; }
-.archivo-mes { display: grid; gap: 10px; }
+.archivo-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 25px; line-height: 1.15; width: min(100% - 24px, 330px); margin-inline: auto; }
+/* El calendario no ocupa todo el ancho: deja aire a los lados, sobre todo a la derecha */
+.archivo-mes { display: grid; gap: 10px; width: min(100% - 24px, 330px); margin-inline: auto; }
 .archivo-mes h3 {
   margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--acento);
 }
-.calendario { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.calendario { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
 .cal-dia-semana { text-align: center; font-size: 11px; font-weight: 600; color: var(--suave); padding-bottom: 2px; }
 .cal-vacio {
   aspect-ratio: 1; display: grid; place-items: center;

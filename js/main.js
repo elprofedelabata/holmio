@@ -4,6 +4,7 @@ import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.
 import { casoPorNumero, fechaDeCaso, numeroDeHoy, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
 import { crearTutorial } from './tutorial.js';
+import { sembrarArchivoDeEjemplo } from './demo-archivo.js'; // ⚠️ TEMPORAL
 
 const $ = (id) => document.getElementById(id);
 
@@ -825,5 +826,6 @@ function irA(destino) {
 window.addEventListener('popstate', enrutar);
 
 // ---------- Inicio ----------
+sembrarArchivoDeEjemplo(numeroHoy); // ⚠️ TEMPORAL: partidas de ejemplo en el archivo
 construirTabla();
 enrutar();
