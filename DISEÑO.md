@@ -124,7 +124,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
    - El elemento respondido se marca en la tabla (en rojo lacre, con una pequeña sacudida).
    - **El juego se detiene**, como al subir de nivel en un *roguelike*: la pantalla se oscurece casi a negro y aparece la ficha del elemento con el sello **«COARTADA»**, el texto «*X tiene coartada*», las acusaciones que quedan y **3 tarjetas de pista** que entran escalonadas.
    - Hay que **elegir 1** para continuar (no se puede cerrar sin elegir).
-   - Al elegir, la tarjeta se destaca, las otras desaparecen y se vuelve a la partida: la tabla se sombrea con una transición y la pista aparece donde le toca (ver abajo).
+   - Al elegir, la tarjeta se destaca y las otras desaparecen. **Dentro de la tarjeta se revela la respuesta**: la pregunta se borra y la respuesta se escribe a máquina (con cursor). En las pistas de dirección, además, se estampa un sello **SÍ** (verde) o **NO** (rojo) y, si es «no», el icono se tacha. Tras un momento para leerla (un toque lo acelera) se vuelve a la partida: la tabla se sombrea con una transición y la pista aparece donde le toca (ver abajo).
    - **Dónde se ven las pistas** (no hay lista de pistas):
      - **Todas** colocan **su icono sobre la casilla del elemento acusado** desde el que se pidieron, en lugar del símbolo (con un pequeño «salto» al aparecer). En las direcciones se ve la flecha; si la respuesta es «no», la flecha sale tachada.
      - Las pistas de **texto** (curiosidad y etimología), además, **amplían el informe del caso**, cada una en un párrafo con su icono.

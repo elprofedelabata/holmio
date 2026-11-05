@@ -242,14 +242,15 @@ function abrirElegir() {
     b.innerHTML = `<span class="ico" aria-hidden="true">${icono(o.svg)}</span><span><strong></strong><span class="preg"></span></span>`;
     b.querySelector('strong').textContent = o.nombre;
     b.querySelector('.preg').textContent = o.pregunta;
-    b.addEventListener('click', () => {
+    b.addEventListener('click', async () => {
       if (!partida.elegirPista(o.tipo)) return;
       persistir();
       botones.forEach((x) => {
         x.disabled = true;
         x.classList.add(x === b ? 'elegida' : 'apartada');
       });
-      setTimeout(() => cerrarElegir(), sinAnimaciones() ? 0 : 420);
+      await revelarPista(b, partida.pistasResueltas().at(-1));
+      cerrarElegir();
     });
     return b;
   });
@@ -272,6 +273,52 @@ function abrirElegir() {
   dlgElegir.classList.remove('saliendo');
   dlgElegir.showModal();
   dlgElegir.focus();
+}
+
+const DIRECCIONES = new Set(['arriba', 'abajo', 'izquierda', 'derecha']);
+const pausa = (ms) => new Promise((r) => setTimeout(r, sinAnimaciones() ? 0 : ms));
+
+/**
+ * Dentro de la tarjeta elegida, la pregunta se borra y la respuesta se escribe a máquina.
+ * Las direcciones reciben además un sello SÍ / NO (y el icono se tacha si es «no»).
+ * Un toque en cualquier parte acelera: completa el texto o pasa a la partida.
+ */
+async function revelarPista(boton, p) {
+  let saltar = false;
+  const alTocar = () => (saltar = true);
+  dlgElegir.addEventListener('pointerdown', alTocar);
+
+  await pausa(380); // efecto de seleccionado
+  const preg = boton.querySelector('.preg');
+  preg.classList.add('borrando');
+  await pausa(180);
+  preg.classList.remove('borrando');
+  preg.classList.add('respuesta', 'escribiendo');
+  preg.setAttribute('aria-live', 'polite');
+
+  if (DIRECCIONES.has(p.tipo)) {
+    const sello = document.createElement('span');
+    sello.className = `veredicto ${p.negativa ? 'no' : 'si'}`;
+    sello.textContent = p.negativa ? 'NO' : 'SÍ';
+    boton.append(sello);
+    if (p.negativa) boton.querySelector('.ico').classList.add('negada');
+  }
+
+  // Máquina de escribir
+  for (let i = 1; i <= p.texto.length; i++) {
+    if (saltar || sinAnimaciones()) {
+      preg.textContent = p.texto;
+      break;
+    }
+    preg.textContent = p.texto.slice(0, i);
+    await new Promise((r) => setTimeout(r, 20));
+  }
+  preg.classList.remove('escribiendo');
+
+  // Tiempo para leerla; un toque lo acorta.
+  saltar = false;
+  for (let t = 0; t < 1500 && !saltar && !sinAnimaciones(); t += 50) await pausa(50);
+  dlgElegir.removeEventListener('pointerdown', alTocar);
 }
 
 function cerrarElegir() {

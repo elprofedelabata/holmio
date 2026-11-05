@@ -340,6 +340,38 @@ button { cursor: pointer; }
 .opcion .ico .ico-svg { width: 30px; height: 30px; stroke-width: 1.7; }
 .opcion strong { display: block; font-family: var(--f-titulo); font-weight: 400; font-size: 19px; line-height: 1.2; }
 .opcion .preg { display: block; font-size: 13.5px; color: var(--suave); margin-top: 2px; }
+/* Revelado de la respuesta dentro de la tarjeta elegida */
+.opcion { position: relative; }
+.opcion .preg { transition: opacity .16s, transform .16s; }
+.opcion .preg.borrando { opacity: 0; transform: translateY(-4px); }
+.opcion .preg.respuesta {
+  font-family: var(--f-titulo); font-size: 15px; line-height: 1.35; color: var(--texto); margin-top: 4px;
+}
+.opcion .preg.escribiendo::after {
+  content: ""; display: inline-block; width: .5em; height: 1em; margin-left: 1px;
+  vertical-align: -2px; background: var(--acento); animation: cursor .7s steps(1) infinite;
+}
+@keyframes cursor { 50% { opacity: 0; } }
+.opcion .ico { position: relative; }
+.opcion .ico.negada .ico-svg { opacity: .4; transition: opacity .3s; }
+.opcion .ico.negada::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 70%; height: 3px; border-radius: 2px;
+  background: var(--lacre); transform: translate(-50%, -50%) rotate(-45deg);
+  animation: tachar .3s .1s ease-out backwards;
+}
+@keyframes tachar { from { width: 0; } }
+.veredicto {
+  position: absolute; top: 10px; right: 12px;
+  font-family: var(--f-simbolo); font-weight: 600; font-size: 14px; letter-spacing: .14em;
+  padding: 1px 8px; border: 2px solid currentColor; border-radius: 4px;
+  transform: rotate(-8deg); animation: estampar-veredicto .35s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.veredicto.si { color: var(--acierto-fondo); }
+.veredicto.no { color: var(--lacre); }
+@keyframes estampar-veredicto {
+  from { transform: rotate(-20deg) scale(2); opacity: 0; }
+  to { transform: rotate(-8deg) scale(1); opacity: 1; }
+}
 .opcion.elegida { transform: scale(1.04); border-color: var(--acento); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acento) 35%, transparent); }
 .opcion.apartada { opacity: 0; transform: scale(.94); }
 .seguir { justify-self: center; }
@@ -454,6 +486,7 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
   .celda, .toast, .opcion { transition: none; }
+  .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
   .celda.recien, .celda.nueva, .informe-extra.nueva { animation: none; }
 }
