@@ -621,16 +621,7 @@ const tutorial = crearTutorial($('ayuda'));
 // ---------- Menú lateral ----------
 const menu = $('menu');
 
-function estadoCasoDelDia() {
-  const n = partida.intentos.length;
-  if (partida.ganada) return `Nº ${caso.numero} · Resuelto en ${n}/${MAX_INTENTOS}`;
-  if (partida.perdida) return `Nº ${caso.numero} · Sin resolver`;
-  if (n === 0) return `Nº ${caso.numero} · Sin empezar`;
-  return `Nº ${caso.numero} · En curso, ${n}/${MAX_INTENTOS} acusaciones`;
-}
-
 function abrirMenu() {
-  $('menu-hoy-estado').textContent = estadoCasoDelDia();
   pintarInterruptorTema();
   menu.classList.remove('cerrando');
   menu.showModal();

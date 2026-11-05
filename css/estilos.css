@@ -173,17 +173,14 @@ button { cursor: pointer; }
 }
 .menu-cuerpo hr { margin: 10px 20px; border: 0; border-top: 1px dashed var(--linea); }
 .menu-item {
-  display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 14px;
-  width: 100%; padding: 10px 20px; border: 0; background: transparent; color: inherit; text-align: left;
+  display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 16px;
+  width: 100%; padding: 13px 20px; border: 0; background: transparent; color: inherit; text-align: left;
   border-left: 3px solid transparent;
 }
 .menu-item:hover, .menu-item:focus-visible { background: var(--resalte); outline: none; }
 .menu-item[aria-current="page"] { border-left-color: var(--acento); background: color-mix(in srgb, var(--acento) 10%, transparent); }
-.menu-ico {
-  width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
-  background: color-mix(in srgb, var(--acento) 13%, transparent); color: var(--acento);
-}
-.menu-ico .ico-svg { width: 20px; height: 20px; stroke-width: 1.9; }
+.menu-ico { width: 28px; height: 28px; display: grid; place-items: center; color: var(--acento); }
+.menu-ico .ico-svg { width: 26px; height: 26px; stroke-width: 1.7; }
 .menu-texto { display: grid; gap: 1px; min-width: 0; }
 /* Título y subtítulo, siempre en una sola línea */
 .menu-texto strong, .menu-texto small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
