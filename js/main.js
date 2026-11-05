@@ -699,10 +699,6 @@ $('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
   $('acerca').focus();
 }));
 
-if (!leer('holmio-visto-ayuda')) {
-  tutorial.abrir();
-  guardar('holmio-visto-ayuda', true);
-}
 
 // ---------- Archivo de casos: calendario por meses ----------
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto',
@@ -833,6 +829,7 @@ function enrutar() {
   mostrarVista(numero === numeroHoy ? 'hoy' : 'caso');
   cargarCaso(numero);
   // Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
+  if (cargando) return; // durante la carga no se abre nada: se hace al quitarla
   if (saltarResultado) saltarResultado = false;
   else if (!$('ayuda').open) abrirSegunFase();
   else $('ayuda').addEventListener('close', abrirSegunFase, { once: true });
@@ -860,5 +857,30 @@ window.addEventListener('popstate', enrutar);
 
 // ---------- Inicio ----------
 sembrarArchivoDeEjemplo(numeroHoy); // ⚠️ TEMPORAL: partidas de ejemplo en el archivo
+// Mientras se ve la pantalla de carga se monta todo por debajo; cuando las fuentes están
+// listas (y ha dado tiempo a ver el logo estamparse) se quita y se abren tutorial o diálogos.
+let cargando = true;
+const inicioCarga = performance.now();
+const CARGA_MINIMA = 900; // ms: lo que tarda el logo en estamparse
+const CARGA_MAXIMA = 4000; // ms: si las fuentes no llegan, se sigue igualmente
+const esperaMs = (ms) => new Promise((r) => setTimeout(r, ms));
+
 construirTabla();
 enrutar();
+
+Promise.race([document.fonts?.ready ?? Promise.resolve(), esperaMs(CARGA_MAXIMA)])
+  .then(() => esperaMs(sinAnimaciones() ? 0 : Math.max(0, CARGA_MINIMA - (performance.now() - inicioCarga))))
+  .then(() => {
+    const pantalla = $("cargando");
+    pantalla.classList.add("fuera");
+    setTimeout(() => pantalla.remove(), sinAnimaciones() ? 0 : 400);
+    cargando = false;
+    // Primera visita: tutorial y, al cerrarlo, lo que tocara (elegir pista o resultado)
+    if (!leer("holmio-visto-ayuda")) {
+      guardar("holmio-visto-ayuda", true);
+      tutorial.abrir();
+      $("ayuda").addEventListener("close", () => location.hash !== "#archivo" && abrirSegunFase(), { once: true });
+    } else if (location.hash !== "#archivo") {
+      abrirSegunFase();
+    }
+  });

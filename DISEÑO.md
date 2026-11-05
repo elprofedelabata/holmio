@@ -229,6 +229,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - ⚠️ **Teclado abierto:** ocupa ~la mitad de la pantalla. Mientras se escribe, deben seguir visibles al menos la tabla y, si es posible, la pista. Es el principal riesgo de diseño: **validar con el prototipo**.
 - Selector de las 3 pistas: tarjetas grandes y pulsables (aquí sí hacen falta zonas táctiles cómodas).
 - Temas noche/día: ver §3.4.
+- **Pantalla de carga:** tapa el juego desde la primera pintura con el **logo largo cayendo como un tampón** y una barra fina en lacre. Se quita (fundido) cuando la tabla está montada y las **fuentes cargadas**, con un mínimo de 0,9 s para ver el logo y un máximo de 4 s de espera a las fuentes. Solo entonces se abren el tutorial (primera visita) o la pantalla que tocara (elegir pista o resultado). Los módulos JS se precargan en paralelo (`modulepreload`).
 - **Barra superior:** logo a la izquierda y **un solo botón de menú (☰)** a la derecha.
 - **Menú lateral** (entra por la derecha; sigue el tema día/noche, con letra de máquina y el color de acento). Se cierra con ✕, tocando fuera, deslizando a la derecha o con Esc.
   - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* (§11.1) y *Práctica libre* (de momento atenuada y sin función). El menú marca dónde estás. Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.

@@ -19,9 +19,22 @@
       document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
     })();
   </script>
+  <!-- Precarga de los módulos: se descargan en paralelo en vez de en cascada -->
+  <link rel="modulepreload" href="js/elementos.js">
+  <link rel="modulepreload" href="js/casos.js">
+  <link rel="modulepreload" href="js/pistas.js">
+  <link rel="modulepreload" href="js/partida.js">
+  <link rel="modulepreload" href="js/tutorial.js">
+  <link rel="modulepreload" href="js/demo-archivo.js">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
+  <!-- Pantalla de carga: tapa el juego hasta que la tabla, las fuentes y el estado están listos -->
+  <div class="cargando" id="cargando" role="status" aria-label="Cargando Holmio">
+    <svg class="cargando-logo" aria-hidden="true"><use href="#logo-largo"/></svg>
+    <span class="cargando-barra" aria-hidden="true"></span>
+  </div>
+
   <div class="app">
     <header class="cabecera">
       <h1 class="marca" aria-label="Holmio">

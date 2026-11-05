@@ -122,6 +122,37 @@ button { cursor: pointer; }
   gap: 10px;
 }
 
+/* ---------- Pantalla de carga ----------
+   Tapa el juego en la primera pintura y se desvanece cuando todo está listo:
+   el logo cae como un tampón y una barra en lacre recorre la línea de abajo. */
+.cargando {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-content: center; justify-items: center; gap: 26px;
+  background: var(--fondo);
+  transition: opacity .35s ease, visibility .35s;
+}
+.cargando.fuera { opacity: 0; visibility: hidden; }
+.cargando-logo {
+  display: block; height: 58px; aspect-ratio: 871 / 226; color: var(--texto);
+  animation: estampar-logo .6s .1s cubic-bezier(.55, 0, .9, .45) both;
+}
+@keyframes estampar-logo {
+  0% { opacity: 0; transform: scale(1.9) rotate(-6deg); }
+  25% { opacity: 1; }
+  60% { transform: scale(.94) rotate(-1deg); }
+  80% { transform: scale(1.02) rotate(0); animation-timing-function: ease-out; }
+  100% { transform: none; }
+}
+.cargando-barra {
+  position: relative; overflow: hidden; width: 120px; height: 2px; border-radius: 2px;
+  background: var(--linea);
+}
+.cargando-barra::after {
+  content: ""; position: absolute; inset: 0; width: 40%; border-radius: 2px; background: var(--lacre);
+  animation: barra-carga 1.1s ease-in-out infinite;
+}
+@keyframes barra-carga { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+
 /* ---------- Cabecera ---------- */
 .cabecera {
   display: flex; align-items: center; justify-content: space-between;
@@ -950,7 +981,7 @@ button { cursor: pointer; }
   .menu.cerrando, .interruptor, .interruptor::after,
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
   .sello-holmio.estampado { transition: none; opacity: .95; transform: rotate(-9deg); }
-  .cal-caso.hoy, .menu[open], .menu::backdrop, .acerca[open], .acerca::backdrop,
+  .cargando-logo, .cargando-barra::after, .cal-caso.hoy, .menu[open], .menu::backdrop, .acerca[open], .acerca::backdrop,
   .btn-noir::after, .ayuda[open], .ayuda::backdrop, .mini-lupa, .escena-final.golpe, .sello-holmio.estampado, .dedo.toque .dedo-onda, .mini-celda.salta, .mini-fichas li.nueva, .mini-campo::after,
   .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
