@@ -26,6 +26,7 @@
 
   --sombra: 0 10px 30px -18px rgba(40, 30, 10, .45);
   --resalte: #efe2c4;
+  --velo: rgba(239, 230, 210, .96);
 
   --f-titulo: "Special Elite", "Courier New", monospace;
   --f-texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -56,6 +57,7 @@
     --acierto-texto: #10251a;
     --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
     --resalte: #2b3346;
+    --velo: rgba(6, 8, 12, .92);
     color-scheme: dark;
   }
 }
@@ -81,6 +83,7 @@
   --acierto-texto: #10251a;
   --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
   --resalte: #2b3346;
+  --velo: rgba(6, 8, 12, .92);
   color-scheme: dark;
 }
 
@@ -589,15 +592,17 @@ button { cursor: pointer; }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
 
-/* Fin: pantalla de resultado (sobre fondo casi negro, como la elección de pista).
-   El fondo es siempre oscuro, así que los colores de texto son fijos. */
+/* Fin: pantalla de resultado a pantalla completa. Sigue el tema: de día, un velo
+   de papel casi opaco con tinta oscura; de noche, el fondo casi negro de siempre. */
+.resultado { color: var(--texto); }
+.resultado::backdrop { background: var(--velo); backdrop-filter: blur(4px); }
 .resultado[open] { align-items: center; justify-content: center; text-align: center; gap: 12px; }
 .fin-cerrar {
   position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 10px; z-index: 2;
   width: 42px; height: 42px; border: 0; border-radius: 10px; background: transparent;
-  display: grid; place-items: center; color: #a39b86; animation: none !important;
+  display: grid; place-items: center; color: var(--suave); animation: none !important;
 }
-.fin-cerrar:hover, .fin-cerrar:focus-visible { color: #f3ead6; background: rgba(243, 234, 214, .08); outline: none; }
+.fin-cerrar:hover, .fin-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
 .fin-cerrar .ico-svg { width: 22px; height: 22px; stroke-width: 2; }
 .resultado > * { animation: aparecer .4s cubic-bezier(.2, 1.1, .4, 1) backwards; }
 .resultado > :nth-child(3) { animation-delay: .35s; }
@@ -606,44 +611,42 @@ button { cursor: pointer; }
 .resultado > :nth-child(6) { animation-delay: .58s; }
 .resultado > :nth-child(7) { animation-delay: .64s; }
 .resultado > :nth-child(8) { animation-delay: .7s; }
-/* Fichas de las acusaciones usadas: entran una a una. Colores fijos (fondo siempre oscuro). */
+/* Fichas de las acusaciones usadas: entran una a una */
 .resultado > .fichas-fin { animation: none; justify-content: center; margin: 2px 0 4px; }
 .fichas-fin li { animation: aparecer-ficha .4s cubic-bezier(.2, 1.6, .4, 1) backwards; animation-delay: calc(.5s + var(--i, 0) * .1s); }
-.fichas-fin li.usado { background: #e0664f; border-color: #e0664f; color: #141821; }
-.fichas-fin li.bien { background: #7cc59a; border-color: #7cc59a; color: #10251a; }
 @keyframes aparecer-ficha { from { opacity: 0; transform: scale(.4); } }
 .ficha-grande { width: 108px; height: 108px; font-size: 46px; margin-bottom: 30px; border-radius: 10px; }
 .ficha-grande small { top: 6px; left: 9px; font-size: 13px; }
 .ficha .sello-fin {
   position: absolute; left: 50%; top: 96%; white-space: nowrap;
   font-size: 16px; letter-spacing: .16em; padding: 4px 12px;
-  border: 2.5px solid currentColor; border-radius: 6px; background: rgba(12, 14, 20, .9);
+  border: 2.5px solid currentColor; border-radius: 6px; background: var(--fondo);
   transform: translate(-50%, -50%) rotate(-8deg);
   animation: estampar-fin .45s .2s cubic-bezier(.2, 1.4, .4, 1) both;
 }
-.resultado.ganada .sello-fin { color: #7cc59a; }
-.resultado.perdida .sello-fin { color: #e0664f; }
+.resultado.ganada .sello-fin { color: var(--acierto-fondo); }
+.resultado.perdida .sello-fin { color: var(--lacre); }
 @keyframes estampar-fin {
   from { transform: translate(-50%, -50%) rotate(-20deg) scale(2.2); opacity: 0; }
   to { transform: translate(-50%, -50%) rotate(-8deg) scale(1); opacity: 1; }
 }
 #fin-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 28px; line-height: 1.15; }
-.fin-sub { font-size: 15px; color: #d8cfba; }
-.fin-sub strong { color: #f3ead6; }
+.fin-sub { font-size: 15px; color: var(--suave); }
+.fin-sub strong { color: var(--texto); }
 .fin-dato {
   display: grid; grid-template-columns: 18px 1fr; gap: 8px; text-align: left;
   max-width: 36ch; margin: 4px 0 6px; padding: 10px 12px;
-  border: 1px dashed rgba(243, 234, 214, .25); border-radius: 10px;
-  font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; color: #d8cfba;
+  border: 1px dashed var(--linea); border-radius: 10px; background: var(--tarjeta);
+  font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; color: var(--texto);
 }
-.fin-dato .ico { width: 16px; height: 16px; margin-top: 1px; color: #e7ad45; }
+.fin-dato .ico { width: 16px; height: 16px; margin-top: 1px; color: var(--acento); }
 .fin-botones { display: grid; gap: 10px; width: 100%; max-width: 340px; }
 .btn-secundario {
   min-height: 44px; border-radius: 10px; background: transparent;
-  border: 1.5px solid rgba(243, 234, 214, .3); color: #f3ead6; font-weight: 600; font-size: 15px;
+  border: 1.5px solid var(--linea); color: var(--texto); font-weight: 600; font-size: 15px;
 }
-.resultado .proximo { color: #a39b86; }
-.resultado .cuenta-atras { color: #f3ead6; }
+.resultado .proximo { color: var(--suave); }
+.resultado .cuenta-atras { color: var(--texto); }
 
 /* ---------- Ayuda ---------- */
 /* Un expediente sobre la mesa a oscuras: mismo fondo casi negro que el resto de pantallas */

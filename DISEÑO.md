@@ -132,7 +132,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
      - En las pistas de texto el bocadillo remite al informe («*Al interrogarlo, reveló una curiosidad del culpable. La tienes en el informe.*») y el párrafo correspondiente destella.
    - La pista se aplica respecto a su **último intento** (cuando es relativa).
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
-6. Al terminar, tras un instante para ver la tabla, aparece la **pantalla de resultado** con la misma puesta en escena que la elección de pista (fondo casi negro, todo centrado):
+6. Al terminar, tras un instante para ver la tabla, aparece la **pantalla de resultado** a pantalla completa y centrada. **Sigue el tema:** de día, un velo de papel con tinta oscura; de noche, el fondo casi negro.
    - ficha grande del culpable con el sello **«CASO CERRADO»** (verde) o **«SE HA FUGADO»** (rojo);
    - «¡Bien visto!» / «¡A la primera!» / «Se te ha escapado» y «El culpable era *X*»;
    - debajo, **las fichas de las acusaciones usadas** (como el contador de la partida: lacre las fallidas, verde la acertada), que entran una a una;
