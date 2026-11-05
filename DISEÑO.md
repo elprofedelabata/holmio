@@ -222,6 +222,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - ⚠️ **Teclado abierto:** ocupa ~la mitad de la pantalla. Mientras se escribe, deben seguir visibles al menos la tabla y, si es posible, la pista. Es el principal riesgo de diseño: **validar con el prototipo**.
 - Selector de las 3 pistas: tarjetas grandes y pulsables (aquí sí hacen falta zonas táctiles cómodas).
 - Temas noche/día: ver §3.4.
+- **Ayuda («Manual del detective»):** se abre la primera vez y con el botón «?». Es un expediente sobre fondo casi negro, con sello «CONFIDENCIAL», título «Cómo cerrar un caso» y cinco pasos cortos con icono (informe, acusar, elegir pista, direcciones desde la última acusación, tabla e iconos). Cabe sin desplazar en pantallas de 600 px de alto. Botón: «Abrir el caso».
 
 ## 11. Reto diario
 
