@@ -412,7 +412,19 @@ dlgFin.addEventListener('cancel', (e) => {
   e.preventDefault();
   cerrarFin();
 });
-$('btn-ver-tabla').addEventListener('click', cerrarFin);
+// Si el resultado se abrió desde el archivo, «Ver la tabla» lleva a la pantalla de ese caso.
+let resultadoDesdeArchivo = null;
+let saltarResultado = false;
+$('btn-ver-tabla').addEventListener('click', () => {
+  const numero = resultadoDesdeArchivo;
+  resultadoDesdeArchivo = null;
+  cerrarFin();
+  if (numero === null) return;
+  saltarResultado = true; // al llegar al caso no se vuelve a abrir el resultado
+  setTimeout(() => irA(numero === numeroHoy ? '' : `#caso-${numero}`), sinAnimaciones() ? 0 : 260);
+});
+// Cerrar el resultado de cualquier otra forma (Esc) deja al jugador en el archivo.
+dlgFin.addEventListener('close', () => (resultadoDesdeArchivo = null));
 $('btn-ver-resultado').addEventListener('click', abrirFin);
 
 /** Al cargar: si la partida estaba a medias de algo, se vuelve a esa pantalla. */
@@ -745,7 +757,10 @@ function renderArchivo() {
       b.querySelector('b').textContent = simbolo ?? '?';
       const textos = { pendiente: 'sin empezar', 'en-curso': 'en curso', cerrado: 'cerrado', fugado: 'se fugó' };
       b.setAttribute('aria-label', `Caso nº ${numero}, ${dia} de ${MESES[fecha.getMonth()]}: ${textos[estado]}${numero === numeroHoy ? ' (hoy)' : ''}`);
-      b.addEventListener('click', () => irA(numero === numeroHoy ? '' : `#caso-${numero}`));
+      b.addEventListener('click', () => {
+        if (estado === 'cerrado' || estado === 'fugado') verResultadoDesdeArchivo(numero);
+        else irA(numero === numeroHoy ? '' : `#caso-${numero}`);
+      });
       rejilla.append(b);
     }
     seccion.append(titulo, rejilla);
@@ -809,8 +824,16 @@ function enrutar() {
   mostrarVista(numero === numeroHoy ? 'hoy' : 'caso');
   cargarCaso(numero);
   // Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
-  if (!$('ayuda').open) abrirSegunFase();
+  if (saltarResultado) saltarResultado = false;
+  else if (!$('ayuda').open) abrirSegunFase();
   else $('ayuda').addEventListener('close', abrirSegunFase, { once: true });
+}
+
+/** Abre la pantalla de resultado de un caso terminado sin salir del archivo. */
+function verResultadoDesdeArchivo(numero) {
+  cargarCaso(numero); // la vista de juego sigue oculta; solo se prepara el resultado
+  resultadoDesdeArchivo = numero;
+  abrirFin();
 }
 
 /** Cambia de pantalla: '' (caso del día), '#archivo' o '#caso-N'. */

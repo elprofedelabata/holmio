@@ -253,7 +253,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - Cada día con caso es una **casilla de elemento** con **«?»** en el centro si no está terminado o el **símbolo del culpable** si ya lo está. El **día del mes va siempre abajo a la derecha**, también en los días sin caso, para que no se confunda con un número atómico.
 - Colores según el estado: pendiente (casilla clara), en curso (borde ámbar discontinuo), **cerrado** (verde salvia, más suave), **fugado** (lacre). El caso de **hoy** lleva un contorno ámbar que late.
 - Los días sin caso (antes del primero o en el futuro) muestran solo el número, apagado. **Nunca se puede abrir un caso futuro.**
-- Al tocar un caso se juega en la pantalla normal, con «**Archivo · Caso nº 9**» y su fecha en la línea bajo el logo. No cuenta para la racha (cuando exista), pero queda guardado.
+- Al tocar un caso **terminado** (cerrado o fugado) se abre su **pantalla de resultado encima del archivo**; «Ver la tabla» lleva a la pantalla de ese caso y Esc deja en el archivo. Al tocar uno **pendiente o en curso** se juega en la pantalla normal, con «**Archivo · Caso nº 9**» y su fecha en la línea bajo el logo. No cuenta para la racha (cuando exista), pero queda guardado.
 - **Direcciones propias:** caso del día (sin #), `#archivo` y `#caso-N`. El botón «atrás» del móvil funciona y un caso del archivo se comparte con su enlace directo.
 
 ## 12. Compartir
