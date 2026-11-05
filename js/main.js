@@ -3,6 +3,7 @@
 import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.js';
 import { casoDelDia, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
+import { crearTutorial } from './tutorial.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -608,17 +609,15 @@ $('btn-compartir').addEventListener('click', async () => {
 // ---------- Tema ----------
 $('btn-tema').addEventListener('click', () => {
   const raiz = document.documentElement;
-  const oscuroAhora =
-    raiz.dataset.theme === 'dark' ||
-    (!raiz.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
-  raiz.dataset.theme = oscuroAhora ? 'light' : 'dark';
+  raiz.dataset.theme = raiz.dataset.theme === 'dark' ? 'light' : 'dark';
   try { localStorage.setItem('holmio-tema', raiz.dataset.theme); } catch {}
 });
 
-// ---------- Ayuda ----------
-$('btn-ayuda').addEventListener('click', () => $('ayuda').showModal());
+// ---------- Ayuda: «Manual del detective» en diapositivas ----------
+const tutorial = crearTutorial($('ayuda'));
+$('btn-ayuda').addEventListener('click', () => tutorial.abrir());
 if (!leer('holmio-visto-ayuda')) {
-  $('ayuda').showModal();
+  tutorial.abrir();
   guardar('holmio-visto-ayuda', true);
 }
 

@@ -486,30 +486,149 @@ button { cursor: pointer; }
   background: var(--tarjeta); color: var(--texto); padding: 18px 18px 16px;
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .9);
 }
-.ayuda[open] { animation: aparecer .35s cubic-bezier(.2, 1.1, .4, 1); }
+.ayuda[open] { display: grid; gap: 12px; animation: aparecer .35s cubic-bezier(.2, 1.1, .4, 1); }
 .ayuda::backdrop { background: rgba(6, 8, 12, .9); backdrop-filter: blur(3px); animation: fundido .2s ease-out; }
-.ayuda form { position: relative; display: grid; gap: 14px; }
-.ayuda-cabecera { display: grid; gap: 2px; padding-right: 96px; }
-.ayuda h2 { font-family: var(--f-titulo); font-weight: 400; font-size: 23px; line-height: 1.15; }
-.confidencial {
-  position: absolute; top: 4px; right: -2px;
-  font-family: var(--f-simbolo); font-weight: 600; font-size: 11px; letter-spacing: .16em;
-  color: var(--lacre); border: 2px solid var(--lacre); border-radius: 4px; padding: 2px 6px;
-  transform: rotate(8deg); opacity: .85;
+.ayuda-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.diapos-contador { font-family: var(--f-simbolo); letter-spacing: .04em; }
+.diapos-saltar {
+  border: 0; background: transparent; color: var(--suave); font-size: 13.5px; font-weight: 600;
+  padding: 6px 2px; text-decoration: underline; text-underline-offset: 3px;
 }
-.pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.pasos li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: center; }
-.pasos .ico {
-  width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
-  background: var(--resalte); color: var(--acento);
+
+/* Carrusel */
+.diapos { overflow: hidden; touch-action: pan-y; margin: 0 -18px; }
+.diapos-pista { display: flex; transition: transform .35s cubic-bezier(.2, .9, .3, 1); }
+.diapos-pista.arrastrando { transition: none; }
+.diapo { flex: 0 0 100%; padding: 0 18px; display: grid; gap: 8px; align-content: start; user-select: none; }
+.diapo h3 { margin: 6px 0 0; font-family: var(--f-titulo); font-weight: 400; font-size: 21px; line-height: 1.15; }
+.diapo p { font-size: 14px; line-height: 1.42; }
+.diapo p strong { font-weight: 600; }
+.diapo .nota { font-size: 12px; color: var(--suave); }
+
+.diapos-nav { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px; }
+.diapo-anterior { width: 44px; height: 44px; font-size: 24px; line-height: 1; }
+.diapo-anterior:disabled { opacity: .35; }
+.diapo-siguiente { min-width: 56px; font-size: 24px; padding: 0 16px; transition: min-width .25s; }
+.diapo-siguiente.final { font-size: 15px; }
+.diapos-puntos { display: flex; justify-content: center; gap: 8px; }
+.diapos-puntos button {
+  width: 8px; height: 8px; padding: 0; border-radius: 50%; border: 0;
+  background: var(--linea); transition: width .25s, background .25s;
 }
-.pasos .ico .ico-svg { width: 22px; height: 22px; stroke-width: 1.8; }
-.pasos p { font-size: 13.5px; line-height: 1.38; }
-.pasos strong { font-weight: 600; }
-.ayuda .nota {
-  font-size: 12px; line-height: 1.35; color: var(--suave);
-  padding-top: 10px; border-top: 1px dashed var(--linea);
+.diapos-puntos button[aria-current="true"] { width: 22px; border-radius: 4px; background: var(--acento); }
+
+/* Escena: una miniatura animada del juego, con los colores del tema */
+.escena {
+  position: relative; height: 196px; overflow: hidden;
+  border: 1px solid var(--linea); border-radius: 12px; background: var(--fondo);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
 }
+.mini-tabla {
+  display: grid; gap: 1.5px;
+  grid-template-columns: repeat(18, 13px); grid-template-rows: repeat(7, 13px) 4px repeat(2, 13px);
+}
+.mini-celda {
+  display: grid; place-items: center; border-radius: 1.5px;
+  font-family: var(--f-simbolo); font-size: 5.6px; font-weight: 600; line-height: 1;
+  background: var(--cand-fondo); color: var(--cand-texto); box-shadow: inset 0 0 0 .6px var(--cand-borde);
+  transition: background-color .4s, color .4s, box-shadow .4s;
+}
+.mini-celda.off { background: var(--off-fondo); color: var(--off-texto); box-shadow: none; }
+.mini-celda.fallo { background: var(--fallo-fondo); color: var(--fallo-texto); box-shadow: none; }
+.mini-celda .ico-svg { width: 80%; height: 80%; stroke-width: 3; }
+.mini-celda.salta { animation: aparecer-pista .5s cubic-bezier(.2, 1.6, .4, 1); }
+
+.mini-informe {
+  width: 270px; padding: 6px 9px; border-radius: 8px;
+  background: var(--tarjeta); border: 1px solid var(--linea);
+}
+.mini-etiqueta { display: block; font-size: 6.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--acento); }
+.mini-informe p { font-family: var(--f-titulo); font-size: 9.5px; line-height: 1.35; min-height: 2.7em; }
+.mini-lupa {
+  position: absolute; width: 34px; height: 34px; color: var(--lupa);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .3));
+  animation: lupa-recorre 7s ease-in-out infinite;
+}
+.mini-lupa .ico-svg { stroke-width: 2.4; }
+@keyframes lupa-recorre {
+  0%, 100% { transform: translate(-90px, 10px); }
+  25% { transform: translate(40px, 40px); }
+  50% { transform: translate(100px, -5px); }
+  75% { transform: translate(-20px, 55px); }
+}
+
+/* Escena 2: panel de acusación en miniatura */
+.mini-panel { width: 270px; display: grid; gap: 10px; }
+.mini-fichas { list-style: none; margin: 0; padding: 0; display: flex; gap: 5px; }
+.mini-fichas li {
+  width: 26px; height: 26px; border-radius: 4px; display: grid; place-items: center;
+  font-family: var(--f-simbolo); font-weight: 600; font-size: 10px;
+  border: 1.2px dashed var(--linea); color: var(--suave);
+}
+.mini-fichas li.ahora { border: 1.2px solid var(--acento); color: var(--acento); background: var(--tarjeta); }
+.mini-fichas li.usado { background: var(--fallo-fondo); color: var(--fallo-texto); border: 1.2px solid var(--fallo-fondo); }
+.mini-fichas li.nueva { animation: aparecer-pista .5s cubic-bezier(.2, 1.6, .4, 1); }
+.mini-entrada { position: relative; display: flex; gap: 6px; }
+.mini-campo {
+  flex: 1; height: 32px; border-radius: 7px; border: 1.2px solid var(--acento); background: var(--tarjeta);
+  display: flex; align-items: center; padding: 0 9px; font-size: 12px;
+}
+.mini-campo::after { content: ""; width: 1px; height: 13px; margin-left: 1px; background: var(--texto); animation: cursor .8s steps(1) infinite; }
+.mini-boton {
+  display: grid; place-items: center; padding: 0 12px; border-radius: 7px;
+  background: var(--acento); color: var(--sobre-acento); font-weight: 700; font-size: 11.5px;
+}
+.mini-desplegable {
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 5px); margin: 0; padding: 3px; list-style: none;
+  background: var(--tarjeta); border: 1.2px solid var(--linea); border-radius: 8px;
+  opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s;
+}
+.mini-desplegable.abierto { opacity: 1; transform: none; }
+.mini-desplegable li { display: flex; padding: 5px 8px; border-radius: 5px; background: var(--resalte); font-size: 11.5px; color: var(--suave); }
+.mini-desplegable b { color: var(--texto); }
+.mini-desplegable i { margin-left: auto; font-style: normal; font-family: var(--f-simbolo); font-weight: 600; color: var(--acento); }
+
+/* Escena 3: elección de pista en miniatura (fondo siempre oscuro, como en el juego) */
+.escena-oscura { background: #0b0d12; border-color: #23283a; }
+.mini-titulo { font-family: var(--f-titulo); font-size: 15px; color: #f3ead6; }
+.mini-opciones { width: 260px; display: grid; gap: 6px; }
+.mini-opcion {
+  position: relative; display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 8px; border: 1.5px solid var(--linea);
+  background: var(--tarjeta); color: var(--texto);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity .3s, transform .3s, border-color .2s, box-shadow .2s;
+}
+.mini-opcion.entra { opacity: 1; transform: none; }
+.mini-opcion.elegida { border-color: var(--acento); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acento) 35%, transparent); transform: scale(1.03); }
+.mini-opcion.apartada { opacity: 0; transform: scale(.95); }
+.mini-ico { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: var(--resalte); color: var(--acento); }
+.mini-ico .ico-svg { width: 16px; height: 16px; stroke-width: 2; }
+.mini-texto strong { display: block; font-family: var(--f-titulo); font-weight: 400; font-size: 12px; }
+.mini-resp { display: block; font-family: var(--f-titulo); font-size: 10.5px; min-height: 0; }
+.mini-opcion .veredicto { top: 5px; right: 8px; font-size: 9px; padding: 0 5px; border-width: 1.5px; }
+
+/* Escena 5: bocadillo en miniatura */
+.mini-bocadillo {
+  position: absolute; transform: translate(-50%, calc(-100% - 7px)) scale(.9); opacity: 0;
+  padding: 4px 8px; border-radius: 7px; background: var(--texto); color: var(--fondo);
+  font-size: 10px; font-weight: 600; white-space: nowrap; transition: opacity .2s, transform .2s;
+}
+.mini-bocadillo::after {
+  content: ""; position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px;
+  background: inherit; transform: translateX(-50%) rotate(45deg);
+}
+.mini-bocadillo.visible { opacity: 1; transform: translate(-50%, calc(-100% - 7px)); }
+
+/* Dedo que señala los toques */
+.dedo {
+  position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%;
+  background: color-mix(in srgb, var(--acento) 35%, transparent); border: 2px solid var(--acento);
+  opacity: 0; transition: opacity .2s, left .45s ease-in-out, top .45s ease-in-out, transform .15s;
+  pointer-events: none; z-index: 2;
+}
+.dedo.visible { opacity: 1; }
+.dedo.toque { transform: scale(.7); }
 
 /* ---------- Aviso flotante ---------- */
 .toast {
@@ -540,8 +659,8 @@ button { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
-  .celda, .toast, .opcion { transition: none; }
-  .ayuda[open], .ayuda::backdrop,
+  .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo { transition: none; }
+  .ayuda[open], .ayuda::backdrop, .mini-lupa, .mini-celda.salta, .mini-fichas li.nueva, .mini-campo::after,
   .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
   .celda.recien, .celda.nueva, .informe-extra.nueva, .fichas li { animation: none !important; }

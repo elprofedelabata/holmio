@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
   <title>Holmio · El elemento culpable del día</title>
   <meta name="description" content="Juego diario de deducción: lee el informe del caso, elige tus pistas y acusa al elemento químico culpable en 6 intentos.">
-  <meta name="theme-color" content="#141821" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#efe6d2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#efe6d2">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
   <script>
-    // Aplica el tema guardado antes de pintar, para evitar parpadeos.
-    try {
-      const t = localStorage.getItem('holmio-tema');
-      if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
-    } catch {}
+    // Aplica el tema antes de pintar, para evitar parpadeos. Por defecto, modo día.
+    (function () {
+      let t = null;
+      try { t = localStorage.getItem('holmio-tema'); } catch {}
+      document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
+    })();
   </script>
   <script type="module" src="js/main.js"></script>
 </head>
@@ -80,28 +80,23 @@
     </footer>
   </div>
 
-  <dialog class="ayuda" id="ayuda" aria-labelledby="ayuda-titulo">
-    <form method="dialog">
-      <span class="confidencial" aria-hidden="true">CONFIDENCIAL</span>
-      <header class="ayuda-cabecera">
-        <p class="etiqueta">Manual del detective</p>
-        <h2 id="ayuda-titulo">Cómo cerrar un caso</h2>
-      </header>
-      <ul class="pasos">
-        <li><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-informe"/></svg></span>
-          <p>Cada día, <strong>uno de los 118 elementos es culpable</strong>. Todo empieza en el informe del caso.</p></li>
-        <li><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-acusar"/></svg></span>
-          <p>Acúsalo <strong>escribiendo su nombre</strong>. Solo tienes <strong>6 acusaciones</strong>.</p></li>
-        <li><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-cartas"/></svg></span>
-          <p>Si fallas, el acusado tiene coartada y te da <strong>a elegir 1 de 3 pistas</strong>. Cada tipo, una sola vez.</p></li>
-        <li><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-derecha"/></svg></span>
-          <p>Las direcciones y el número atómico se miden <strong>desde tu última acusación</strong>. Elige bien desde dónde preguntas.</p></li>
-        <li><span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-lupa"/></svg></span>
-          <p>La tabla <strong>apaga a quien tiene coartada</strong>. Cada pista deja su icono en la casilla: tócalo para releerla.</p></li>
-      </ul>
-      <p class="nota">Izquierda y derecha usan la tabla larga: el bloque f (las dos filas de abajo) va entre los grupos 2 y 3.</p>
-      <button class="btn-principal btn-ancho" value="cerrar">Abrir el caso</button>
-    </form>
+  <!-- Manual del detective: diapositivas con escenas animadas (las monta js/tutorial.js) -->
+  <dialog class="ayuda" id="ayuda" aria-labelledby="ayuda-titulo" aria-roledescription="carrusel">
+    <header class="ayuda-cabecera">
+      <div>
+        <p class="etiqueta">Manual del detective · <span class="diapos-contador">1 / 5</span></p>
+        <h2 id="ayuda-titulo" class="visualmente-oculto">Cómo cerrar un caso</h2>
+      </div>
+      <button class="diapos-saltar" type="button">Saltar</button>
+    </header>
+    <div class="diapos">
+      <div class="diapos-pista"></div>
+    </div>
+    <nav class="diapos-nav" aria-label="Diapositivas">
+      <button class="diapo-anterior icono-btn" type="button" aria-label="Anterior"><span aria-hidden="true">‹</span></button>
+      <div class="diapos-puntos"></div>
+      <button class="diapo-siguiente btn-principal" type="button" aria-label="Siguiente"><span aria-hidden="true">›</span></button>
+    </nav>
   </dialog>
 
   <!-- Tras un fallo: el juego se detiene y hay que elegir una de tres pistas -->

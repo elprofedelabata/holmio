@@ -76,7 +76,7 @@ Cada día hay un **caso** y un **elemento culpable**. La tabla periódica es el 
 - **Día especial:** cuando la solución sea el propio holmio, mensaje propio («El culpable estaba en el logo desde el principio»).
 
 ### 3.4 Temas de color
-Dos temas **igual de cuidados**. Por defecto se usa el del sistema del móvil, con un interruptor en ajustes para cambiarlo.
+Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tema del sistema; el botón de la cabecera cambia a modo noche y la elección se recuerda.
 
 **Modo noche — «el despacho»**
 
@@ -222,7 +222,13 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - ⚠️ **Teclado abierto:** ocupa ~la mitad de la pantalla. Mientras se escribe, deben seguir visibles al menos la tabla y, si es posible, la pista. Es el principal riesgo de diseño: **validar con el prototipo**.
 - Selector de las 3 pistas: tarjetas grandes y pulsables (aquí sí hacen falta zonas táctiles cómodas).
 - Temas noche/día: ver §3.4.
-- **Ayuda («Manual del detective»):** se abre la primera vez y con el botón «?». Es un expediente sobre fondo casi negro, con sello «CONFIDENCIAL», título «Cómo cerrar un caso» y cinco pasos cortos con icono (informe, acusar, elegir pista, direcciones desde la última acusación, tabla e iconos). Cabe sin desplazar en pantallas de 600 px de alto. Botón: «Abrir el caso».
+- **Ayuda («Manual del detective»):** se abre la primera vez y con el botón «?». Sobre fondo casi negro, un **carrusel de 5 diapositivas** que se navega **deslizando**, con las **flechas** ‹ ›, con los **puntos** o con el teclado; «Saltar» arriba y «Abrir el caso» en la última. Cada diapositiva tiene una **escena animada** hecha con piezas en miniatura del propio juego (se adaptan al tema) y un texto corto:
+  1. *Un culpable al día*: el informe se escribe a máquina y una lupa recorre la tabla.
+  2. *Acusa por su nombre*: se escribe «hie», se elige Hierro en el desplegable, se acusa y la ficha se rellena.
+  3. *Elige una pista*: tres tarjetas entran, se elige «Abajo», sello SÍ y la respuesta se escribe.
+  4. *Pregunta desde el sitio adecuado*: Fe recibe la flecha ↓ y se apagan los periodos 1–4.
+  5. *Sigue el rastro*: tabla con pistas; un toque en Pt abre su bocadillo.
+  Cabe sin desplazar desde 600 px de alto.
 
 ## 11. Reto diario
 
