@@ -481,12 +481,12 @@ button { cursor: pointer; }
 /* ---------- Ayuda ---------- */
 /* Un expediente sobre la mesa a oscuras: mismo fondo casi negro que el resto de pantallas */
 .ayuda {
-  width: min(420px, calc(100% - 28px)); max-height: calc(100dvh - 24px); overflow-y: auto;
+  width: min(420px, calc(100% - 28px)); max-height: calc(100dvh - 24px); overflow-x: hidden; overflow-y: auto;
   border: 1px solid var(--linea); border-radius: 14px;
   background: var(--tarjeta); color: var(--texto); padding: 18px 18px 16px;
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .9);
 }
-.ayuda[open] { display: grid; gap: 12px; animation: aparecer .35s cubic-bezier(.2, 1.1, .4, 1); }
+.ayuda[open] { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; animation: aparecer .35s cubic-bezier(.2, 1.1, .4, 1); }
 .ayuda::backdrop { background: rgba(6, 8, 12, .9); backdrop-filter: blur(3px); animation: fundido .2s ease-out; }
 .ayuda-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .ayuda h2 { font-family: var(--f-titulo); font-weight: 400; font-size: 23px; line-height: 1.15; }
@@ -505,11 +505,61 @@ button { cursor: pointer; }
 .diapo p strong { font-weight: 600; }
 .diapo .nota { font-size: 12px; color: var(--suave); }
 
-.diapos-nav { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px; }
-.diapo-anterior { width: 44px; height: 44px; font-size: 24px; line-height: 1; }
-.diapo-anterior:disabled { opacity: .35; }
-.diapo-siguiente { min-width: 56px; font-size: 24px; padding: 0 16px; transition: min-width .25s; }
-.diapo-siguiente.final { font-size: 15px; }
+/* Flechas: circulares, iguales, flotando a media altura sobre los bordes de la diapositiva */
+.diapos-marco { position: relative; min-width: 0; } /* sin esto, la pista de diapositivas ensancha el diálogo */
+.diapo-flecha {
+  position: absolute; top: 50%; z-index: 3;
+  width: 42px; height: 42px; border-radius: 50%; padding: 0;
+  display: grid; place-items: center;
+  background: var(--tarjeta); color: var(--texto);
+  border: 1.5px solid var(--linea);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .55);
+  transform: translateY(-50%);
+  transition: opacity .25s, transform .25s, border-color .2s;
+}
+.diapo-flecha .ico-svg { width: 22px; height: 22px; stroke-width: 2.4; }
+.diapo-flecha:hover { border-color: var(--acento); }
+.diapo-flecha:active { transform: translateY(-50%) scale(.92); }
+.diapo-anterior { left: -10px; }
+.diapo-siguiente { right: -10px; }
+.diapo-flecha.oculta { opacity: 0; pointer-events: none; transform: translateY(-50%) scale(.6); }
+
+/* Pie: los puntos y, en la última diapositiva, el botón noir en su lugar */
+.diapos-pie { display: grid; place-items: center; min-height: 52px; }
+.diapos-pie > * { grid-area: 1 / 1; transition: opacity .3s, transform .35s cubic-bezier(.2, 1.2, .4, 1); }
+.diapos-pie.final .diapos-puntos { opacity: 0; transform: translateY(-6px); }
+.diapos-abrir { opacity: 0; transform: translateY(10px) scale(.96); pointer-events: none; }
+.diapos-pie.final .diapos-abrir { opacity: 1; transform: none; pointer-events: auto; }
+
+/* Botón noir: tinta, filete ámbar doble, letra de máquina y un barrido de luz de lámpara */
+.btn-noir {
+  position: relative; overflow: hidden; width: 100%; min-height: 52px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  background: radial-gradient(120% 140% at 50% 0%, #1f2431 0%, #0e1016 70%);
+  color: #f3ead6; border: 1.5px solid #e7ad45; border-radius: 10px;
+  font-family: var(--f-titulo); font-size: 19px; letter-spacing: .16em; text-transform: uppercase;
+  box-shadow:
+    inset 0 0 0 4px #0e1016, inset 0 0 0 5px rgba(231, 173, 69, .35),
+    0 14px 30px -14px rgba(0, 0, 0, .9);
+  text-shadow: 0 0 12px rgba(231, 173, 69, .35);
+  transition: box-shadow .25s, transform .1s;
+}
+.btn-noir .ico-svg { width: 22px; height: 22px; color: #e7ad45; stroke-width: 2.2; }
+.btn-noir::after {
+  content: ""; position: absolute; top: -10%; bottom: -10%; left: -60%; width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(231, 173, 69, .3), transparent);
+  transform: skewX(-20deg);
+  animation: barrido 3.4s ease-in-out .8s infinite;
+}
+@keyframes barrido { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+.btn-noir:hover, .btn-noir:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 4px #0e1016, inset 0 0 0 5px rgba(231, 173, 69, .6),
+    0 0 26px -2px rgba(231, 173, 69, .45);
+}
+.btn-noir:active { transform: translateY(1px); }
+
 .diapos-puntos { display: flex; justify-content: center; gap: 8px; }
 .diapos-puntos button {
   width: 8px; height: 8px; padding: 0; border-radius: 50%; border: 0;
@@ -704,7 +754,7 @@ button { cursor: pointer; }
   .bocadillo.visible { animation: none; }
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
   .mini-marca, .mini-sello.visible { transition: none; }
-  .ayuda[open], .ayuda::backdrop, .mini-lupa, .dedo.toque .dedo-onda, .mini-celda.salta, .mini-fichas li.nueva, .mini-campo::after,
+  .btn-noir::after, .ayuda[open], .ayuda::backdrop, .mini-lupa, .dedo.toque .dedo-onda, .mini-celda.salta, .mini-fichas li.nueva, .mini-campo::after,
   .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
   .celda.recien, .celda.nueva, .informe-extra.nueva, .fichas li { animation: none !important; }

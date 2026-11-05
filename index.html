@@ -86,14 +86,24 @@
       <h2 id="ayuda-titulo">Cómo se juega</h2>
       <button class="diapos-saltar" type="button">Saltar</button>
     </header>
-    <div class="diapos">
-      <div class="diapos-pista"></div>
+    <div class="diapos-marco">
+      <div class="diapos">
+        <div class="diapos-pista"></div>
+      </div>
+      <button class="diapo-flecha diapo-anterior" type="button" aria-label="Anterior">
+        <svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+      </button>
+      <button class="diapo-flecha diapo-siguiente" type="button" aria-label="Siguiente">
+        <svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+      </button>
     </div>
-    <nav class="diapos-nav" aria-label="Diapositivas">
-      <button class="diapo-anterior icono-btn" type="button" aria-label="Anterior"><span aria-hidden="true">‹</span></button>
-      <div class="diapos-puntos"></div>
-      <button class="diapo-siguiente btn-principal" type="button" aria-label="Siguiente"><span aria-hidden="true">›</span></button>
-    </nav>
+    <div class="diapos-pie">
+      <nav class="diapos-puntos" aria-label="Diapositivas"></nav>
+      <button class="btn-noir diapos-abrir" type="button">
+        <svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lupa"/></svg>
+        <span>Abrir el caso</span>
+      </button>
+    </div>
   </dialog>
 
   <!-- Tras un fallo: el juego se detiene y hay que elegir una de tres pistas -->

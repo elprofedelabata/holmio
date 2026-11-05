@@ -288,6 +288,8 @@ export function crearTutorial(dialogo) {
   const puntos = dialogo.querySelector('.diapos-puntos');
   const anterior = dialogo.querySelector('.diapo-anterior');
   const siguiente = dialogo.querySelector('.diapo-siguiente');
+  const pie = dialogo.querySelector('.diapos-pie');
+  const abrirCaso = dialogo.querySelector('.diapos-abrir');
   const total = DIAPOSITIVAS.length;
 
   const animaciones = DIAPOSITIVAS.map((d, i) => {
@@ -315,11 +317,16 @@ export function crearTutorial(dialogo) {
     pista.style.transform = `translateX(${-actual * 100}%)`;
     [...pista.children].forEach((s, j) => (s.inert = j !== actual));
     [...puntos.children].forEach((p, j) => p.setAttribute('aria-current', String(j === actual)));
-    anterior.disabled = actual === 0;
+    // Sin flecha izquierda en la primera ni derecha en la última; en la última, el botón noir.
+    const primera = actual === 0;
     const ultima = actual === total - 1;
-    siguiente.classList.toggle('final', ultima);
-    siguiente.innerHTML = ultima ? 'Abrir el caso' : '<span aria-hidden="true">›</span>';
-    siguiente.setAttribute('aria-label', ultima ? 'Abrir el caso' : 'Siguiente');
+    anterior.classList.toggle('oculta', primera);
+    anterior.inert = primera;
+    siguiente.classList.toggle('oculta', ultima);
+    siguiente.inert = ultima;
+    pie.classList.toggle('final', ultima);
+    abrirCaso.inert = !ultima;
+    puntos.inert = ultima;
     control?.abort();
     control = new AbortController();
     animaciones[actual](control.signal).catch(() => {});
@@ -331,7 +338,8 @@ export function crearTutorial(dialogo) {
   }
 
   anterior.addEventListener('click', () => ir(actual - 1));
-  siguiente.addEventListener('click', () => (actual === total - 1 ? cerrar() : ir(actual + 1)));
+  siguiente.addEventListener('click', () => ir(actual + 1));
+  abrirCaso.addEventListener('click', cerrar);
   dialogo.querySelector('.diapos-saltar').addEventListener('click', cerrar);
   dialogo.addEventListener('close', () => control?.abort());
   dialogo.addEventListener('keydown', (e) => {
