@@ -122,7 +122,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 3. **Si acierta**, gana y se muestra la pantalla de resultado.
 4. **Si falla**:
    - El elemento respondido se marca en la tabla (en rojo lacre, con una pequeña sacudida).
-   - **El juego se detiene**, como al subir de nivel en un *roguelike*: la pantalla se cubre con un velo (papel en modo día, casi negro en modo noche) y aparece la ficha del elemento con el sello **«COARTADA»**, el texto «*X tiene coartada*», «**ELIGE UNA PISTA**» destacado en ámbar y **3 tarjetas de pista** que entran escalonadas.
+   - **El juego se detiene**, como al subir de nivel en un *roguelike*: la pantalla se cubre con un **velo translúcido y desenfocado** (papel en modo día, casi negro en modo noche) que deja intuir el juego debajo y aparece la ficha del elemento con el sello **«COARTADA»**, el texto «*X tiene coartada*», «**ELIGE UNA PISTA**» destacado en ámbar y **3 tarjetas de pista** que entran escalonadas.
    - Hay que **elegir 1** para continuar (no se puede cerrar sin elegir).
    - Al elegir, la tarjeta se destaca y las otras desaparecen. **Dentro de la tarjeta se revela la respuesta**: la pregunta se borra y la respuesta se escribe a máquina (con cursor). En las pistas de dirección, además, se estampa un sello **SÍ** (verde) o **NO** (rojo) y, si es «no», el icono se tacha. Tras un momento para leerla (un toque lo acelera) se vuelve a la partida: la tabla se sombrea con una transición y la pista aparece donde le toca (ver abajo).
    - **Dónde se ven las pistas** (no hay lista de pistas):
@@ -132,7 +132,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
      - En las pistas de texto el bocadillo remite al informe («*Al interrogarlo, reveló una curiosidad del culpable. La tienes en el informe.*») y el párrafo correspondiente destella.
    - La pista se aplica respecto a su **último intento** (cuando es relativa).
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
-6. Al terminar, tras un instante para ver la tabla, aparece la **pantalla de resultado** a pantalla completa y centrada. **Sigue el tema:** de día, un velo de papel con tinta oscura; de noche, el fondo casi negro.
+6. Al terminar, tras un instante para ver la tabla, aparece la **pantalla de resultado** a pantalla completa y centrada. **Sigue el tema:** de día, un velo de papel con tinta oscura; de noche, casi negro. En ambos, el velo es **translúcido y desenfocado**, para que se note que está por encima del juego.
    - ficha grande del culpable con el sello **«CASO CERRADO»** (verde) o **«SE HA FUGADO»** (rojo);
    - «¡Bien visto!» / «¡A la primera!» / «Se te ha escapado» y «El culpable era *X*»;
    - debajo, **las fichas de las acusaciones usadas** (como el contador de la partida: lacre las fallidas, verde la acertada), que entran una a una;
