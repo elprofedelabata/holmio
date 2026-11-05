@@ -384,6 +384,9 @@ export function crearTutorial(dialogo) {
   return {
     abrir() {
       dialogo.showModal();
+      // El foco va al propio diálogo (no a «Saltar», el primer botón): las flechas
+      // del teclado siguen funcionando y no aparece ningún botón resaltado.
+      dialogo.focus();
       ir(0);
     },
   };
