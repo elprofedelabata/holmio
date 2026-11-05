@@ -274,7 +274,16 @@ button { cursor: pointer; }
 .acusar { display: grid; gap: 6px; }
 .aviso { font-size: 13px; color: var(--lacre); min-height: 0; }
 .aviso:empty { display: none; }
-.fila-entrada { display: flex; gap: 8px; position: relative; }
+.fila-entrada { display: flex; align-items: center; gap: 10px; position: relative; }
+/* Acusar: algo más bajo que el campo, más ancho y con el mazo de juez */
+.fila-entrada .btn-acusar {
+  flex: none; min-width: 132px; min-height: 40px; height: 40px; padding: 0 18px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  letter-spacing: .02em;
+}
+.btn-acusar .ico-svg { width: 19px; height: 19px; stroke-width: 2.1; transition: transform .15s; transform-origin: 30% 80%; }
+.btn-acusar:active .ico-svg { transform: rotate(-22deg); }
+@media (max-width: 350px) { .fila-entrada .btn-acusar { min-width: 112px; padding: 0 14px; } }
 
 /* Desplegable de sugerencias: se abre hacia arriba, con la mejor coincidencia
    pegada al campo de texto. */

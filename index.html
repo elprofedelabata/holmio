@@ -66,9 +66,12 @@
         <div class="fila-entrada">
           <ul class="desplegable" id="sugerencias" role="listbox" aria-label="Sugerencias" hidden></ul>
           <label class="visualmente-oculto" for="entrada">Nombre del elemento</label>
-          <input id="entrada" type="text" placeholder="Nombre del sospechoso…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"
+          <input id="entrada" type="text" placeholder="Sospechoso…" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go"
                  role="combobox" aria-autocomplete="list" aria-controls="sugerencias" aria-expanded="false">
-          <button class="btn-principal" type="submit">Acusar</button>
+          <button class="btn-principal btn-acusar" type="submit">
+            <svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mazo"/></svg>
+            <span>Acusar</span>
+          </button>
         </div>
       </form>
 
@@ -206,6 +209,13 @@
     <symbol id="i-etimologia" viewBox="0 0 24 24">
       <path d="M12 6.5C10 5 7 4.5 3.5 5v13.5c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/>
       <path d="M12 6.5V20"/>
+    </symbol>
+    <!-- Acusar: mazo de juez -->
+    <symbol id="i-mazo" viewBox="0 0 24 24">
+      <path d="M11 5.5l4-4 7.5 7.5-4 4z"/>
+      <path d="M13 3.5l7.5 7.5" opacity=".5"/>
+      <path d="M14.75 9.25 5 19"/>
+      <path d="M3 22h9.5"/>
     </symbol>
     <!-- Ayuda: informe, acusación, tres pistas y lupa -->
     <symbol id="i-informe" viewBox="0 0 24 24">
