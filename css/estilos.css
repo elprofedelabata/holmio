@@ -128,14 +128,9 @@ button { cursor: pointer; }
   padding-bottom: 8px; border-bottom: 1px solid var(--linea);
 }
 .marca { display: flex; align-items: center; gap: 6px; font-weight: 400; }
-/* Logo: el monograma «Ho» del sello (img/monograma-limpio.svg), teñido en lacre.
-   El SVG hace de máscara: la forma la pone él y el color, background. */
-.logo {
-  display: inline-block; flex: none; width: 38px; height: 38px; background: var(--lacre);
-  -webkit-mask: url("../img/monograma-limpio.svg") center / contain no-repeat;
-  mask: url("../img/monograma-limpio.svg") center / contain no-repeat;
-}
-.marca-texto { font-family: var(--f-titulo); font-size: 22px; letter-spacing: .12em; line-height: 1; }
+/* Logo largo «HOLMIO» (la primera O es la lupa), generado con herramientas/logo.py.
+   Las letras toman el color del texto y la lupa va en lacre (ver el <symbol>). */
+.logo-largo { display: block; height: 40px; aspect-ratio: 871 / 226; color: var(--texto); }
 .icono-btn {
   width: 38px; height: 38px; border-radius: 10px;
   border: 1.5px solid var(--linea); background: transparent;
@@ -167,7 +162,7 @@ button { cursor: pointer; }
   font-family: var(--f-titulo); font-size: 20px; letter-spacing: .12em;
   --fondo: var(--tarjeta); /* el brillo de la lupa toma el color del panel */
 }
-.menu-marca .logo { width: 32px; height: 32px; }
+.menu-marca .logo-largo { height: 34px; }
 .menu-cerrar {
   width: 38px; height: 38px; border: 0; border-radius: 10px; background: transparent;
   display: grid; place-items: center; color: var(--suave);
