@@ -25,7 +25,7 @@
   <div class="app">
     <header class="cabecera">
       <h1 class="marca" aria-label="Holmio">
-        <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><use href="#ho-lupa"/></svg>
+        <span class="logo" aria-hidden="true"></span>
         <span class="marca-texto">HOLMIO</span>
       </h1>
       <button class="icono-btn btn-menu" id="btn-menu" type="button" aria-label="Abrir el menú" aria-haspopup="dialog" aria-controls="menu">
@@ -99,7 +99,7 @@
   <dialog class="menu" id="menu" aria-label="Menú">
     <header class="menu-cabecera">
       <span class="menu-marca">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#ho-lupa"/></svg>
+        <span class="logo" aria-hidden="true"></span>
         HOLMIO
       </span>
       <button class="menu-cerrar" type="button" aria-label="Cerrar el menú">
@@ -208,26 +208,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="bocadillo" id="bocadillo" role="status" aria-live="polite" hidden></div>
-
-  <!-- Logo: «Ho» con la o convertida en lupa -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="ho-lupa" viewBox="0 0 100 100">
-      <g fill="currentColor">
-        <rect x="10" y="26" width="9" height="48"/>
-        <rect x="37" y="26" width="9" height="48"/>
-        <rect x="10" y="45.5" width="36" height="9"/>
-        <rect x="5" y="26" width="19" height="5"/>
-        <rect x="32" y="26" width="19" height="5"/>
-        <rect x="5" y="69" width="19" height="5"/>
-        <rect x="32" y="69" width="19" height="5"/>
-      </g>
-      <!-- Los colores llegan por variables CSS, que sí atraviesan <use> -->
-      <g fill="none" stroke-linecap="round" style="stroke: var(--lupa)">
-        <circle cx="68" cy="57" r="13.5" stroke-width="9"/>
-        <line x1="80" y1="69" x2="92" y2="81" stroke-width="10"/>
-      </g>
-      <path d="M61 51.5a8 8 0 0 1 6-4" fill="none" stroke-width="3" stroke-linecap="round" style="stroke: var(--fondo); opacity: .9"/>
-    </symbol>
 
     <!-- Iconos de pista (24×24, trazo con currentColor; el grosor lo pone el CSS) -->
     <!-- Dirección: la casilla tenue es tu última acusación; la flecha, hacia dónde preguntas -->

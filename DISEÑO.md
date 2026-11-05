@@ -75,6 +75,12 @@ Cada día hay un **caso** y un **elemento culpable**. La tabla periódica es el 
 - Animación de carga: la lupa recorriendo la tabla.
 - **Día especial:** cuando la solución sea el propio holmio, mensaje propio («El culpable estaba en el logo desde el principio»).
 
+**Logo actual (implementado):** el **monograma «Ho»** recortado del sello (`img/sello.png` → `img/monograma.png`) y vectorizado con `herramientas/vectorizar.py`:
+- `img/monograma-limpio.svg` (4 KB): logo de la cabecera y del menú, teñido en rojo lacre con una máscara CSS. Se reconoce incluso a 16 px.
+- `img/monograma.svg` (26 KB): con textura de tampón, para tamaños grandes.
+- `img/favicon.svg`: el monograma en lacre sobre un cuadrado redondeado color tinta.
+- `img/sello.svg` / `img/sello-limpio.svg`: el sello completo (usado en la última diapositiva del tutorial; pendiente: imagen para compartir en redes).
+
 ### 3.4 Temas de color
 Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tema del sistema; el botón de la cabecera cambia a modo noche y la elección se recuerda.
 
