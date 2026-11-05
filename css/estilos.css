@@ -156,10 +156,8 @@ button { cursor: pointer; }
   padding: 10px 12px; display: grid; gap: 4px; align-content: start;
   flex: 0 1 auto; min-height: 64px; overflow-y: auto; overscroll-behavior: contain;
 }
-.tablero, .estado { flex: none; }
-/* Tabla + línea de estado, centradas en el hueco libre bajo el informe */
-.tablero { margin-top: auto; }
-.estado { margin-bottom: auto; }
+/* Tabla centrada en el hueco libre bajo el informe */
+.tablero { flex: none; margin-block: auto; }
 .etiqueta {
   font-family: var(--f-texto); font-size: 11px; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase; color: var(--acento);
@@ -227,16 +225,42 @@ button { cursor: pointer; }
 .celda.revelado { box-shadow: inset 0 0 0 2px var(--lacre); color: var(--texto); background: var(--cand-fondo); }
 
 /* ---------- Estado ---------- */
-.estado {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  font-size: 12.5px; color: var(--suave);
+/* ---------- Acusaciones (en el panel, sobre el campo de respuesta) ---------- */
+.estado { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+
+/* Seis fichas con forma de casilla de elemento: vacías, la actual con «?»,
+   y las usadas con el símbolo del acusado (lacre) o del culpable (verde). */
+.fichas { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; }
+.fichas li {
+  position: relative; width: 34px; height: 34px; border-radius: 5px;
+  display: grid; place-items: center;
+  font-family: var(--f-simbolo); font-weight: 600; font-size: 13px; line-height: 1;
+  border: 1.5px dashed var(--linea); color: var(--suave);
 }
-#estado-quedan { text-align: right; }
-.puntos { display: flex; gap: 5px; }
-.puntos b { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--linea); }
-.puntos b.usado { background: var(--fallo-fondo); border-color: var(--fallo-fondo); }
-.puntos b.bien { background: var(--acierto-fondo); border-color: var(--acierto-fondo); }
-.puntos b.ahora { border-color: var(--acento); }
+.fichas li::before {
+  content: attr(data-n); position: absolute; top: 2px; left: 3px;
+  font-size: 7.5px; font-weight: 500; opacity: .7;
+}
+.fichas li.usado { background: var(--fallo-fondo); color: var(--fallo-texto); border: 1.5px solid var(--fallo-fondo); }
+.fichas li.bien { background: var(--acierto-fondo); color: var(--acierto-texto); border: 1.5px solid var(--acierto-fondo); }
+.fichas li.ahora {
+  border: 1.5px solid var(--acento); color: var(--acento); background: var(--tarjeta);
+  animation: latido 1.8s ease-in-out infinite;
+}
+@keyframes latido {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--acento) 45%, transparent); }
+  50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--acento) 0%, transparent); }
+}
+.fichas li.nueva { animation: aparecer-pista .5s cubic-bezier(.2, 1.6, .4, 1); }
+
+.sospechosos { display: grid; justify-items: end; line-height: 1.05; }
+.sospechosos strong { font-family: var(--f-simbolo); font-size: 20px; font-weight: 600; color: var(--texto); }
+.sospechosos span { font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+
+@media (max-width: 350px) {
+  .fichas { gap: 4px; }
+  .fichas li { width: 30px; height: 30px; font-size: 12px; }
+}
 
 /* ---------- Panel inferior ---------- */
 .panel {
@@ -489,12 +513,14 @@ button { cursor: pointer; }
   .celda, .toast, .opcion { transition: none; }
   .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
-  .celda.recien, .celda.nueva, .informe-extra.nueva { animation: none; }
+  .celda.recien, .celda.nueva, .informe-extra.nueva, .fichas li { animation: none !important; }
 }
 
 /* Pantallas bajas (teclado abierto): compactar */
 @media (max-height: 560px) {
   .meta { display: none; }
+  /* Con el teclado abierto: las fichas de acusación ceden su sitio a la tabla */
+  .panel:has(#form-acusar:not([hidden])) .estado { display: none; }
   .informe { padding: 8px 10px; min-height: 48px; }
   #informe-texto { font-size: 12.5px; }
 }

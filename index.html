@@ -51,15 +51,15 @@
       <div class="tablero">
         <div class="tabla" id="tabla" role="img" aria-label="Tabla periódica con los sospechosos"></div>
       </div>
-
-      <div class="estado">
-        <span id="estado-intento"></span>
-        <span class="puntos" id="puntos" aria-hidden="true"></span>
-        <span id="estado-quedan"></span>
-      </div>
     </main>
 
     <footer class="panel" id="panel">
+      <!-- Acusaciones: seis fichas que se rellenan con los elementos acusados -->
+      <div class="estado">
+        <ol class="fichas" id="fichas"></ol>
+        <p class="sospechosos" id="sospechosos"><strong id="sospechosos-num"></strong><span>sospechosos</span></p>
+      </div>
+
       <!-- Fase: acusar -->
       <form class="acusar" id="form-acusar" autocomplete="off" hidden>
         <p class="aviso" id="aviso" role="status" aria-live="polite"></p>

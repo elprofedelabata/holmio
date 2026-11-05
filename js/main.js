@@ -194,22 +194,37 @@ function render() {
   renderInforme(resueltas);
   pintarTabla(candidatos, resueltas);
 
-  // Estado
+  // Acusaciones: seis fichas que se rellenan con el símbolo de cada acusado
   const n = partida.intentos.length;
   const fase = partida.fase;
-  $('estado-intento').textContent =
-    fase === 'fin' ? (partida.ganada ? `Resuelto en ${n}` : 'Sin resolver') : `Acusación ${Math.min(n + (fase === 'acusar' ? 1 : 0), MAX_INTENTOS)} de ${MAX_INTENTOS}`;
-  $('estado-quedan').textContent =
-    fase === 'fin' ? '' : `${candidatos.length} sospechoso${candidatos.length === 1 ? '' : 's'}`;
-  $('puntos').replaceChildren(
+  const fichas = $('fichas');
+  const nuevas = n > (render.fichasPintadas ?? n); // se acaba de acusar: la ficha nueva salta
+  render.fichasPintadas = n;
+  fichas.setAttribute(
+    'aria-label',
+    fase === 'fin'
+      ? (partida.ganada ? `Resuelto en ${n} acusaciones` : 'Sin resolver')
+      : `Acusación ${Math.min(n + 1, MAX_INTENTOS)} de ${MAX_INTENTOS}`,
+  );
+  fichas.replaceChildren(
     ...Array.from({ length: MAX_INTENTOS }, (_, i) => {
-      const b = document.createElement('b');
+      const li = document.createElement('li');
+      li.dataset.n = i + 1;
       const z = partida.intentos[i];
-      if (z !== undefined) b.className = z === partida.secreto.z ? 'bien' : 'usado';
-      else if (i === n && fase === 'acusar') b.className = 'ahora';
-      return b;
+      if (z !== undefined) {
+        li.className = z === partida.secreto.z ? 'bien' : 'usado';
+        li.textContent = ELEMENTOS[z - 1].simbolo;
+        if (nuevas && i === n - 1) li.classList.add('nueva');
+      } else if (i === n && fase !== 'fin') {
+        li.className = 'ahora';
+        li.textContent = '?';
+      }
+      return li;
     }),
   );
+  $('sospechosos').hidden = fase === 'fin';
+  $('sospechosos-num').textContent = candidatos.length;
+  $('sospechosos').lastChild.textContent = candidatos.length === 1 ? 'sospechoso' : 'sospechosos';
 
   // Panel inferior (durante la elección de pista, el diálogo lo tapa todo)
   $('form-acusar').hidden = fase === 'fin';
