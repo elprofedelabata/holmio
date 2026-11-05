@@ -234,7 +234,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
   3. *Elige una pista*: tres tarjetas entran, se elige «Abajo», sello SÍ y la respuesta se escribe.
   4. *Pregunta desde el sitio adecuado*: Fe recibe la flecha ↓ y se apagan los periodos 1–4.
   5. *Sigue el rastro*: tabla con pistas; un toque en Pt abre su bocadillo.
-  6. *Tu turno, detective*: aparece la marca HOLMIO y cae el sello «CASO ABIERTO». Cierra con la frase: «118 sospechosos. Un solo culpable. **Ninguna coartada dura para siempre.**»
+  6. *Tu turno, detective*: el **sello de Holmio** (`img/sello.svg`, con textura) cae sobre la mesa como un tampón, con un pequeño golpe. Cierra con la frase: «118 sospechosos. Un solo culpable. **Ninguna coartada dura para siempre.**»
   En pantalla, una mano señala los toques en dispositivos táctiles y una flecha de ratón en el ordenador.
   Cabe sin desplazar desde 600 px de alto.
 

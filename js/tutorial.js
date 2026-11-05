@@ -259,23 +259,18 @@ const DIAPOSITIVAS = [
     clase: 'diapo-final',
     texto: '118 sospechosos. Un solo culpable. <strong>Ninguna coartada dura para siempre.</strong>',
     montar(escena) {
+      // El sello de Holmio (img/sello.svg) cae sobre la mesa como un tampón
       escena.classList.add('escena-oscura', 'escena-final');
-      escena.innerHTML = `
-        <div class="mini-marca">
-          <svg class="mini-logo" viewBox="0 0 100 100" aria-hidden="true"><use href="#ho-lupa"/></svg>
-          <span class="mini-palabra">HOLMIO</span>
-        </div>
-        <span class="mini-sello">CASO ABIERTO</span>`;
-      const marca = escena.querySelector('.mini-marca');
-      const sello = escena.querySelector('.mini-sello');
+      escena.innerHTML = '<span class="sello-holmio" role="img" aria-label="Sello de Holmio"></span>';
+      const sello = escena.querySelector('.sello-holmio');
       return (señal) => enBucle(señal, async () => {
-        marca.classList.remove('visible');
-        sello.classList.remove('visible');
-        await esperar(350, señal);
-        marca.classList.add('visible');
-        await esperar(1100, señal);
-        sello.classList.add('visible');
-        await esperar(3200, señal);
+        sello.classList.remove('estampado');
+        escena.classList.remove('golpe');
+        await esperar(450, señal);
+        sello.classList.add('estampado');
+        await esperar(260, señal); // instante del impacto
+        escena.classList.add('golpe');
+        await esperar(3600, señal);
       });
     },
   },
