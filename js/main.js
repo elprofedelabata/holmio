@@ -703,8 +703,8 @@ function renderArchivo() {
   const primero = fechaDeCaso(1);
   const hoy = fechaDeCaso(numeroHoy);
   const meses = [];
-  // Del mes actual hacia atrás, hasta el mes del Caso nº 1
-  for (let d = new Date(hoy.getFullYear(), hoy.getMonth(), 1); d >= new Date(primero.getFullYear(), primero.getMonth(), 1); d.setMonth(d.getMonth() - 1)) {
+  // Del mes del Caso nº 1 al mes actual (de más antiguo a más reciente)
+  for (let d = new Date(primero.getFullYear(), primero.getMonth(), 1); d <= hoy; d.setMonth(d.getMonth() + 1)) {
     meses.push(new Date(d));
   }
   const DIA = 86_400_000;
@@ -792,7 +792,8 @@ function enrutar() {
     [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
     mostrarVista('archivo');
     renderArchivo();
-    $('vista-archivo').scrollTop = 0;
+    // Se abre desplazado del todo hacia abajo: el mes actual y el caso de hoy a la vista
+    $('vista-archivo').scrollTop = $('vista-archivo').scrollHeight;
     return;
   }
   const m = location.hash.match(/^#caso-(\d+)$/);

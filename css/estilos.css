@@ -239,6 +239,7 @@ button { cursor: pointer; }
 .archivo-leyenda .en-curso { border: 1.5px dashed var(--acento); }
 .archivo-leyenda .pendiente { background: var(--cand-fondo); box-shadow: inset 0 0 0 1.5px var(--cand-borde); }
 .archivo-leyenda .hoy { outline: 2px solid var(--acento); outline-offset: 1px; background: var(--cand-fondo); }
+#archivo-meses { display: grid; gap: 30px; }
 /* El calendario no ocupa todo el ancho: deja aire a los lados, sobre todo a la derecha */
 .archivo-mes { display: grid; gap: 10px; width: min(100% - 24px, 330px); margin-inline: auto; }
 .archivo-mes h3 {
