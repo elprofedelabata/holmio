@@ -66,12 +66,26 @@ export function numeroDeCaso(fecha = fechaLocal()) {
   return Math.round((Date.UTC(a, m - 1, d) - Date.UTC(a1, m1 - 1, d1)) / DIA_MS) + 1;
 }
 
-/** Caso del día. En el prototipo, ?caso=N fuerza un número de caso. */
-export function casoDelDia() {
+/** Caso por número (1, 2, 3…). En el prototipo, los casos de prueba se repiten en bucle. */
+export function casoPorNumero(numero) {
+  return { numero, ...CASOS[(numero - 1) % CASOS.length] };
+}
+
+/** Fecha (local, a medianoche) en la que se publicó el caso `numero`. */
+export function fechaDeCaso(numero) {
+  const [a, m, d] = FECHA_CASO_1.split('-').map(Number);
+  return new Date(a, m - 1, d + numero - 1);
+}
+
+/** Número del caso de hoy. En el prototipo, ?caso=N lo fuerza (para probar). */
+export function numeroDeHoy() {
   const forzado = Number(new URLSearchParams(location.search).get('caso'));
-  const numero = forzado >= 1 ? Math.floor(forzado) : Math.max(1, numeroDeCaso());
-  const caso = CASOS[(numero - 1) % CASOS.length];
-  return { numero, ...caso };
+  return forzado >= 1 ? Math.floor(forzado) : Math.max(1, numeroDeCaso());
+}
+
+/** Caso del día. */
+export function casoDelDia() {
+  return casoPorNumero(numeroDeHoy());
 }
 
 /** Milisegundos hasta la próxima medianoche local. */

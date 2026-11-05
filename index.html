@@ -33,6 +33,12 @@
       </button>
     </header>
 
+    <!-- Archivo de casos: calendario por meses (lo monta main.js) -->
+    <section class="vista-archivo" id="vista-archivo" hidden aria-labelledby="archivo-titulo">
+      <h2 class="archivo-titulo" id="archivo-titulo">Archivo de casos</h2>
+      <div id="archivo-meses"></div>
+    </section>
+
     <div class="meta">
       <span id="num-caso">Caso nº —</span>
       <span id="fecha-caso"></span>
@@ -97,7 +103,7 @@
         <span class="menu-ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-lupa"/></svg></span>
         <span class="menu-texto"><strong>Caso del día</strong></span>
       </button>
-      <button class="menu-item" id="menu-archivo" type="button" aria-disabled="true">
+      <button class="menu-item" id="menu-archivo" type="button">
         <span class="menu-ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-archivo"/></svg></span>
         <span class="menu-texto"><strong>Archivo de casos</strong></span>
       </button>

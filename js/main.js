@@ -1,7 +1,7 @@
 // Holmio — interfaz
 
 import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.js';
-import { casoDelDia, msHastaManana } from './casos.js';
+import { casoPorNumero, fechaDeCaso, numeroDeHoy, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
 import { crearTutorial } from './tutorial.js';
 
@@ -16,13 +16,17 @@ const leer = (clave) => {
 };
 
 // ---------- Partida ----------
-const caso = casoDelDia();
-const CLAVE = `holmio-caso-${caso.numero}`;
+// El caso en juego puede ser el del día o uno del archivo (ver «Navegación», al final).
+const claveDe = (numero) => `holmio-caso-${numero}`;
+const numeroHoy = numeroDeHoy();
+let caso = null;
+let partida = null;
+let esArchivo = false;
+const persistir = () => guardar(claveDe(caso.numero), partida.datos());
+
 if (new URLSearchParams(location.search).has('reiniciar')) {
-  try { localStorage.removeItem(CLAVE); } catch {}
+  try { localStorage.removeItem(claveDe(numeroHoy)); } catch {}
 }
-const partida = new Partida(caso, leer(CLAVE) ?? {});
-const persistir = () => guardar(CLAVE, partida.datos());
 
 // ---------- Tabla ----------
 const celdas = new Map();
@@ -585,7 +589,8 @@ $('tabla').addEventListener('click', verPistaDeCelda);
 $('tabla').addEventListener('keydown', verPistaDeCelda);
 
 $('btn-compartir').addEventListener('click', async () => {
-  const url = location.origin + location.pathname;
+  // Un caso del archivo se comparte con su enlace directo
+  const url = location.origin + location.pathname + (esArchivo ? `#caso-${caso.numero}` : '');
   const texto = partida.textoCompartir(url);
   if (navigator.share && matchMedia('(pointer: coarse)').matches) {
     try { await navigator.share({ text: texto }); return; } catch (err) {
@@ -663,8 +668,9 @@ menu.addEventListener('pointerup', (e) => {
   if (dx > 60 && Math.abs(dx) > Math.abs(dy)) cerrarMenu();
 });
 
-$('menu-hoy').addEventListener('click', () => cerrarMenu());
-// Archivo y práctica aún no existen: de momento no hacen nada.
+$('menu-hoy').addEventListener('click', () => cerrarMenu(() => irA('')));
+$('menu-archivo').addEventListener('click', () => cerrarMenu(() => irA('#archivo')));
+// La práctica libre aún no existe: de momento no hace nada.
 $('menu-ayuda').addEventListener('click', () => cerrarMenu(() => tutorial.abrir()));
 $('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
   $('acerca').showModal();
@@ -676,14 +682,148 @@ if (!leer('holmio-visto-ayuda')) {
   guardar('holmio-visto-ayuda', true);
 }
 
+// ---------- Archivo de casos: calendario por meses ----------
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto',
+  'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const DIAS_SEMANA = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+/** Estado guardado de un caso: { estado, simbolo?, intentos } sin destripar nada. */
+function estadoDeCaso(numero) {
+  const datos = leer(claveDe(numero));
+  if (!datos?.intentos?.length) return { estado: 'pendiente', intentos: 0 };
+  const p = new Partida(casoPorNumero(numero), datos);
+  const intentos = p.intentos.length;
+  if (p.ganada) return { estado: 'cerrado', simbolo: p.secreto.simbolo, intentos };
+  if (p.perdida) return { estado: 'fugado', simbolo: p.secreto.simbolo, intentos };
+  return { estado: 'en-curso', intentos };
+}
+
+function renderArchivo() {
+  const primero = fechaDeCaso(1);
+  const hoy = fechaDeCaso(numeroHoy);
+  const meses = [];
+  // Del mes actual hacia atrás, hasta el mes del Caso nº 1
+  for (let d = new Date(hoy.getFullYear(), hoy.getMonth(), 1); d >= new Date(primero.getFullYear(), primero.getMonth(), 1); d.setMonth(d.getMonth() - 1)) {
+    meses.push(new Date(d));
+  }
+  const DIA = 86_400_000;
+  const numeroDeFecha = (f) => Math.round((f - primero) / DIA) + 1;
+
+  $('archivo-meses').replaceChildren(...meses.map((inicioMes) => {
+    const seccion = document.createElement('section');
+    seccion.className = 'archivo-mes';
+    const titulo = document.createElement('h3');
+    titulo.textContent = `${MESES[inicioMes.getMonth()]} ${inicioMes.getFullYear()}`;
+    const rejilla = document.createElement('div');
+    rejilla.className = 'calendario';
+    rejilla.append(...DIAS_SEMANA.map((d) => {
+      const s = document.createElement('span');
+      s.className = 'cal-dia-semana';
+      s.textContent = d;
+      return s;
+    }));
+    const diasMes = new Date(inicioMes.getFullYear(), inicioMes.getMonth() + 1, 0).getDate();
+    const hueco = (inicioMes.getDay() + 6) % 7; // semana empieza en lunes
+    for (let i = 0; i < hueco; i++) rejilla.append(document.createElement('span'));
+    for (let dia = 1; dia <= diasMes; dia++) {
+      const fecha = new Date(inicioMes.getFullYear(), inicioMes.getMonth(), dia);
+      const numero = numeroDeFecha(fecha);
+      if (numero < 1 || numero > numeroHoy) {
+        // Días sin caso (antes del primero o en el futuro): solo el número, apagado
+        const s = document.createElement('span');
+        s.className = 'cal-vacio';
+        s.textContent = dia;
+        rejilla.append(s);
+        continue;
+      }
+      const { estado, simbolo, intentos } = estadoDeCaso(numero);
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = `cal-caso ${estado}${numero === numeroHoy ? ' hoy' : ''}`;
+      b.innerHTML = `<small>${dia}</small><b></b><i aria-hidden="true">${'▪'.repeat(intentos)}</i>`;
+      b.querySelector('b').textContent = simbolo ?? '?';
+      const textos = { pendiente: 'sin empezar', 'en-curso': 'en curso', cerrado: 'cerrado', fugado: 'se fugó' };
+      b.setAttribute('aria-label', `Caso nº ${numero}, ${dia} de ${MESES[fecha.getMonth()]}: ${textos[estado]}${numero === numeroHoy ? ' (hoy)' : ''}`);
+      b.addEventListener('click', () => irA(numero === numeroHoy ? '' : `#caso-${numero}`));
+      rejilla.append(b);
+    }
+    seccion.append(titulo, rejilla);
+    return seccion;
+  }));
+}
+
+// ---------- Navegación: caso del día (sin #), #archivo y #caso-N ----------
+// Cada pantalla tiene su dirección: el botón «atrás» funciona y se puede compartir un caso.
+const fechaLarga = (f) => f.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' });
+
+function cargarCaso(numero) {
+  [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
+  caso = casoPorNumero(numero);
+  partida = new Partida(caso, leer(claveDe(numero)) ?? {});
+  esArchivo = numero !== numeroHoy;
+  render.fichasPintadas = undefined;
+  entrada.value = '';
+  aviso.textContent = '';
+  cerrarDesplegable();
+  ocultarBocadillo();
+  $('num-caso').textContent = esArchivo ? `Archivo · Caso nº ${numero}` : `Caso nº ${numero}`;
+  $('fecha-caso').textContent = fechaLarga(fechaDeCaso(numero));
+  $('informe-texto').textContent = caso.informe;
+  render();
+  document.querySelector('.informe').scrollTop = 0;
+}
+
+function mostrarVista(vista) {
+  const archivo = vista === 'archivo';
+  $('vista-archivo').hidden = !archivo;
+  document.querySelector('.meta').hidden = archivo;
+  document.querySelector('.contenido').hidden = archivo;
+  $('panel').hidden = archivo;
+  // En el menú se marca dónde estás (un caso antiguo cuenta como «Archivo»)
+  for (const [id, activo] of [['menu-hoy', vista === 'hoy'], ['menu-archivo', vista !== 'hoy']]) {
+    if (activo) $(id).setAttribute('aria-current', 'page');
+    else $(id).removeAttribute('aria-current');
+  }
+}
+
+function enrutar() {
+  if (location.hash === '#archivo') {
+    [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
+    mostrarVista('archivo');
+    renderArchivo();
+    $('vista-archivo').scrollTop = 0;
+    return;
+  }
+  const m = location.hash.match(/^#caso-(\d+)$/);
+  let numero = m ? Number(m[1]) : numeroHoy;
+  // Nunca casos futuros (ni direcciones raras): se va al de hoy y se limpia la dirección
+  const valido = numero >= 1 && numero <= numeroHoy && (m || !location.hash);
+  if (!valido) {
+    numero = numeroHoy;
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  // El caso de hoy no necesita #caso-N
+  if (m && numero === numeroHoy) history.replaceState(null, '', location.pathname + location.search);
+  mostrarVista(numero === numeroHoy ? 'hoy' : 'caso');
+  cargarCaso(numero);
+  // Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
+  if (!$('ayuda').open) abrirSegunFase();
+  else $('ayuda').addEventListener('close', abrirSegunFase, { once: true });
+}
+
+/** Cambia de pantalla: '' (caso del día), '#archivo' o '#caso-N'. */
+function irA(destino) {
+  if (destino === location.hash || (!destino && !location.hash)) return enrutar();
+  if (destino) location.hash = destino; // dispara hashchange
+  else {
+    history.pushState(null, '', location.pathname + location.search);
+    enrutar();
+  }
+}
+
+// popstate llega tanto al cambiar el # como con el botón «atrás» (hashchange sería redundante)
+window.addEventListener('popstate', enrutar);
+
 // ---------- Inicio ----------
-$('num-caso').textContent = `Caso nº ${caso.numero}`;
-$('fecha-caso').textContent = new Date().toLocaleDateString('es-ES', {
-  weekday: 'long', day: 'numeric', month: 'short',
-});
-$('informe-texto').textContent = caso.informe;
 construirTabla();
-render();
-// Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
-if (!$('ayuda').open) abrirSegunFase();
-else $('ayuda').addEventListener('close', abrirSegunFase, { once: true });
+enrutar();

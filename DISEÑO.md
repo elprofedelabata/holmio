@@ -224,7 +224,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - Temas noche/día: ver §3.4.
 - **Barra superior:** logo a la izquierda y **un solo botón de menú (☰)** a la derecha.
 - **Menú lateral** (entra por la derecha; sigue el tema día/noche, con letra de máquina y el color de acento). Se cierra con ✕, tocando fuera, deslizando a la derecha o con Esc.
-  - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* y *Práctica libre* (estas dos, de momento atenuadas y sin función). Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
+  - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* (§11.1) y *Práctica libre* (de momento atenuada y sin función). El menú marca dónde estás. Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
   - **Utilidades:** *Cómo se juega* (icono de interrogación en un círculo), interruptor de *Modo noche* y *Acerca de Holmio* (qué es, origen del nombre y enlace al código).
   - Cuando existan el archivo y la práctica, se ofrecerán también en la **pantalla de resultado** y en el **panel inferior** al terminar el caso del día, que es cuando el jugador se queda con ganas.
 - **Ayuda («Cómo se juega»):** se abre la primera vez y desde el menú. Sobre fondo casi negro, un **carrusel de 6 diapositivas** que se navega **deslizando**, con las **flechas** (chevrones pequeños y discretos, sin círculo, en el margen del diálogo a media altura; sin flecha izquierda en la primera ni derecha en la última), con los **puntos** o con el teclado. «Saltar» arriba. En la última diapositiva los puntos dejan paso a un botón **noir** «Abrir el caso» (tinta, doble filete ámbar, letra de máquina y un barrido de luz de lámpara). Cada diapositiva tiene una **escena animada** hecha con piezas en miniatura del propio juego (se adaptan al tema) y un texto corto:
@@ -246,6 +246,15 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
   - evitar rachas raras (dos gases nobles seguidos, tres lantánidos en una semana),
   - poder repetir elementos en ciclos posteriores con **pistas principales nuevas**.
 - Con 118 elementos, el ciclo se repite cada ~4 meses. 🟡 Decidir si los superpesados (Z > 103) aparecen con menos frecuencia.
+
+### 11.1 Archivo de casos
+
+- Pantalla mínima: solo el título **«Archivo de casos»** y un **calendario por meses** (del más reciente al más antiguo, semanas de lunes a domingo). Sin resumen, filtros ni botón de volver: se navega con el menú (☰).
+- Cada día con caso es una **casilla de elemento**: el día arriba a la izquierda (como el número atómico), en el centro **«?»** si no está terminado o el **símbolo del culpable** si ya lo está, y debajo una rayita por acusación usada.
+- Colores según el estado: pendiente (casilla clara), en curso (borde ámbar discontinuo), **cerrado** (verde), **fugado** (lacre). El caso de **hoy** lleva un contorno ámbar que late.
+- Los días sin caso (antes del primero o en el futuro) muestran solo el número, apagado. **Nunca se puede abrir un caso futuro.**
+- Al tocar un caso se juega en la pantalla normal, con «**Archivo · Caso nº 9**» y su fecha en la línea bajo el logo. No cuenta para la racha (cuando exista), pero queda guardado.
+- **Direcciones propias:** caso del día (sin #), `#archivo` y `#caso-N`. El botón «atrás» del móvil funciona y un caso del archivo se comparte con su enlace directo.
 
 ## 12. Compartir
 
