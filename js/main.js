@@ -737,11 +737,11 @@ function renderArchivo() {
         rejilla.append(s);
         continue;
       }
-      const { estado, simbolo, intentos } = estadoDeCaso(numero);
+      const { estado, simbolo } = estadoDeCaso(numero);
       const b = document.createElement('button');
       b.type = 'button';
       b.className = `cal-caso ${estado}${numero === numeroHoy ? ' hoy' : ''}`;
-      b.innerHTML = `<small>${dia}</small><b></b><i aria-hidden="true">${'▪'.repeat(intentos)}</i>`;
+      b.innerHTML = `<b></b><small>${dia}</small>`;
       b.querySelector('b').textContent = simbolo ?? '?';
       const textos = { pendiente: 'sin empezar', 'en-curso': 'en curso', cerrado: 'cerrado', fugado: 'se fugó' };
       b.setAttribute('aria-label', `Caso nº ${numero}, ${dia} de ${MESES[fecha.getMonth()]}: ${textos[estado]}${numero === numeroHoy ? ' (hoy)' : ''}`);
