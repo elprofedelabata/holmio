@@ -605,15 +605,80 @@ $('btn-compartir').addEventListener('click', async () => {
 });
 
 // ---------- Tema ----------
-$('btn-tema').addEventListener('click', () => {
-  const raiz = document.documentElement;
-  raiz.dataset.theme = raiz.dataset.theme === 'dark' ? 'light' : 'dark';
-  try { localStorage.setItem('holmio-tema', raiz.dataset.theme); } catch {}
+const esNoche = () => document.documentElement.dataset.theme === 'dark';
+function pintarInterruptorTema() {
+  $('menu-tema').setAttribute('aria-checked', String(esNoche()));
+}
+$('menu-tema').addEventListener('click', () => {
+  document.documentElement.dataset.theme = esNoche() ? 'light' : 'dark';
+  try { localStorage.setItem('holmio-tema', document.documentElement.dataset.theme); } catch {}
+  pintarInterruptorTema();
 });
 
-// ---------- Ayuda: «Manual del detective» en diapositivas ----------
+// ---------- Ayuda: «Cómo se juega» en diapositivas ----------
 const tutorial = crearTutorial($('ayuda'));
-$('btn-ayuda').addEventListener('click', () => tutorial.abrir());
+
+// ---------- Menú lateral ----------
+const menu = $('menu');
+
+function estadoCasoDelDia() {
+  const n = partida.intentos.length;
+  if (partida.ganada) return `Nº ${caso.numero} · Resuelto en ${n}/${MAX_INTENTOS}`;
+  if (partida.perdida) return `Nº ${caso.numero} · Sin resolver`;
+  if (n === 0) return `Nº ${caso.numero} · Sin empezar`;
+  return `Nº ${caso.numero} · En curso, ${n}/${MAX_INTENTOS} acusaciones`;
+}
+
+function abrirMenu() {
+  $('menu-hoy-estado').textContent = estadoCasoDelDia();
+  pintarInterruptorTema();
+  menu.classList.remove('cerrando');
+  menu.showModal();
+  menu.querySelector('.menu-cerrar').focus();
+}
+
+/** Cierra el menú deslizándolo; `despues` se ejecuta cuando ya no está. */
+function cerrarMenu(despues) {
+  if (!menu.open) return despues?.();
+  menu.classList.add('cerrando');
+  setTimeout(() => {
+    menu.close();
+    menu.classList.remove('cerrando');
+    despues?.();
+  }, sinAnimaciones() ? 0 : 220);
+}
+
+$('btn-menu').addEventListener('click', abrirMenu);
+menu.querySelector('.menu-cerrar').addEventListener('click', () => cerrarMenu());
+menu.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  cerrarMenu();
+});
+// Tocar fuera del panel (en el fondo oscurecido) lo cierra.
+menu.addEventListener('click', (e) => {
+  if (e.target !== menu) return;
+  const r = menu.getBoundingClientRect();
+  const dentro = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  if (!dentro) cerrarMenu();
+});
+// Deslizar hacia la derecha también lo cierra.
+let arrastreMenu = null;
+menu.addEventListener('pointerdown', (e) => (arrastreMenu = { x: e.clientX, y: e.clientY }));
+menu.addEventListener('pointerup', (e) => {
+  if (!arrastreMenu) return;
+  const dx = e.clientX - arrastreMenu.x;
+  const dy = e.clientY - arrastreMenu.y;
+  arrastreMenu = null;
+  if (dx > 60 && Math.abs(dx) > Math.abs(dy)) cerrarMenu();
+});
+
+$('menu-hoy').addEventListener('click', () => cerrarMenu());
+$('menu-ayuda').addEventListener('click', () => cerrarMenu(() => tutorial.abrir()));
+$('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
+  $('acerca').showModal();
+  $('acerca').focus();
+}));
+
 if (!leer('holmio-visto-ayuda')) {
   tutorial.abrir();
   guardar('holmio-visto-ayuda', true);

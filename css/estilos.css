@@ -127,21 +127,100 @@ button { cursor: pointer; }
 .marca { display: flex; align-items: center; gap: 6px; font-weight: 400; }
 .logo { width: 34px; height: 34px; color: var(--texto); }
 .marca-texto { font-family: var(--f-titulo); font-size: 22px; letter-spacing: .12em; line-height: 1; }
-.cabecera-botones { display: flex; gap: 8px; }
 .icono-btn {
-  width: 36px; height: 36px; border-radius: 10px;
+  width: 38px; height: 38px; border-radius: 10px;
   border: 1.5px solid var(--linea); background: transparent;
-  display: grid; place-items: center; font-weight: 700; color: var(--suave);
+  display: grid; place-items: center; font-weight: 700; color: var(--texto);
 }
-.icono-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
-.icono-btn .ico-luna { fill: currentColor; stroke: none; }
-.icono-btn .ico-sol { display: none; }
-:root[data-theme="dark"] .icono-btn .ico-luna { display: none; }
-:root[data-theme="dark"] .icono-btn .ico-sol { display: inline; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .icono-btn .ico-luna { display: none; }
-  :root:not([data-theme="light"]) .icono-btn .ico-sol { display: inline; }
+.btn-menu .ico-svg { width: 22px; height: 22px; stroke-width: 2; }
+.btn-menu:hover { border-color: var(--acento); }
+
+/* ---------- Menú lateral: una ficha de detective que entra por la derecha ----------
+   Siempre oscuro (como el resto de pantallas superpuestas), con letra de máquina y ámbar. */
+.menu {
+  inset: 0 0 0 auto; margin: 0; padding: 0;
+  width: min(320px, 86vw); height: 100%; max-width: none; max-height: none;
+  border: 0; border-left: 1px solid #2a2f3d;
+  background: #11141b; color: #f3ead6;
+  box-shadow: -20px 0 50px -20px rgba(0, 0, 0, .9);
 }
+.menu[open] { display: flex; flex-direction: column; animation: menu-entra .28s cubic-bezier(.2, .9, .3, 1); }
+.menu.cerrando { transform: translateX(100%); transition: transform .22s ease-in; }
+.menu::backdrop { background: rgba(6, 8, 12, .7); backdrop-filter: blur(2px); animation: fundido .2s ease-out; }
+@keyframes menu-entra { from { transform: translateX(100%); } }
+
+.menu-cabecera {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 14px 14px 20px; border-bottom: 1px solid #23283a;
+}
+.menu-marca {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--f-titulo); font-size: 20px; letter-spacing: .12em;
+  --lupa: #e7ad45; --fondo: #11141b;
+}
+.menu-marca svg { width: 30px; height: 30px; color: #f3ead6; }
+.menu-cerrar {
+  width: 38px; height: 38px; border: 0; border-radius: 10px; background: transparent;
+  display: grid; place-items: center; color: #a39b86;
+}
+.menu-cerrar:hover, .menu-cerrar:focus-visible { color: #f3ead6; background: rgba(243, 234, 214, .06); outline: none; }
+.menu-cerrar .ico-svg { width: 20px; height: 20px; stroke-width: 2; }
+
+.menu-cuerpo { flex: 1; overflow-y: auto; padding: 10px 0; display: flex; flex-direction: column; }
+.menu-seccion {
+  padding: 10px 20px 6px; font-size: 11px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: #e7ad45;
+}
+.menu-cuerpo hr { margin: 10px 20px; border: 0; border-top: 1px dashed rgba(243, 234, 214, .16); }
+.menu-item {
+  display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 14px;
+  width: 100%; padding: 10px 20px; border: 0; background: transparent; color: inherit; text-align: left;
+  border-left: 3px solid transparent;
+}
+.menu-item:hover, .menu-item:focus-visible { background: rgba(243, 234, 214, .05); outline: none; }
+.menu-item[aria-current="page"] { border-left-color: #e7ad45; background: rgba(231, 173, 69, .07); }
+.menu-ico {
+  width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
+  background: rgba(231, 173, 69, .1); color: #e7ad45;
+}
+.menu-ico .ico-svg { width: 20px; height: 20px; stroke-width: 1.9; }
+.menu-texto { display: grid; gap: 1px; }
+.menu-texto strong { font-family: var(--f-titulo); font-weight: 400; font-size: 17px; line-height: 1.2; }
+.menu-texto small { font-size: 12.5px; color: #a39b86; }
+.menu-item-suave { grid-template-columns: 1fr; padding-block: 8px; }
+.menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: #a39b86; }
+
+/* Interruptor del modo noche */
+.interruptor {
+  position: relative; width: 42px; height: 24px; border-radius: 12px;
+  background: #2c3342; transition: background .2s;
+}
+.interruptor::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%;
+  background: #f3ead6; transition: transform .2s cubic-bezier(.2, 1.2, .4, 1);
+}
+.menu-item[aria-checked="true"] .interruptor { background: #e7ad45; }
+.menu-item[aria-checked="true"] .interruptor::after { transform: translateX(18px); background: #11141b; }
+
+.menu-pie {
+  padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
+  font-family: var(--f-titulo); font-size: 12px; color: #6f6956; border-top: 1px solid #23283a;
+}
+
+/* ---------- Acerca de ---------- */
+.acerca {
+  width: min(400px, calc(100% - 28px)); max-height: calc(100dvh - 24px); overflow-y: auto;
+  border: 1px solid var(--linea); border-radius: 14px; padding: 22px 22px 18px;
+  background: var(--tarjeta); color: var(--texto); box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .9);
+}
+.acerca:focus { outline: none; }
+.acerca[open] { display: grid; gap: 12px; animation: aparecer .3s cubic-bezier(.2, 1.1, .4, 1); }
+.acerca::backdrop { background: rgba(6, 8, 12, .9); backdrop-filter: blur(3px); animation: fundido .2s ease-out; }
+.acerca h2 { font-family: var(--f-titulo); font-weight: 400; font-size: 23px; }
+.acerca p { font-size: 14.5px; line-height: 1.45; }
+.acerca .nota { font-size: 12.5px; color: var(--suave); }
+.acerca a { color: var(--acento); }
+.acerca form { margin-top: 4px; }
 
 .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--suave); }
 #num-caso { font-family: var(--f-simbolo); font-weight: 600; letter-spacing: .04em; color: var(--lacre); }
@@ -783,8 +862,10 @@ button { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
+  .menu.cerrando, .interruptor, .interruptor::after,
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
   .mini-marca, .mini-sello.visible { transition: none; }
+  .menu[open], .menu::backdrop, .acerca[open], .acerca::backdrop,
   .btn-noir::after, .ayuda[open], .ayuda::backdrop, .mini-lupa, .dedo.toque .dedo-onda, .mini-celda.salta, .mini-fichas li.nueva, .mini-campo::after,
   .veredicto, .opcion .ico.negada::after, .opcion .preg.escribiendo::after,
   .ficha .sello-fin, .resultado > *, .ficha .sello-mini, .opcion, .subida[open], .subida::backdrop,
