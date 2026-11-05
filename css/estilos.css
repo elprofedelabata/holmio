@@ -184,28 +184,18 @@ button { cursor: pointer; }
   background: color-mix(in srgb, var(--acento) 13%, transparent); color: var(--acento);
 }
 .menu-ico .ico-svg { width: 20px; height: 20px; stroke-width: 1.9; }
-.menu-texto { display: grid; gap: 1px; }
+.menu-texto { display: grid; gap: 1px; min-width: 0; }
+/* Título y subtítulo, siempre en una sola línea */
+.menu-texto strong, .menu-texto small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .menu-texto strong { font-family: var(--f-titulo); font-weight: 400; font-size: 17px; line-height: 1.2; }
 .menu-texto small { font-size: 12.5px; color: var(--suave); }
 .menu-item-suave { grid-template-columns: 1fr; padding-block: 8px; }
 .menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: var(--suave); }
 
-/* Opciones aún no disponibles: atenuadas y con un sello «Pronto» */
+/* Opciones aún no disponibles: atenuadas */
 .menu-item[aria-disabled="true"] { cursor: default; }
 .menu-item[aria-disabled="true"] .menu-ico,
 .menu-item[aria-disabled="true"] .menu-texto { opacity: .55; }
-.sello-pronto {
-  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--lacre); border: 1.5px solid var(--lacre); border-radius: 4px; padding: 2px 6px;
-  transform: rotate(-6deg);
-}
-.sello-pronto.meneo { animation: meneo .45s ease-in-out; }
-@keyframes meneo {
-  0%, 100% { transform: rotate(-6deg); }
-  25% { transform: rotate(-14deg) scale(1.08); }
-  50% { transform: rotate(2deg) scale(1.08); }
-  75% { transform: rotate(-10deg); }
-}
 
 /* Interruptor del modo noche */
 .interruptor {
@@ -880,7 +870,7 @@ button { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
-  .menu.cerrando, .interruptor, .interruptor::after, .sello-pronto.meneo,
+  .menu.cerrando, .interruptor, .interruptor::after,
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
   .mini-marca, .mini-sello.visible { transition: none; }
   .menu[open], .menu::backdrop, .acerca[open], .acerca::backdrop,

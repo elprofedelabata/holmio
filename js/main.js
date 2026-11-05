@@ -673,15 +673,7 @@ menu.addEventListener('pointerup', (e) => {
 });
 
 $('menu-hoy').addEventListener('click', () => cerrarMenu());
-// Archivo y práctica aún no existen: el sello «Pronto» se menea al tocarlos.
-for (const id of ['menu-archivo', 'menu-practica']) {
-  $(id).addEventListener('click', () => {
-    const sello = $(id).querySelector('.sello-pronto');
-    sello.classList.remove('meneo');
-    void sello.offsetWidth;
-    sello.classList.add('meneo');
-  });
-}
+// Archivo y práctica aún no existen: de momento no hacen nada.
 $('menu-ayuda').addEventListener('click', () => cerrarMenu(() => tutorial.abrir()));
 $('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
   $('acerca').showModal();
