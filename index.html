@@ -35,7 +35,16 @@
 
     <!-- Archivo de casos: calendario por meses (lo monta main.js) -->
     <section class="vista-archivo" id="vista-archivo" hidden aria-labelledby="archivo-titulo">
-      <h2 class="archivo-titulo" id="archivo-titulo">Archivo de casos</h2>
+      <header class="archivo-cabecera">
+        <h2 class="archivo-titulo" id="archivo-titulo">Archivo de casos</h2>
+        <ul class="archivo-leyenda" aria-label="Leyenda">
+          <li><i class="cerrado"></i>Cerrado</li>
+          <li><i class="fugado"></i>Fugado</li>
+          <li><i class="en-curso"></i>En curso</li>
+          <li><i class="pendiente"></i>Pendiente</li>
+          <li><i class="hoy"></i>Hoy</li>
+        </ul>
+      </header>
       <div id="archivo-meses"></div>
     </section>
 

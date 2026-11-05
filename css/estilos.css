@@ -21,7 +21,7 @@
   --off-texto: #b6a988;
   --fallo-fondo: #b9412f;
   --fallo-texto: #fff8ea;
-  --acierto-fondo: #2f6b4a;
+  --acierto-fondo: #5b9a73; /* verde salvia: más suave que el antiguo #2f6b4a */
   --acierto-texto: #f4fbf6;
 
   --sombra: 0 10px 30px -18px rgba(40, 30, 10, .45);
@@ -218,9 +218,27 @@ button { cursor: pointer; }
 .app > .vista-archivo { flex: 1 1 auto; min-height: 0; }
 .vista-archivo {
   overflow-y: auto; overscroll-behavior: contain;
-  display: grid; gap: 22px; align-content: start; padding: 6px 0 28px;
+  display: grid; gap: 22px; align-content: start; padding: 0 0 28px;
 }
-.archivo-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 25px; line-height: 1.15; width: min(100% - 24px, 330px); margin-inline: auto; }
+/* Cabecera fija (título + leyenda) mientras se desplaza el calendario */
+.archivo-cabecera {
+  position: sticky; top: 0; z-index: 2; display: grid; gap: 8px;
+  padding: 4px 0 12px; background: var(--fondo);
+  box-shadow: 0 10px 12px -12px rgba(0, 0, 0, .35);
+}
+.archivo-titulo, .archivo-leyenda { width: min(100% - 24px, 330px); margin-inline: auto; }
+.archivo-titulo { font-family: var(--f-titulo); font-weight: 400; font-size: 25px; line-height: 1.15; }
+.archivo-leyenda {
+  list-style: none; padding: 0; margin-block: 0; display: flex; flex-wrap: wrap; gap: 4px 9px;
+  font-size: 11px; color: var(--suave);
+}
+.archivo-leyenda li { display: inline-flex; align-items: center; gap: 4px; }
+.archivo-leyenda i { width: 10px; height: 10px; border-radius: 3px; }
+.archivo-leyenda .cerrado { background: var(--acierto-fondo); }
+.archivo-leyenda .fugado { background: var(--fallo-fondo); }
+.archivo-leyenda .en-curso { border: 1.5px dashed var(--acento); }
+.archivo-leyenda .pendiente { background: var(--cand-fondo); box-shadow: inset 0 0 0 1.5px var(--cand-borde); }
+.archivo-leyenda .hoy { outline: 2px solid var(--acento); outline-offset: 1px; background: var(--cand-fondo); }
 /* El calendario no ocupa todo el ancho: deja aire a los lados, sobre todo a la derecha */
 .archivo-mes { display: grid; gap: 10px; width: min(100% - 24px, 330px); margin-inline: auto; }
 .archivo-mes h3 {
