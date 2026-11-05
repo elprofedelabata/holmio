@@ -201,6 +201,7 @@ button { cursor: pointer; }
 /* ---------- Tabla ---------- */
 .tablero { container-type: inline-size; }
 .tabla {
+  isolation: isolate; /* las capas de las casillas (p. ej., el salto de una pista) no salen de la tabla */
   display: grid;
   grid-template-columns: repeat(18, minmax(0, 1fr));
   grid-template-rows: repeat(7, auto) 6px repeat(2, auto);
@@ -264,7 +265,7 @@ button { cursor: pointer; }
 
 /* ---------- Panel inferior ---------- */
 .panel {
-  position: sticky; bottom: 0;
+  position: sticky; bottom: 0; z-index: 10; /* el panel y su desplegable, siempre por encima de la tabla */
   margin: 0 -14px; padding: 10px 14px calc(12px + env(safe-area-inset-bottom));
   background: var(--fondo);
   border-top: 1px solid var(--linea);

@@ -554,7 +554,10 @@ $('form-acusar').addEventListener('submit', (e) => {
     setTimeout(abrirElegir, sinAnimaciones() ? 0 : 700);
   } else if (partida.fase === 'fin') {
     // Primero se ve el acierto (o el culpable revelado) en la tabla; después, el resultado.
-    celdas.get(partida.ganada ? el.z : partida.secreto.z).classList.add(partida.ganada ? 'nueva' : 'recien');
+    const celda = celdas.get(partida.ganada ? el.z : partida.secreto.z);
+    const clase = partida.ganada ? 'nueva' : 'recien';
+    celda.classList.add(clase);
+    celda.addEventListener('animationend', () => celda.classList.remove(clase), { once: true });
     setTimeout(abrirFin, sinAnimaciones() ? 0 : 900);
   }
 });
