@@ -1,4 +1,4 @@
-// «Manual del detective»: tutorial en diapositivas, cada una con una escena animada
+// «Cómo se juega»: tutorial en diapositivas, cada una con una escena animada
 // construida con piezas en miniatura del propio juego (se adaptan al tema día/noche).
 // Se navega deslizando, con las flechas, con los puntos o con el teclado.
 
@@ -256,7 +256,6 @@ export function crearTutorial(dialogo) {
   const puntos = dialogo.querySelector('.diapos-puntos');
   const anterior = dialogo.querySelector('.diapo-anterior');
   const siguiente = dialogo.querySelector('.diapo-siguiente');
-  const contador = dialogo.querySelector('.diapos-contador');
   const total = DIAPOSITIVAS.length;
 
   const animaciones = DIAPOSITIVAS.map((d, i) => {
@@ -284,7 +283,6 @@ export function crearTutorial(dialogo) {
     pista.style.transform = `translateX(${-actual * 100}%)`;
     [...pista.children].forEach((s, j) => (s.inert = j !== actual));
     [...puntos.children].forEach((p, j) => p.setAttribute('aria-current', String(j === actual)));
-    contador.textContent = `${actual + 1} / ${total}`;
     anterior.disabled = actual === 0;
     const ultima = actual === total - 1;
     siguiente.classList.toggle('final', ultima);
