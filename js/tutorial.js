@@ -61,22 +61,29 @@ function miniTabla() {
   return { tabla, celdas, reiniciar, marcar };
 }
 
+// Mano con el dedo índice (pantallas táctiles) o flecha de ratón (con puntero fino).
+// La punta del dedo / de la flecha marca el punto exacto del toque.
+const SVG_MANO = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5a2 2 0 0 0-2 2V13l-1.3-1.3a1.8 1.8 0 0 0-2.6 2.5l4.4 5A6 6 0 0 0 12 21.5h2.5a5.5 5.5 0 0 0 5.5-5.5v-4.5a1.6 1.6 0 0 0-3.2-.9 1.6 1.6 0 0 0-3-.6A1.5 1.5 0 0 0 11 10V4.5a2 2 0 0 0-2-2z"/><path class="pliegue" d="M13.8 10v3M16.8 10.6v3"/></svg>`;
+const SVG_CURSOR = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.5v15.5l4.2-4.1 2.9 6.6 2.6-1.1-2.9-6.5h5.9z"/></svg>`;
+
 function dedo() {
   const d = document.createElement('span');
-  d.className = 'dedo';
+  const tactil = matchMedia('(pointer: coarse)').matches;
+  d.className = `dedo ${tactil ? 'mano' : 'cursor'}`;
+  d.innerHTML = `<span class="dedo-onda"></span>${tactil ? SVG_MANO : SVG_CURSOR}`;
   return d;
 }
 
-/** Coloca el dedo sobre un elemento de la escena y simula un toque. */
+/** Lleva la mano (o el cursor) a un elemento de la escena y simula un toque. */
 async function tocar(d, objetivo, escena, señal) {
   const e = escena.getBoundingClientRect();
   const r = objetivo.getBoundingClientRect();
   d.style.left = `${r.left - e.left + r.width / 2}px`;
   d.style.top = `${r.top - e.top + r.height / 2}px`;
   d.classList.add('visible');
-  await esperar(500, señal);
+  await esperar(550, señal);
   d.classList.add('toque');
-  await esperar(250, señal);
+  await esperar(420, señal);
   d.classList.remove('toque');
 }
 
