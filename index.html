@@ -89,7 +89,7 @@
 
       <!-- Fase: fin (tras cerrar la pantalla de resultado) -->
       <section class="fin-barra" id="fin-barra" hidden>
-        <p class="proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
+        <p class="proximo" id="barra-proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
         <button class="btn-principal" id="btn-ver-resultado" type="button">Ver resultado</button>
       </section>
     </footer>
@@ -191,6 +191,9 @@
 
   <!-- Resultado: misma puesta en escena que la elección de pista -->
   <dialog class="subida resultado" id="fin" tabindex="-1" aria-labelledby="fin-titulo" aria-describedby="fin-sub">
+    <button class="fin-cerrar" id="fin-cerrar" type="button" aria-label="Cerrar">
+      <svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
     <div class="ficha ficha-grande" id="fin-casilla" aria-hidden="true"></div>
     <h2 id="fin-titulo"></h2>
     <p class="fin-sub" id="fin-sub"></p>
@@ -200,7 +203,7 @@
       <button class="btn-principal btn-ancho" id="btn-compartir" type="button">Compartir resultado</button>
       <button class="btn-secundario btn-ancho" id="btn-ver-tabla" type="button">Ver la tabla</button>
     </div>
-    <p class="proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
+    <p class="proximo" id="fin-proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

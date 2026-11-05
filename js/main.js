@@ -382,6 +382,10 @@ function renderFin() {
   $('fin-dato').innerHTML = `<span class="ico" aria-hidden="true">${icono('i-curiosidad')}</span><span></span>`;
   $('fin-dato').lastChild.textContent = caso.curiosidad;
 
+  // La cuenta atrás solo tiene sentido en el caso del día
+  $('fin-proximo').hidden = esArchivo;
+  $('barra-proximo').hidden = esArchivo;
+
   const tick = () => {
     const t = Math.floor(msHastaManana() / 1000);
     const p = (x) => String(x).padStart(2, '0');
@@ -426,6 +430,11 @@ $('btn-ver-tabla').addEventListener('click', () => {
 // Cerrar el resultado de cualquier otra forma (Esc) deja al jugador en el archivo.
 dlgFin.addEventListener('close', () => (resultadoDesdeArchivo = null));
 $('btn-ver-resultado').addEventListener('click', abrirFin);
+$('fin-cerrar').addEventListener('click', cerrarFin);
+// Tocar fuera del contenido (en el fondo oscurecido) también lo cierra.
+dlgFin.addEventListener('click', (e) => {
+  if (e.target === dlgFin) cerrarFin();
+});
 
 /** Al cargar: si la partida estaba a medias de algo, se vuelve a esa pantalla. */
 function abrirSegunFase() {

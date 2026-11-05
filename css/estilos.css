@@ -585,19 +585,27 @@ button { cursor: pointer; }
 
 /* Fin: barra del panel inferior (cuando se cierra la pantalla de resultado) */
 .fin-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fin-barra .btn-principal { margin-left: auto; }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
 
 /* Fin: pantalla de resultado (sobre fondo casi negro, como la elección de pista).
    El fondo es siempre oscuro, así que los colores de texto son fijos. */
 .resultado[open] { align-items: center; justify-content: center; text-align: center; gap: 12px; }
+.fin-cerrar {
+  position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 10px; z-index: 2;
+  width: 42px; height: 42px; border: 0; border-radius: 10px; background: transparent;
+  display: grid; place-items: center; color: #a39b86; animation: none !important;
+}
+.fin-cerrar:hover, .fin-cerrar:focus-visible { color: #f3ead6; background: rgba(243, 234, 214, .08); outline: none; }
+.fin-cerrar .ico-svg { width: 22px; height: 22px; stroke-width: 2; }
 .resultado > * { animation: aparecer .4s cubic-bezier(.2, 1.1, .4, 1) backwards; }
-.resultado > :nth-child(2) { animation-delay: .35s; }
-.resultado > :nth-child(3) { animation-delay: .42s; }
-.resultado > :nth-child(4) { animation-delay: .5s; }
-.resultado > :nth-child(5) { animation-delay: .58s; }
-.resultado > :nth-child(6) { animation-delay: .64s; }
-.resultado > :nth-child(7) { animation-delay: .7s; }
+.resultado > :nth-child(3) { animation-delay: .35s; }
+.resultado > :nth-child(4) { animation-delay: .42s; }
+.resultado > :nth-child(5) { animation-delay: .5s; }
+.resultado > :nth-child(6) { animation-delay: .58s; }
+.resultado > :nth-child(7) { animation-delay: .64s; }
+.resultado > :nth-child(8) { animation-delay: .7s; }
 /* Fichas de las acusaciones usadas: entran una a una. Colores fijos (fondo siempre oscuro). */
 .resultado > .fichas-fin { animation: none; justify-content: center; margin: 2px 0 4px; }
 .fichas-fin li { animation: aparecer-ficha .4s cubic-bezier(.2, 1.6, .4, 1) backwards; animation-delay: calc(.5s + var(--i, 0) * .1s); }
