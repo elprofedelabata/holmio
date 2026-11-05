@@ -224,8 +224,8 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - Temas noche/día: ver §3.4.
 - **Barra superior:** logo a la izquierda y **un solo botón de menú (☰)** a la derecha.
 - **Menú lateral** (entra por la derecha; sigue el tema día/noche, con letra de máquina y el color de acento). Se cierra con ✕, tocando fuera, deslizando a la derecha o con Esc.
-  - **Jugar:** *Caso del día*, *Archivo de casos* y *Práctica libre* (estas dos, de momento atenuadas y sin función). Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
-  - **Utilidades:** *Cómo se juega*, interruptor de *Modo noche* y *Acerca de Holmio* (qué es, origen del nombre y enlace al código).
+  - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* y *Práctica libre* (estas dos, de momento atenuadas y sin función). Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
+  - **Utilidades:** *Cómo se juega* (icono de interrogación en un círculo), interruptor de *Modo noche* y *Acerca de Holmio* (qué es, origen del nombre y enlace al código).
   - Cuando existan el archivo y la práctica, se ofrecerán también en la **pantalla de resultado** y en el **panel inferior** al terminar el caso del día, que es cuando el jugador se queda con ganas.
 - **Ayuda («Cómo se juega»):** se abre la primera vez y desde el menú. Sobre fondo casi negro, un **carrusel de 6 diapositivas** que se navega **deslizando**, con las **flechas** (chevrones pequeños y discretos, sin círculo, en el margen del diálogo a media altura; sin flecha izquierda en la primera ni derecha en la última), con los **puntos** o con el teclado. «Saltar» arriba. En la última diapositiva los puntos dejan paso a un botón **noir** «Abrir el caso» (tinta, doble filete ámbar, letra de máquina y un barrido de luz de lámpara). Cada diapositiva tiene una **escena animada** hecha con piezas en miniatura del propio juego (se adaptan al tema) y un texto corto:
   1. *Un culpable al día*: el informe se escribe a máquina y una lupa recorre la tabla.
