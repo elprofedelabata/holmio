@@ -438,6 +438,13 @@ button { cursor: pointer; }
 .resultado > :nth-child(4) { animation-delay: .5s; }
 .resultado > :nth-child(5) { animation-delay: .58s; }
 .resultado > :nth-child(6) { animation-delay: .64s; }
+.resultado > :nth-child(7) { animation-delay: .7s; }
+/* Fichas de las acusaciones usadas: entran una a una. Colores fijos (fondo siempre oscuro). */
+.resultado > .fichas-fin { animation: none; justify-content: center; margin: 2px 0 4px; }
+.fichas-fin li { animation: aparecer-ficha .4s cubic-bezier(.2, 1.6, .4, 1) backwards; animation-delay: calc(.5s + var(--i, 0) * .1s); }
+.fichas-fin li.usado { background: #e0664f; border-color: #e0664f; color: #141821; }
+.fichas-fin li.bien { background: #7cc59a; border-color: #7cc59a; color: #10251a; }
+@keyframes aparecer-ficha { from { opacity: 0; transform: scale(.4); } }
 .ficha-grande { width: 108px; height: 108px; font-size: 46px; margin-bottom: 30px; border-radius: 10px; }
 .ficha-grande small { top: 6px; left: 9px; font-size: 13px; }
 .ficha .sello-fin {

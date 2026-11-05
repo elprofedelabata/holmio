@@ -360,10 +360,21 @@ function renderFin() {
   $('fin-casilla').innerHTML =
     `<small>${s.z}</small>${s.simbolo}<span class="sello-fin">${partida.ganada ? 'CASO CERRADO' : 'SE HA FUGADO'}</span>`;
   $('fin-titulo').textContent = partida.ganada ? (n === 1 ? '¡A la primera!' : '¡Bien visto!') : 'Se te ha escapado';
-  $('fin-sub').innerHTML = partida.ganada
-    ? `El culpable era <strong></strong> · resuelto en ${n} acusaci${n === 1 ? 'ón' : 'ones'}`
-    : 'El culpable era <strong></strong>';
+  $('fin-sub').innerHTML = 'El culpable era <strong></strong>';
   $('fin-sub').querySelector('strong').textContent = s.nombre;
+  // Las acusaciones usadas, con las mismas fichas que el contador de la partida
+  const usadas = partida.intentos.map((z) => ELEMENTOS[z - 1]);
+  $('fin-fichas').setAttribute('aria-label', `Acusaciones: ${usadas.map((el) => el.nombre).join(', ')}`);
+  $('fin-fichas').replaceChildren(
+    ...usadas.map((el, i) => {
+      const li = document.createElement('li');
+      li.dataset.n = i + 1;
+      li.className = el.z === s.z ? 'bien' : 'usado';
+      li.style.setProperty('--i', i);
+      li.textContent = el.simbolo;
+      return li;
+    }),
+  );
   $('fin-dato').innerHTML = `<span class="ico" aria-hidden="true">${icono('i-curiosidad')}</span><span></span>`;
   $('fin-dato').lastChild.textContent = caso.curiosidad;
 

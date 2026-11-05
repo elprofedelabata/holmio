@@ -134,7 +134,8 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 5. Se repite hasta acertar o agotar los **6 intentos** (1 inicial + 5 tras pistas).
 6. Al terminar, tras un instante para ver la tabla, aparece la **pantalla de resultado** con la misma puesta en escena que la elección de pista (fondo casi negro, todo centrado):
    - ficha grande del culpable con el sello **«CASO CERRADO»** (verde) o **«SE HA FUGADO»** (rojo);
-   - «¡Bien visto!» / «¡A la primera!» / «Se te ha escapado», el nombre del culpable y en cuántas acusaciones;
+   - «¡Bien visto!» / «¡A la primera!» / «Se te ha escapado» y «El culpable era *X*»;
+   - debajo, **las fichas de las acusaciones usadas** (como el contador de la partida: lacre las fallidas, verde la acertada), que entran una a una;
    - una **curiosidad** del elemento;
    - **Compartir resultado**, **Ver la tabla** (cierra la pantalla para ver el tablero final) y la cuenta atrás para el próximo caso.
    - Con la pantalla cerrada, el panel inferior muestra la cuenta atrás y un botón **«Ver resultado»** para volver a abrirla. Al recargar la página con la partida terminada, la pantalla se abre sola.
