@@ -136,12 +136,12 @@ button { cursor: pointer; }
 .btn-menu:hover { border-color: var(--acento); }
 
 /* ---------- Menú lateral: una ficha de detective que entra por la derecha ----------
-   Siempre oscuro (como el resto de pantallas superpuestas), con letra de máquina y ámbar. */
+   Sigue el tema (papel de día, tinta de noche), con letra de máquina y el color de acento. */
 .menu {
   inset: 0 0 0 auto; margin: 0; padding: 0;
   width: min(320px, 86vw); height: 100%; max-width: none; max-height: none;
-  border: 0; border-left: 1px solid #2a2f3d;
-  background: #11141b; color: #f3ead6;
+  border: 0; border-left: 1px solid var(--linea);
+  background: var(--tarjeta); color: var(--texto);
   box-shadow: -20px 0 50px -20px rgba(0, 0, 0, .9);
 }
 .menu[open] { display: flex; flex-direction: column; animation: menu-entra .28s cubic-bezier(.2, .9, .3, 1); }
@@ -151,60 +151,78 @@ button { cursor: pointer; }
 
 .menu-cabecera {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 14px 14px 20px; border-bottom: 1px solid #23283a;
+  padding: 16px 14px 14px 20px; border-bottom: 1px solid var(--linea);
 }
 .menu-marca {
   display: flex; align-items: center; gap: 8px;
   font-family: var(--f-titulo); font-size: 20px; letter-spacing: .12em;
-  --lupa: #e7ad45; --fondo: #11141b;
+  --fondo: var(--tarjeta); /* el brillo de la lupa toma el color del panel */
 }
-.menu-marca svg { width: 30px; height: 30px; color: #f3ead6; }
+.menu-marca svg { width: 30px; height: 30px; color: var(--texto); }
 .menu-cerrar {
   width: 38px; height: 38px; border: 0; border-radius: 10px; background: transparent;
-  display: grid; place-items: center; color: #a39b86;
+  display: grid; place-items: center; color: var(--suave);
 }
-.menu-cerrar:hover, .menu-cerrar:focus-visible { color: #f3ead6; background: rgba(243, 234, 214, .06); outline: none; }
+.menu-cerrar:hover, .menu-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
 .menu-cerrar .ico-svg { width: 20px; height: 20px; stroke-width: 2; }
 
 .menu-cuerpo { flex: 1; overflow-y: auto; padding: 10px 0; display: flex; flex-direction: column; }
 .menu-seccion {
   padding: 10px 20px 6px; font-size: 11px; font-weight: 700; letter-spacing: .16em;
-  text-transform: uppercase; color: #e7ad45;
+  text-transform: uppercase; color: var(--acento);
 }
-.menu-cuerpo hr { margin: 10px 20px; border: 0; border-top: 1px dashed rgba(243, 234, 214, .16); }
+.menu-cuerpo hr { margin: 10px 20px; border: 0; border-top: 1px dashed var(--linea); }
 .menu-item {
   display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 14px;
   width: 100%; padding: 10px 20px; border: 0; background: transparent; color: inherit; text-align: left;
   border-left: 3px solid transparent;
 }
-.menu-item:hover, .menu-item:focus-visible { background: rgba(243, 234, 214, .05); outline: none; }
-.menu-item[aria-current="page"] { border-left-color: #e7ad45; background: rgba(231, 173, 69, .07); }
+.menu-item:hover, .menu-item:focus-visible { background: var(--resalte); outline: none; }
+.menu-item[aria-current="page"] { border-left-color: var(--acento); background: color-mix(in srgb, var(--acento) 10%, transparent); }
 .menu-ico {
   width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
-  background: rgba(231, 173, 69, .1); color: #e7ad45;
+  background: color-mix(in srgb, var(--acento) 13%, transparent); color: var(--acento);
 }
 .menu-ico .ico-svg { width: 20px; height: 20px; stroke-width: 1.9; }
 .menu-texto { display: grid; gap: 1px; }
 .menu-texto strong { font-family: var(--f-titulo); font-weight: 400; font-size: 17px; line-height: 1.2; }
-.menu-texto small { font-size: 12.5px; color: #a39b86; }
+.menu-texto small { font-size: 12.5px; color: var(--suave); }
 .menu-item-suave { grid-template-columns: 1fr; padding-block: 8px; }
-.menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: #a39b86; }
+.menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: var(--suave); }
+
+/* Opciones aún no disponibles: atenuadas y con un sello «Pronto» */
+.menu-item[aria-disabled="true"] { cursor: default; }
+.menu-item[aria-disabled="true"] .menu-ico,
+.menu-item[aria-disabled="true"] .menu-texto { opacity: .55; }
+.sello-pronto {
+  font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--lacre); border: 1.5px solid var(--lacre); border-radius: 4px; padding: 2px 6px;
+  transform: rotate(-6deg);
+}
+.sello-pronto.meneo { animation: meneo .45s ease-in-out; }
+@keyframes meneo {
+  0%, 100% { transform: rotate(-6deg); }
+  25% { transform: rotate(-14deg) scale(1.08); }
+  50% { transform: rotate(2deg) scale(1.08); }
+  75% { transform: rotate(-10deg); }
+}
 
 /* Interruptor del modo noche */
 .interruptor {
   position: relative; width: 42px; height: 24px; border-radius: 12px;
-  background: #2c3342; transition: background .2s;
+  background: var(--linea); transition: background .2s;
 }
 .interruptor::after {
   content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%;
-  background: #f3ead6; transition: transform .2s cubic-bezier(.2, 1.2, .4, 1);
+  background: var(--fondo); box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+  transition: transform .2s cubic-bezier(.2, 1.2, .4, 1);
 }
-.menu-item[aria-checked="true"] .interruptor { background: #e7ad45; }
-.menu-item[aria-checked="true"] .interruptor::after { transform: translateX(18px); background: #11141b; }
+.menu-item[aria-checked="true"] .interruptor { background: var(--acento); }
+.menu-item[aria-checked="true"] .interruptor::after { transform: translateX(18px); }
 
 .menu-pie {
   padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
-  font-family: var(--f-titulo); font-size: 12px; color: #6f6956; border-top: 1px solid #23283a;
+  font-family: var(--f-titulo); font-size: 12px; color: var(--suave); border-top: 1px solid var(--linea);
 }
 
 /* ---------- Acerca de ---------- */
@@ -862,7 +880,7 @@ button { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   .bocadillo.visible { animation: none; }
-  .menu.cerrando, .interruptor, .interruptor::after,
+  .menu.cerrando, .interruptor, .interruptor::after, .sello-pronto.meneo,
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
   .mini-marca, .mini-sello.visible { transition: none; }
   .menu[open], .menu::backdrop, .acerca[open], .acerca::backdrop,
