@@ -263,15 +263,16 @@ const DIAPOSITIVAS = [
       escena.classList.add('escena-oscura', 'escena-final');
       escena.innerHTML = '<span class="sello-holmio" role="img" aria-label="Sello de Holmio"></span>';
       const sello = escena.querySelector('.sello-holmio');
-      return (señal) => enBucle(señal, async () => {
+      // Una sola vez cada vez que se llega a la diapositiva (sin bucle)
+      return async (señal) => {
         sello.classList.remove('estampado');
         escena.classList.remove('golpe');
-        await esperar(450, señal);
+        void sello.offsetWidth; // reinicia la animación si se vuelve a la diapositiva
+        await esperar(400, señal);
         sello.classList.add('estampado');
-        await esperar(260, señal); // instante del impacto
+        await esperar(290, señal); // instante del impacto
         escena.classList.add('golpe');
-        await esperar(3600, señal);
-      });
+      };
     },
   },
 ];
