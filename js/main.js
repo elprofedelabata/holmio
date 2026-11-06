@@ -807,7 +807,13 @@ function cargarCaso(numero) {
   aviso.textContent = '';
   cerrarDesplegable();
   ocultarBocadillo();
-  $('num-caso').textContent = esArchivo ? `Archivo · Caso nº ${numero}` : `Caso nº ${numero}`;
+  $('num-caso').textContent = `Caso nº ${numero}`;
+  if (esArchivo) {
+    const prefijo = document.createElement('span');
+    prefijo.className = 'pestana-archivo';
+    prefijo.textContent = 'Archivo · ';
+    $('num-caso').prepend(prefijo);
+  }
   $('fecha-caso').textContent = fechaLarga(fechaDeCaso(numero));
   $('informe-texto').textContent = caso.informe;
   render();

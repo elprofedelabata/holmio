@@ -8,6 +8,7 @@
   --tarjeta: #f8f2e4;
   --carpeta: #dcc392;       /* cartulina manila del dossier */
   --carpeta-borde: #c2a56e;
+  --postit: #f5e27a;
   --texto: #1a1d27;
   --suave: #6b6455;
   --linea: #d6c9ac;
@@ -33,6 +34,7 @@
   --velo: rgba(239, 230, 210, .7); /* velo translúcido: se intuye el juego debajo */
 
   --f-titulo: "Special Elite", "Courier New", monospace;
+  --f-mano: "Caveat", "Segoe Script", cursive;
   --f-texto: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-simbolo: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 
@@ -45,6 +47,7 @@
     --tarjeta: #1c212d;
     --carpeta: #3a3226;
     --carpeta-borde: #52472f;
+    --postit: #e0cc68; /* algo apagado: de noche no debe deslumbrar */
     --texto: #ece3cf;
     --suave: #9a937f;
     --linea: #2c3342;
@@ -75,6 +78,7 @@
   --tarjeta: #1c212d;
   --carpeta: #3a3226;
   --carpeta-borde: #52472f;
+  --postit: #e0cc68;
   --texto: #ece3cf;
   --suave: #9a937f;
   --linea: #2c3342;
@@ -333,7 +337,6 @@ button { cursor: pointer; }
 .acerca form { margin-top: 4px; }
 
 .meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; font-size: 13px; color: var(--suave); }
-#fecha-caso { padding: 0 2px 3px 0; }
 
 .app > * { flex: none; }
 .app > .contenido { flex: 1; min-height: 0; }
@@ -343,7 +346,7 @@ button { cursor: pointer; }
 /* El dossier: carpeta de cartulina con pestaña y, dentro, el informe como una hoja
    mecanografiada sujeta con un clip. La carpeta no recorta para que el clip y la hoja de
    detrás puedan asomar; quien hace scroll si el texto no cabe es solo la hoja. */
-.dossier { flex: 0 1 auto; min-height: 110px; display: flex; flex-direction: column; }
+.dossier { position: relative; flex: 0 1 auto; min-height: 110px; display: flex; flex-direction: column; }
 #num-caso {
   position: relative; z-index: 1; margin-bottom: -1px; padding: 4px 14px 3px;
   background: var(--grano) 0 0 / 160px 160px, var(--carpeta);
@@ -361,8 +364,21 @@ button { cursor: pointer; }
   content: ""; position: absolute; inset: 10px 6px 6px 11px; border-radius: 2px;
   background: var(--tarjeta); box-shadow: 0 1px 2px rgba(0, 0, 0, .3); transform: rotate(.7deg);
 }
+/* En móviles estrechos «Archivo ·» no cabe junto al post-it */
+@media (max-width: 360px) { .pestana-archivo { display: none; } }
+/* La fecha: un post-it escrito a boli que el clip sujeta a la carpeta. Va en tinta azul en
+   los dos temas, porque es un objeto: no cambia con la luz de la habitación */
+#fecha-caso {
+  position: absolute; z-index: 2; top: 6px; right: 10px;
+  padding: 3px 26px 3px 9px; border-radius: 1px;
+  background: linear-gradient(175deg, color-mix(in srgb, var(--postit) 88%, #fff), var(--postit) 55%);
+  box-shadow: 1px 3px 5px -2px rgba(0, 0, 0, .5);
+  transform: rotate(-2.2deg);
+  font-family: var(--f-mano); font-size: 18px; font-weight: 600; line-height: 1.1; color: #22346e;
+  white-space: nowrap;
+}
 .clip {
-  position: absolute; z-index: 1; top: -5px; right: 18px; width: 14px; height: 35px;
+  position: absolute; z-index: 3; top: -24px; right: 18px; width: 14px; height: 35px;
   fill: none; stroke: var(--suave); stroke-width: 1.6; stroke-linecap: round;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .3));
 }
