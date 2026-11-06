@@ -4,6 +4,7 @@ import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.
 import { casoPorNumero, fechaDeCaso, numeroDeHoy, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
 import { sortearCaso, casoDePractica } from './practica.js';
+import { crearImagen } from './imagen.js';
 import { crearTutorial } from './tutorial.js';
 import { sembrarArchivoDeEjemplo } from './demo-archivo.js'; // ⚠️ TEMPORAL
 
@@ -412,8 +413,24 @@ function renderFin() {
   temporizador = setInterval(tick, 1000);
 }
 
+// La imagen se prepara al abrir el resultado: el navegador solo deja compartir justo tras
+// pulsar, y dibujarla entonces podría tardar demasiado.
+let imagenLista = null;
+function prepararImagen() {
+  imagenLista = null;
+  if (practica) return;
+  imagenLista = crearImagen({
+    numero: caso.numero,
+    fecha: fechaLarga(fechaDeCaso(caso.numero)),
+    ganada: partida.ganada,
+    fichas: partida.fichasCompartir().map((f) => ({ ...f, icono: f.icono && iconoCelda({ svg: f.icono }) })),
+    url: (location.host + location.pathname).replace(/\/$/, ''),
+  }).catch(() => null);
+}
+
 function abrirFin() {
   if (partida.fase !== 'fin' || dlgFin.open) return;
+  prepararImagen();
   dlgFin.classList.remove('saliendo');
   dlgFin.showModal();
   dlgFin.focus();
@@ -663,21 +680,35 @@ $('btn-compartir').addEventListener('click', async () => {
   // Un caso del archivo se comparte con su enlace directo
   const url = location.origin + location.pathname + (esArchivo ? `#caso-${caso.numero}` : '');
   const texto = partida.textoCompartir(url);
+  const imagen = await imagenLista;
+  // El aviso va en el propio botón: el diálogo tapa cualquier aviso flotante.
+  const boton = $('btn-compartir').querySelector('span');
+  const avisar = (mensaje) => {
+    boton.textContent = mensaje;
+    clearTimeout(boton.t);
+    boton.t = setTimeout(() => (boton.textContent = 'Compartir resultado'), 2500);
+  };
+
+  // Móvil: hoja de compartir, con la imagen si el navegador la admite y, si no, solo texto
   if (navigator.share && matchMedia('(pointer: coarse)').matches) {
-    try { await navigator.share({ text: texto }); return; } catch (err) {
+    const datos = imagen && navigator.canShare?.({ files: [imagen] }) ? { files: [imagen], text: texto } : { text: texto };
+    try { await navigator.share(datos); return; } catch (err) {
       if (err?.name === 'AbortError') return;
     }
   }
-  // El aviso va en el propio botón: el diálogo tapa cualquier aviso flotante.
-  const boton = $('btn-compartir').querySelector('span');
+  // Ordenador: la imagen al portapapeles; si no se puede, el texto
+  if (imagen && window.ClipboardItem && navigator.clipboard?.write) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': imagen })]);
+      return avisar('¡Imagen copiada!');
+    } catch {}
+  }
   try {
     await navigator.clipboard.writeText(texto);
-    boton.textContent = '¡Copiado!';
+    avisar('¡Copiado!');
   } catch {
-    boton.textContent = 'No se pudo copiar';
+    avisar('No se pudo copiar');
   }
-  clearTimeout(boton.t);
-  boton.t = setTimeout(() => (boton.textContent = 'Compartir resultado'), 2500);
 });
 
 // ---------- Tema ----------

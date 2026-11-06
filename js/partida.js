@@ -96,6 +96,14 @@ export class Partida {
     return true;
   }
 
+  /** Una ficha por acusación para la imagen: sin el elemento, solo la pista elegida. */
+  fichasCompartir() {
+    return this.intentos.map((z, i) => ({
+      acierto: z === this.secreto.z,
+      icono: TIPOS_PISTA[this.pistas[i]?.tipo]?.svg ?? null,
+    }));
+  }
+
   /** Texto para compartir, sin desvelar la solución. */
   textoCompartir(url) {
     const marcador = this.ganada ? `${this.intentos.length}/${MAX_INTENTOS}` : `X/${MAX_INTENTOS}`;
