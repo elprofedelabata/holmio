@@ -3,6 +3,7 @@
 import { ELEMENTOS, buscarExacto, sugerencias, quitarTildes } from './elementos.js';
 import { casoPorNumero, fechaDeCaso, numeroDeHoy, msHastaManana } from './casos.js';
 import { Partida, MAX_INTENTOS } from './partida.js';
+import { sortearCaso, casoDePractica } from './practica.js';
 import { crearTutorial } from './tutorial.js';
 import { sembrarArchivoDeEjemplo } from './demo-archivo.js'; // ⚠️ TEMPORAL
 
@@ -17,13 +18,19 @@ const leer = (clave) => {
 };
 
 // ---------- Partida ----------
-// El caso en juego puede ser el del día o uno del archivo (ver «Navegación», al final).
+// El caso en juego puede ser el del día, uno del archivo o uno de práctica (ver
+// «Navegación», al final). La práctica va aparte: no entra en el archivo.
 const claveDe = (numero) => `holmio-caso-${numero}`;
+const CLAVE_PRACTICA = 'holmio-practica';
 const numeroHoy = numeroDeHoy();
 let caso = null;
 let partida = null;
 let esArchivo = false;
-const persistir = () => guardar(claveDe(caso.numero), partida.datos());
+let practica = null; // lo sorteado para el caso de práctica en juego: { z, semilla, recientes }
+const persistir = () => {
+  if (practica) guardar(CLAVE_PRACTICA, { ...practica, ...partida.datos() });
+  else guardar(claveDe(caso.numero), partida.datos());
+};
 
 if (new URLSearchParams(location.search).has('reiniciar')) {
   try { localStorage.removeItem(claveDe(numeroHoy)); } catch {}
@@ -379,12 +386,18 @@ function renderFin() {
       return li;
     }),
   );
+  // La práctica no tiene curiosidad escrita
+  $('fin-dato').hidden = !caso.curiosidad;
   $('fin-dato').innerHTML = `<span class="ico" aria-hidden="true">${icono('i-curiosidad')}</span><span></span>`;
-  $('fin-dato').lastChild.textContent = caso.curiosidad;
+  $('fin-dato').lastChild.textContent = caso.curiosidad ?? '';
 
   // La cuenta atrás solo tiene sentido en el caso del día
-  $('fin-proximo').hidden = esArchivo;
-  $('barra-proximo').hidden = esArchivo;
+  $('fin-proximo').hidden = esArchivo || Boolean(practica);
+  $('barra-proximo').hidden = esArchivo || Boolean(practica);
+  // En práctica no se comparte: lo siguiente es otro caso
+  $('btn-compartir').hidden = Boolean(practica);
+  $('btn-otro').hidden = !practica;
+  $('barra-otro').hidden = !practica;
 
   const tick = () => {
     const t = Math.floor(msHastaManana() / 1000);
@@ -430,6 +443,7 @@ $('btn-ver-tabla').addEventListener('click', () => {
 // Cerrar el resultado de cualquier otra forma (Esc) deja al jugador en el archivo.
 dlgFin.addEventListener('close', () => (resultadoDesdeArchivo = null));
 $('btn-ver-resultado').addEventListener('click', abrirFin);
+for (const id of ['btn-otro', 'barra-otro']) $(id).addEventListener('click', () => cargarPractica(true));
 $('fin-cerrar').addEventListener('click', cerrarFin);
 // Tocar fuera del contenido (en el fondo oscurecido) también lo cierra.
 dlgFin.addEventListener('click', (e) => {
@@ -712,7 +726,7 @@ menu.addEventListener('pointerup', (e) => {
 
 $('menu-hoy').addEventListener('click', () => cerrarMenu(() => irA('')));
 $('menu-archivo').addEventListener('click', () => cerrarMenu(() => irA('#archivo')));
-// La práctica libre aún no existe: de momento no hace nada.
+$('menu-practica').addEventListener('click', () => cerrarMenu(() => irA('#practica')));
 $('menu-ayuda').addEventListener('click', () => cerrarMenu(() => tutorial.abrir()));
 $('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
   $('acerca').showModal();
@@ -810,31 +824,51 @@ function renderArchivo() {
   }));
 }
 
-// ---------- Navegación: caso del día (sin #), #archivo y #caso-N ----------
+// ---------- Navegación: caso del día (sin #), #archivo, #caso-N y #practica ----------
 // Cada pantalla tiene su dirección: el botón «atrás» funciona y se puede compartir un caso.
 const fechaLarga = (f) => f.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' });
 
-function cargarCaso(numero) {
+/** Pone en pantalla un caso, con la pestaña y el post-it de la carpeta. */
+function montarCaso(nuevo, datos, pestana, fecha) {
   [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
-  caso = casoPorNumero(numero);
-  partida = new Partida(caso, leer(claveDe(numero)) ?? {});
-  esArchivo = numero !== numeroHoy;
+  caso = nuevo;
+  partida = new Partida(caso, datos);
   render.fichasPintadas = undefined;
   entrada.value = '';
   aviso.textContent = '';
   cerrarDesplegable();
   ocultarBocadillo();
-  $('num-caso').textContent = `Caso nº ${numero}`;
+  $('num-caso').textContent = pestana;
   if (esArchivo) {
     const prefijo = document.createElement('span');
     prefijo.className = 'pestana-archivo';
     prefijo.textContent = 'Archivo · ';
     $('num-caso').prepend(prefijo);
   }
-  $('fecha-caso').textContent = fechaLarga(fechaDeCaso(numero));
+  $('fecha-caso').textContent = fecha;
   $('informe-texto').textContent = caso.informe;
   render();
   document.querySelector('.informe').scrollTop = 0;
+}
+
+function cargarCaso(numero) {
+  esArchivo = numero !== numeroHoy;
+  practica = null;
+  montarCaso(casoPorNumero(numero), leer(claveDe(numero)) ?? {}, `Caso nº ${numero}`, fechaLarga(fechaDeCaso(numero)));
+}
+
+/** Retoma la práctica a medias o, si no la hay (o se pide `otro`), sortea un caso nuevo. */
+function cargarPractica(otro = false) {
+  const guardada = leer(CLAVE_PRACTICA);
+  esArchivo = false;
+  practica = guardada;
+  const terminada = guardada?.z && new Partida(casoDePractica(guardada), guardada).terminada;
+  if (otro || !guardada?.z || terminada) {
+    practica = sortearCaso(guardada?.recientes);
+    guardar(CLAVE_PRACTICA, practica);
+  }
+  montarCaso(casoDePractica(practica), leer(CLAVE_PRACTICA) ?? {}, 'Práctica', 'sin fecha');
+  enfocarEntrada();
 }
 
 function mostrarVista(vista) {
@@ -844,7 +878,8 @@ function mostrarVista(vista) {
   document.querySelector('.contenido').hidden = archivo;
   $('panel').hidden = archivo;
   // En el menú se marca dónde estás (un caso antiguo cuenta como «Archivo»)
-  for (const [id, activo] of [['menu-hoy', vista === 'hoy'], ['menu-archivo', vista !== 'hoy']]) {
+  const marcas = [['menu-hoy', vista === 'hoy'], ['menu-archivo', vista === 'archivo' || vista === 'caso'], ['menu-practica', vista === 'practica']];
+  for (const [id, activo] of marcas) {
     if (activo) $(id).setAttribute('aria-current', 'page');
     else $(id).removeAttribute('aria-current');
   }
@@ -859,6 +894,11 @@ function enrutar() {
     $('vista-archivo').scrollTop = $('vista-archivo').scrollHeight;
     return;
   }
+  if (location.hash === '#practica') {
+    mostrarVista('practica');
+    cargarPractica();
+    return abrirTrasCargar();
+  }
   const m = location.hash.match(/^#caso-(\d+)$/);
   let numero = m ? Number(m[1]) : numeroHoy;
   // Nunca casos futuros (ni direcciones raras): se va al de hoy y se limpia la dirección
@@ -871,7 +911,11 @@ function enrutar() {
   if (m && numero === numeroHoy) history.replaceState(null, '', location.pathname + location.search);
   mostrarVista(numero === numeroHoy ? 'hoy' : 'caso');
   cargarCaso(numero);
-  // Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla.
+  abrirTrasCargar();
+}
+
+/** Si se cerró la página a mitad de elección (o con la partida terminada), se vuelve a esa pantalla. */
+function abrirTrasCargar() {
   if (cargando) return; // durante la carga no se abre nada: se hace al quitarla
   if (saltarResultado) saltarResultado = false;
   else if (!$('ayuda').open) abrirSegunFase();

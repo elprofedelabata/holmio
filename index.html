@@ -32,6 +32,7 @@
   <link rel="modulepreload" href="js/casos.js">
   <link rel="modulepreload" href="js/pistas.js">
   <link rel="modulepreload" href="js/partida.js">
+  <link rel="modulepreload" href="js/practica.js">
   <link rel="modulepreload" href="js/tutorial.js">
   <link rel="modulepreload" href="js/demo-archivo.js">
   <script type="module" src="js/main.js"></script>
@@ -115,6 +116,7 @@
       <!-- Fase: fin (tras cerrar la pantalla de resultado) -->
       <section class="fin-barra" id="fin-barra" hidden>
         <p class="proximo" id="barra-proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>
+        <button class="btn-secundario" id="barra-otro" type="button" hidden>Otro caso</button>
         <button class="btn-principal" id="btn-ver-resultado" type="button">Ver resultado</button>
       </section>
     </footer>
@@ -140,7 +142,7 @@
         <span class="menu-ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-archivo"/></svg></span>
         <span class="menu-texto"><strong>Archivo de casos</strong></span>
       </button>
-      <button class="menu-item" id="menu-practica" type="button" aria-disabled="true">
+      <button class="menu-item" id="menu-practica" type="button">
         <span class="menu-ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-infinito"/></svg></span>
         <span class="menu-texto"><strong>Práctica libre</strong></span>
       </button>
@@ -239,6 +241,7 @@
     <p class="fin-dato" id="fin-dato"></p>
     <div class="fin-botones">
       <button class="btn-principal btn-ancho" id="btn-compartir" type="button">Compartir resultado</button>
+      <button class="btn-principal btn-ancho" id="btn-otro" type="button" hidden>Otro caso</button>
       <button class="btn-secundario btn-ancho" id="btn-ver-tabla" type="button">Ver la tabla</button>
     </div>
     <p class="proximo" id="fin-proximo">Próximo caso en <span class="cuenta-atras">--:--:--</span></p>

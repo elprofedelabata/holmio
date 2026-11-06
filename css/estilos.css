@@ -241,11 +241,6 @@ button { cursor: pointer; }
 .menu-item-suave { grid-template-columns: 1fr; padding-block: 8px; }
 .menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: var(--suave); }
 
-/* Opciones aún no disponibles: atenuadas */
-.menu-item[aria-disabled="true"] { cursor: default; }
-.menu-item[aria-disabled="true"] .menu-ico,
-.menu-item[aria-disabled="true"] .menu-texto { opacity: .55; }
-
 /* Interruptor del modo noche */
 .interruptor {
   position: relative; width: 42px; height: 24px; border-radius: 12px;
@@ -685,6 +680,7 @@ button { cursor: pointer; }
 /* Fin: barra del panel inferior (cuando se cierra la pantalla de resultado) */
 .fin-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .fin-barra .btn-principal { margin-left: auto; }
+.fin-barra .btn-secundario { padding: 0 16px; }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
 
@@ -1100,8 +1096,8 @@ button { cursor: pointer; }
   .btn-menu:hover, .btn-secundario:hover { color: var(--acento); }
   .opcion:not(:disabled):hover { transform: translateY(-2px); }
 
-  .menu-item:not([aria-disabled="true"]):hover { background: var(--resalte); border-left-color: var(--lacre); }
-  .menu-item:not([aria-disabled="true"]):hover .menu-ico { transform: translateX(2px); }
+  .menu-item:hover { background: var(--resalte); border-left-color: var(--lacre); }
+  .menu-item:hover .menu-ico { transform: translateX(2px); }
   .desplegable li:hover { background: var(--resalte); }
 
   .menu-cerrar:hover, .fin-cerrar:hover { color: var(--lacre); background: var(--resalte); }
@@ -1116,7 +1112,7 @@ button { cursor: pointer; }
 /* En pantallas táctiles no hay hover: la pieza se apaga un instante al pulsarla */
 @media (hover: none) {
   .btn-principal:active, .btn-secundario:active, .btn-noir:active, .opcion:active,
-  .cal-caso:active, .celda.con-pista:active, .icono-btn:active, .menu-item:not([aria-disabled="true"]):active,
+  .cal-caso:active, .celda.con-pista:active, .icono-btn:active, .menu-item:active,
   .desplegable li:active { filter: brightness(.88); }
 }
 

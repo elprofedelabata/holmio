@@ -120,7 +120,6 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 - **Botones de contorno y tarjetas de pista:** se encienden con la luz ámbar.
 - **Menú y sugerencias:** se marca la pestaña del expediente en lacre.
 - **Cerrar, flechas y enlaces:** cambian a lacre o ámbar, y la X gira.
-- Lo desactivado (Práctica libre) no reacciona.
 
 ### 3.5 Tipografías
 - **Special Elite** (máquina de escribir): solo para títulos y el texto del informe del caso. No para la interfaz.
@@ -249,7 +248,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - **Pantalla de carga:** tapa el juego desde la primera pintura con el **logo largo cayendo como un tampón** y una barra fina en lacre. Se quita (fundido) cuando la tabla está montada y las **fuentes cargadas**, con un mínimo de 0,9 s para ver el logo y un máximo de 4 s de espera a las fuentes. Solo entonces se abren el tutorial (primera visita) o la pantalla que tocara (elegir pista o resultado). Los módulos JS se precargan en paralelo (`modulepreload`).
 - **Barra superior:** logo a la izquierda y **un solo botón de menú (☰)** a la derecha.
 - **Menú lateral** (entra por la derecha; sigue el tema día/noche, con letra de máquina y el color de acento). Se cierra con ✕, tocando fuera, deslizando a la derecha o con Esc.
-  - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* (§11.1) y *Práctica libre* (de momento atenuada y sin función). El menú marca dónde estás. Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
+  - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* (§11.1) y *Práctica libre* (§11.2). El menú marca dónde estás. Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
   - **Utilidades:** *Cómo se juega* (icono de interrogación en un círculo), interruptor de *Modo noche*, *Acerca de Holmio* (qué es, origen del nombre y enlace al código) y *Borrar todos los datos*, que pide confirmación («¿Quemar el expediente?»), borra casos, tema y tutorial visto y recarga la página.
   - Cuando existan el archivo y la práctica, se ofrecerán también en la **pantalla de resultado** y en el **panel inferior** al terminar el caso del día, que es cuando el jugador se queda con ganas.
 - **Teclado abierto (móvil):** mientras se escribe se ocultan la tabla y las fichas, y quedan solo el dossier y el campo, con el informe a la vista. La tabla vuelve al acusar o al cerrar el teclado. En ordenador no cambia nada.
@@ -281,6 +280,18 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - Los días sin caso (antes del primero o en el futuro) muestran solo el número, apagado. **Nunca se puede abrir un caso futuro.**
 - Al tocar un caso **terminado** (cerrado o fugado) se abre su **pantalla de resultado encima del archivo**; «Ver la tabla» lleva a la pantalla de ese caso; la ✕, tocar fuera o Esc dejan en el archivo. Al tocar uno **pendiente o en curso** se juega en la pantalla normal, con «**Archivo · Caso nº 9**» y su fecha en la línea bajo el logo. No cuenta para la racha (cuando exista), pero queda guardado.
 - **Direcciones propias:** caso del día (sin #), `#archivo` y `#caso-N`. El botón «atrás» del móvil funciona y un caso del archivo se comparte con su enlace directo.
+
+### 11.2 Práctica libre
+
+Partidas sin límite para quien se queda con ganas tras el caso del día (`#practica`, lógica en `js/practica.js`).
+
+- **Sin informe:** cada partida sortea uno de los 118 elementos y se juega solo con las pistas de datos. Funciona con todos los elementos sin escribir contenido y nunca destripa un caso del día que aún no ha salido. Sin texto escrito no se ofrecen etimología ni curiosidad.
+- **Dificultad:** simulación de 7.080 partidas por estrategia, acusando a un candidato al azar: 56 % de victorias eligiendo pistas al azar y 82 % eligiendo la que más descarta. Elegir bien la pista es la habilidad que se practica.
+- **Dossier:** la pestaña dice «Práctica» y el post-it, «sin fecha».
+- **Resultado:** sin cuenta atrás, sin compartir y sin dato curioso. El botón principal es **Otro caso**; también está en el panel inferior si se vuelve a la tabla.
+- **Guardado:** una sola partida en `holmio-practica`, separada de los casos: no entra en el archivo ni en las estadísticas. Se retoma si quedó a medias; una terminada no se retoma, se sortea otra.
+- **Repeticiones:** no sale ninguno de los últimos 30 elementos jugados.
+- **Más adelante:** cuando haya contenido, se podrán añadir los informes de casos ya publicados.
 
 ## 12. Compartir
 
