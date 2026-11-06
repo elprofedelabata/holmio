@@ -12,6 +12,7 @@
   --texto: #1a1d27;
   --suave: #6b6455;
   --linea: #d6c9ac;
+  --hueco-borde: #917f59;   /* huecos de las fichas: deben verse sobre el papel */
   --acento: #a66d0c;        /* ámbar oscuro */
   --lacre: #b9412f;         /* intentos, sellos */
   --sobre-acento: #fff8ea;
@@ -51,6 +52,7 @@
     --texto: #ece3cf;
     --suave: #9a937f;
     --linea: #2c3342;
+    --hueco-borde: #2c3342;
     --acento: #e7ad45;
     --lacre: #e0664f;
     --sobre-acento: #141821;
@@ -82,6 +84,7 @@
   --texto: #ece3cf;
   --suave: #9a937f;
   --linea: #2c3342;
+  --hueco-borde: #2c3342;
   --acento: #e7ad45;
   --lacre: #e0664f;
   --sobre-acento: #141821;
@@ -481,7 +484,7 @@ button { cursor: pointer; }
   position: relative; width: 34px; height: 34px; border-radius: 5px;
   display: grid; place-items: center;
   font-family: var(--f-simbolo); font-weight: 600; font-size: 13px; line-height: 1;
-  border: 1.5px dashed var(--linea); color: var(--suave);
+  border: 1.5px dashed var(--hueco-borde); color: var(--suave);
 }
 .fichas li::before {
   content: attr(data-n); position: absolute; top: 2px; left: 3px;
@@ -910,7 +913,7 @@ button { cursor: pointer; }
 .mini-fichas li {
   width: 26px; height: 26px; border-radius: 4px; display: grid; place-items: center;
   font-family: var(--f-simbolo); font-weight: 600; font-size: 10px;
-  border: 1.2px dashed var(--linea); color: var(--suave);
+  border: 1.2px dashed var(--hueco-borde); color: var(--suave);
 }
 .mini-fichas li.ahora { border: 1.2px solid var(--acento); color: var(--acento); background: var(--tarjeta); }
 .mini-fichas li.usado { background: var(--fallo-fondo); color: var(--fallo-texto); border: 1.2px solid var(--fallo-fondo); }
