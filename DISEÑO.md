@@ -106,6 +106,8 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 
 **Logo en cada tema:** casilla en el color de fondo, «H» y «67» en el color de texto, lupa en **ámbar** (noche) o **lacre** (día), con un pequeño arco de brillo en la lente.
 
+**Grano de papel** *(en prueba 🟡)*: el fondo general lleva un grano muy sutil, en los dos temas, para que parezca papel y no un color plano. Es una loseta PNG semitransparente (`img/grano-dia.png`, `img/grano-noche.png`, generadas con `herramientas/grano.py`) que se repite sin costuras y va en la variable `--grano`. Solo en el fondo (`body`, pantalla de carga, cabecera del archivo y menú): **las casillas, tarjetas y textos siguen planos** para no perder legibilidad. Regla: se debe notar al compararlo, no al jugar. Sin madera ni otras texturas figurativas.
+
 ### 3.5 Tipografías
 - **Special Elite** (máquina de escribir): solo para títulos y el texto del informe del caso. No para la interfaz.
 - **IBM Plex Sans**: interfaz y textos.
@@ -322,6 +324,7 @@ Por elemento hacen falta:
 - [ ] Frecuencia de los superpesados en el calendario (§11).
 - [ ] Stack técnico definitivo (§15).
 - [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js` y su import en `main.js`, y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
+- [ ] Decidir si se queda el grano de papel (§3.4). Si se queda, quitar la comparación temporal `?grano=0` (`index.html` y `css/estilos.css`); si no, quitar también `--grano`, las losetas y `herramientas/grano.py`.
 
 ## 17. Plan de trabajo
 

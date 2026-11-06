@@ -17,6 +17,8 @@
       let t = null;
       try { t = localStorage.getItem('holmio-tema'); } catch {}
       document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
+      // ⚠️ TEMPORAL: ?grano=0 quita el grano de papel para compararlo
+      if (location.search.includes('grano=0')) document.documentElement.dataset.grano = 'no';
     })();
   </script>
   <!-- Precarga de los módulos: se descargan en paralelo en vez de en cascada -->

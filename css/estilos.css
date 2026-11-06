@@ -26,6 +26,7 @@
 
   --sombra: 0 10px 30px -18px rgba(40, 30, 10, .45);
   --resalte: #efe2c4;
+  --grano: url("../img/grano-dia.png"); /* grano de papel: ver herramientas/grano.py */
   --velo: rgba(239, 230, 210, .7); /* velo translúcido: se intuye el juego debajo */
 
   --f-titulo: "Special Elite", "Courier New", monospace;
@@ -57,6 +58,7 @@
     --acierto-texto: #10251a;
     --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
     --resalte: #2b3346;
+    --grano: url("../img/grano-noche.png");
     --velo: rgba(6, 8, 12, .68);
     color-scheme: dark;
   }
@@ -83,15 +85,19 @@
   --acierto-texto: #10251a;
   --sombra: 0 10px 30px -18px rgba(0, 0, 0, .8);
   --resalte: #2b3346;
+  --grano: url("../img/grano-noche.png");
   --velo: rgba(6, 8, 12, .68);
   color-scheme: dark;
 }
+
+/* ⚠️ TEMPORAL: ?grano=0 quita el grano para compararlo */
+:root[data-grano="no"] { --grano: none; }
 
 /* ---------- Base ---------- */
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
 body {
-  background: var(--fondo);
+  background: var(--grano) 0 0 / 160px 160px, var(--fondo);
   color: var(--texto);
   font-family: var(--f-texto);
   font-size: 16px;
@@ -128,7 +134,7 @@ button { cursor: pointer; }
 .cargando {
   position: fixed; inset: 0; z-index: 100;
   display: grid; place-content: center; justify-items: center; gap: 26px;
-  background: var(--fondo);
+  background: var(--grano) 0 0 / 160px 160px, var(--fondo);
   transition: opacity .35s ease, visibility .35s;
 }
 .cargando.fuera { opacity: 0; visibility: hidden; }
@@ -258,7 +264,7 @@ button { cursor: pointer; }
 /* Cabecera fija (título + leyenda) mientras se desplaza el calendario */
 .archivo-cabecera {
   position: sticky; top: 0; z-index: 2; display: grid; gap: 8px;
-  padding: 4px 0 12px; background: var(--fondo);
+  padding: 4px 0 12px; background: var(--grano) 0 0 / 160px 160px, var(--fondo);
   box-shadow: 0 10px 12px -12px rgba(0, 0, 0, .35);
 }
 .archivo-titulo, .archivo-leyenda { width: min(100% - 24px, 330px); margin-inline: auto; }
@@ -443,7 +449,7 @@ button { cursor: pointer; }
 .panel {
   position: sticky; bottom: 0; z-index: 10; /* el panel y su desplegable, siempre por encima de la tabla */
   margin: 0 -14px; padding: 10px 14px calc(12px + env(safe-area-inset-bottom));
-  background: var(--fondo);
+  background: var(--grano) 0 0 / 160px 160px, var(--fondo);
   border-top: 1px solid var(--linea);
 }
 
