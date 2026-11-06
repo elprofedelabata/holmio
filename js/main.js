@@ -6,7 +6,6 @@ import { Partida, MAX_INTENTOS } from './partida.js';
 import { sortearCaso, casoDePractica } from './practica.js';
 import { crearImagen } from './imagen.js';
 import { crearTutorial } from './tutorial.js';
-import { sembrarArchivoDeEjemplo } from './demo-archivo.js'; // ⚠️ TEMPORAL
 
 const $ = (id) => document.getElementById(id);
 
@@ -32,10 +31,6 @@ const persistir = () => {
   if (practica) guardar(CLAVE_PRACTICA, { ...practica, ...partida.datos() });
   else guardar(claveDe(caso.numero), partida.datos());
 };
-
-if (new URLSearchParams(location.search).has('reiniciar')) {
-  try { localStorage.removeItem(claveDe(numeroHoy)); } catch {}
-}
 
 // ---------- Tabla ----------
 const celdas = new Map();
@@ -789,8 +784,6 @@ $('borrar').addEventListener('close', () => {
   try {
     Object.keys(localStorage)
       .filter((clave) => clave.startsWith('holmio-'))
-      // ⚠️ TEMPORAL: sin esta marca, demo-archivo.js volvería a rellenar el archivo
-      .filter((clave) => clave !== 'holmio-demo-archivo')
       .forEach((clave) => localStorage.removeItem(clave));
   } catch {}
   location.replace(location.pathname);
@@ -989,7 +982,6 @@ function irA(destino) {
 window.addEventListener('popstate', enrutar);
 
 // ---------- Inicio ----------
-sembrarArchivoDeEjemplo(numeroHoy); // ⚠️ TEMPORAL: partidas de ejemplo en el archivo
 // Mientras se ve la pantalla de carga se monta todo por debajo; cuando las fuentes están
 // listas (y ha dado tiempo a ver el logo estamparse) se quita y se abren tutorial o diálogos.
 let cargando = true;

@@ -7,6 +7,20 @@
   <meta name="description" content="Juego diario de deducción: lee el informe del caso, elige tus pistas y acusa al elemento químico culpable en 6 intentos.">
   <meta name="theme-color" content="#efe6d2">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/icono-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <!-- Vista previa al pegar el enlace en chats y redes -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Holmio">
+  <meta property="og:title" content="Holmio · El elemento culpable del día">
+  <meta property="og:description" content="118 sospechosos. Un solo culpable. ¿Aceptas el caso?">
+  <meta property="og:url" content="https://elprofedelabata.github.io/holmio/">
+  <meta property="og:image" content="https://elprofedelabata.github.io/holmio/img/compartir.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo de Holmio y su sello: 118 sospechosos, un solo culpable">
+  <meta name="twitter:card" content="summary_large_image">
   <script>
     // Aplica el tema antes de pintar, para evitar parpadeos. Por defecto, modo día.
     // Va antes de la hoja de estilos para pedir ya el grano de papel: si esperase al CSS,
@@ -30,12 +44,12 @@
   <!-- Precarga de los módulos: se descargan en paralelo en vez de en cascada -->
   <link rel="modulepreload" href="js/elementos.js">
   <link rel="modulepreload" href="js/casos.js">
+  <link rel="modulepreload" href="js/casos-datos.js">
   <link rel="modulepreload" href="js/pistas.js">
   <link rel="modulepreload" href="js/partida.js">
   <link rel="modulepreload" href="js/practica.js">
   <link rel="modulepreload" href="js/imagen.js">
   <link rel="modulepreload" href="js/tutorial.js">
-  <link rel="modulepreload" href="js/demo-archivo.js">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -214,7 +228,7 @@
       <img src="img/el-profe-de-la-bata.svg" alt="" width="48" height="48">
       <span><small>Un juego de</small><strong>El profe de la bata</strong><span class="credito-web">elprofedelabata.es</span></span>
     </a>
-    <p class="nota">© 2026 El profe de la bata · Versión de prueba</p>
+    <p class="nota">© 2026 El profe de la bata</p>
     <form method="dialog"><button class="btn-principal" value="cerrar"><svg class="ico-svg" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cerrar"/></svg><span>Cerrar</span></button></form>
   </dialog>
 

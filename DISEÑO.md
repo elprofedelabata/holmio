@@ -94,7 +94,7 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 | Acento (lupa, etiquetas, botón) | Lámpara ámbar | `#e7ad45` |
 | Intento / alerta | Lacre | `#e0664f` |
 
-**Modo día — «el expediente»** *(a pulir 🟡: acercarlo más a papel manila)*
+**Modo día — «el expediente»** 
 
 | Rol | Color | Hex |
 |---|---|---|
@@ -184,7 +184,7 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 - **Azar determinista:** la selección se genera con una semilla basada en *fecha + número de intento*, de modo que dos jugadores en la misma situación ven las mismas opciones. (Como el filtro de "útiles" depende de los intentos previos, jugadores con partidas distintas pueden ver ofertas distintas; es aceptable).
 - Las pistas **relativas** se calculan respecto al **último intento** del jugador. Esto crea la estrategia principal: responder elementos "céntricos" antes de pedir una pista de posición.
 
-## 6. Catálogo de tipos de pista *(provisional 🟡)*
+## 6. Catálogo de tipos de pista
 
 | Icono | Tipo | Ejemplo | Relativa al intento | Origen del dato |
 |---|---|---|---|---|
@@ -209,11 +209,11 @@ Referencia visual: [maqueta de identidad](exploracion/identidad.html) (direcció
 - Las cuatro pistas de **dirección** son preguntas de **sí o no** sobre el último acusado. Al ser cuatro tipos distintos (cada uno usable una vez), dan más juego que dos pistas de eje completo: hay que decidir qué dirección preguntar y desde qué elemento. Una dirección imposible desde el último acusado (p. ej., «arriba» desde el periodo 1) no se ofrece, porque no descartaría nada.
 - Las pistas **comparativas** (🔥 ⚡ #️⃣) no se ofrecen si falta el dato para el elemento secreto o para el último intento (p. ej., elementos superpesados sin punto de fusión medido).
 - Las pistas **escritas a mano** (🔤 💡) no "sombrean" la tabla: aportan información que el jugador interpreta.
-- 🟡 Decidir la lista final (8–10 tipos) tras probar el prototipo.
+- **Lista final: 11 tipos** (`js/pistas.js`): arriba, abajo, izquierda, derecha, número atómico, bloque, tipo, estado, radiactividad, etimología y curiosidad. Época, punto de fusión y electronegatividad se quedaron fuera.
 
-## 7. Reglas de posición *(pendiente 🟡)*
+## 7. Reglas de posición
 
-Implementado así en el prototipo (pendiente de confirmar tras probarlo):
+Reglas del juego:
 - **Arriba / abajo** = comparar el **periodo** (fila). Los lantánidos son periodo 6 y los actínidos periodo 7, aunque se dibujen debajo.
 - **Izquierda / derecha** = comparar la columna en la **tabla larga de 32 columnas**, para que lantánidos y actínidos tengan una posición coherente (entre los grupos 2 y 3).
 - **Lu y Lr en el grupo 3**; el bloque f son La–Yb y Ac–No.
@@ -344,23 +344,24 @@ Por elemento hacen falta:
 ## 15. Técnica
 
 - **Sitio estático** alojado en **GitHub Pages**. Sin servidor ni base de datos.
-- 🟡 Propuesta: **HTML + CSS + JavaScript (módulos ES) sin paso de compilación**. Es lo más sencillo de publicar en GitHub Pages; se puede pasar a Vite/TypeScript más adelante si el proyecto crece.
-- Toda la lógica en el cliente. La solución está en el JS y quien quiera hacer trampas puede; se asume, igual que en Wordle.
+- **HTML + CSS + JavaScript (módulos ES) sin paso de compilación**. Es lo más sencillo de publicar en GitHub Pages; se puede pasar a Vite/TypeScript más adelante si el proyecto crece.
+- Toda la lógica en el cliente. Los casos van codificados en `js/casos-datos.js` (se generan con `herramientas/casos.py` desde `contenido/casos.json`, que no se sube): evita destripes por accidente, pero quien quiera hacer trampas puede; se asume, igual que en Wordle.
+- Instalable en el móvil (`manifest.webmanifest`) y con vista previa al compartir el enlace (`img/compartir.png`). Si cambia la dirección, hay que actualizar las etiquetas `og:` de `index.html`.
 
 ## 16. Decisiones pendientes
 
 - [x] Nombre del juego → **Holmio** (§3.1).
 - [x] Temática y estilo → **detective**, modo noche + modo día (§3).
 - [ ] Dominio propio o URL de GitHub Pages (§3.1).
-- [ ] Pulir la paleta del modo día (§3.4).
-- [ ] Dibujar el logo según §3.3.
-- [ ] Lista final de tipos de pista (§6), y si se incluye la de número atómico.
-- [ ] Reglas exactas de posición y colocación de La/Ac–Lu/Lr (§7).
+- [x] Pulir la paleta del modo día (§3.4).
+- [x] Dibujar el logo según §3.3.
+- [x] Lista final de tipos de pista (§6), y si se incluye la de número atómico.
+- [x] Reglas exactas de posición y colocación de La/Ac–Lu/Lr (§7).
 - [x] Comportamiento del autocompletado (§9).
 - [x] Disposición de la interfaz con el teclado abierto (§10).
 - [x] Frecuencia de los superpesados en el calendario (§11): uno cada seis días desde el caso 30.
-- [ ] Stack técnico definitivo (§15).
-- [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js`, su import en `main.js` y la excepción de `holmio-demo-archivo` en «Borrar todos los datos», y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
+- [x] Stack técnico definitivo (§15).
+- [x] Fecha de lanzamiento: **7 de noviembre de 2026** (Caso nº 1).
 
 ## 17. Plan de trabajo
 

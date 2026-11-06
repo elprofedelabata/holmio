@@ -106,7 +106,7 @@ const DIAPOSITIVAS = [
       return (señal) => enBucle(señal, async () => {
         p.textContent = '';
         await esperar(400, señal);
-        await escribir(p, 'Dos hermanos lo aislaron en 1783 en un seminario de Bergara…', señal, 40);
+        await escribir(p, 'Salió de una mina al anochecer y nadie volvió a verlo…', señal, 40);
         await esperar(2600, señal);
       });
     },
