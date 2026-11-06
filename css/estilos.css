@@ -343,7 +343,7 @@ button { cursor: pointer; }
 /* El dossier: carpeta de cartulina con pestaña y, dentro, el informe como una hoja
    mecanografiada sujeta con un clip. La carpeta no recorta para que el clip y la hoja de
    detrás puedan asomar; quien hace scroll si el texto no cabe es solo la hoja. */
-.dossier { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.dossier { flex: 0 1 auto; min-height: 110px; display: flex; flex-direction: column; }
 #num-caso {
   position: relative; z-index: 1; margin-bottom: -1px; padding: 4px 14px 3px;
   background: var(--grano) 0 0 / 160px 160px, var(--carpeta);
@@ -1116,13 +1116,16 @@ button { cursor: pointer; }
   .celda.recien, .celda.nueva, .informe-extra.nueva, .fichas li { animation: none !important; }
 }
 
-/* Pantallas bajas (teclado abierto): compactar */
+/* Móvil con el teclado abierto: solo el dossier y el campo. La tabla vuelve al terminar */
+.app.escribiendo { height: var(--alto-visible, 100dvh); }
+.app.escribiendo .tablero, .app.escribiendo .estado { display: none; }
+
+/* Pantallas bajas sin teclado (móvil en horizontal, ventanas pequeñas): compactar */
 @media (max-height: 560px) {
-  .meta { display: none; }
-  /* Con el teclado abierto: las fichas de acusación ceden su sitio a la tabla */
   .panel:has(#form-acusar:not([hidden])) .estado { display: none; }
-  .informe { padding: 6px 10px; min-height: 48px; }
-  .carpeta { min-height: 66px; padding: 5px 6px 6px; border-radius: 10px; }
-  .clip { display: none; }
-  #informe-texto { font-size: 12.5px; }
+  .app:not(.escribiendo) .meta, .app:not(.escribiendo) .clip { display: none; }
+  .app:not(.escribiendo) .dossier { min-height: 66px; }
+  .app:not(.escribiendo) .carpeta { min-height: 66px; padding: 5px 6px 6px; border-radius: 10px; }
+  .app:not(.escribiendo) .informe { padding: 6px 10px; min-height: 48px; }
+  .app:not(.escribiendo) #informe-texto { font-size: 12.5px; }
 }

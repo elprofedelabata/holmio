@@ -548,18 +548,38 @@ entrada.addEventListener('keydown', (e) => {
   }
 });
 
-// Con el teclado abierto queda poca altura: desplazamos la página para que la tabla
-// completa quede justo encima del panel de respuesta (el informe sube y sale de la vista).
-function mostrarTablaSobreTeclado() {
-  if (document.activeElement !== entrada) return;
-  const tabla = document.querySelector('.tablero').getBoundingClientRect();
-  const panel = $('panel').getBoundingClientRect();
-  const sobra = tabla.bottom + 8 - panel.top;
-  if (sobra > 0) window.scrollBy({ top: sobra });
+// ---------- Teclado en el móvil ----------
+// Con el teclado abierto no caben la tabla y el informe: mientras se escribe se oculta la
+// tabla y la app se ajusta a la altura que deja el teclado. iOS no encoge la página, solo
+// visualViewport; por eso la altura se fija a mano y se devuelve el desplazamiento a cero.
+const app = document.querySelector('.app');
+const visor = window.visualViewport;
+let altoSinTeclado = 0;
+let tecladoVisto = false;
+
+function ajustarAlTeclado() {
+  if (!visor || !app.classList.contains('escribiendo')) return;
+  const abierto = visor.height < altoSinTeclado - 120;
+  // Teclado cerrado sin salir del campo (botón «atrás» de Android): vuelve la tabla
+  if (tecladoVisto && !abierto) return entrada.blur();
+  tecladoVisto ||= abierto;
+  app.style.setProperty('--alto-visible', `${visor.height}px`);
+  window.scrollTo(0, 0);
 }
-entrada.addEventListener('focus', () => setTimeout(mostrarTablaSobreTeclado, 350));
-window.visualViewport?.addEventListener('resize', mostrarTablaSobreTeclado);
-window.addEventListener('resize', mostrarTablaSobreTeclado);
+entrada.addEventListener('focus', () => {
+  if (!matchMedia('(pointer: coarse)').matches) return;
+  ocultarBocadillo();
+  altoSinTeclado = visor?.height ?? window.innerHeight;
+  app.classList.add('escribiendo');
+  ajustarAlTeclado();
+});
+entrada.addEventListener('blur', () => {
+  app.classList.remove('escribiendo');
+  app.style.removeProperty('--alto-visible');
+  tecladoVisto = false;
+});
+visor?.addEventListener('resize', ajustarAlTeclado);
+visor?.addEventListener('scroll', ajustarAlTeclado);
 
 $('form-acusar').addEventListener('submit', (e) => {
   e.preventDefault();
