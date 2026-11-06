@@ -1175,3 +1175,40 @@ button { cursor: pointer; }
   .app:not(.escribiendo) .informe { padding: 6px 10px; min-height: 48px; }
   .app:not(.escribiendo) #informe-texto { font-size: 12.5px; }
 }
+
+/* ---------- Escritorio ----------
+   El móvil es una columna. Aquí se aprovecha el ancho: arriba la cabecera, en el centro el
+   dossier a la izquierda y la tabla a la derecha, y abajo el panel en una sola fila.
+   La tabla se limita también por la altura, para que quepa sin desplazarse. */
+@media (min-width: 960px) {
+  .app { max-width: 1600px; padding: 14px 32px 0; gap: 14px; }
+  .logo-largo { height: 46px; }
+
+  .contenido { flex-direction: row; align-items: center; justify-content: center; gap: 40px; }
+  .dossier { flex: 0 0 350px; max-height: 100%; }
+  #informe-texto { font-size: 15.5px; line-height: 1.45; }
+  .informe-extra { font-size: 14px; }
+  .etiqueta { font-size: 13px; }
+  #num-caso { font-size: 15px; }
+  #fecha-caso { font-size: 19px; }
+  .tablero { flex: 1 1 0; min-width: 0; max-width: max(460px, calc((100dvh - 225px) * 1.8)); margin-block: 0; }
+  .celda { font-size: clamp(10px, 1.75cqw, 20px); }
+
+  .panel { display: flex; align-items: center; gap: 32px; margin: 0; padding: 12px 0 16px; }
+  .estado { flex: none; gap: 28px; margin-bottom: 0; }
+  .fichas li { width: 40px; height: 40px; font-size: 15px; }
+  .acusar, .fin-barra { flex: 1; min-width: 0; }
+  .acusar { position: relative; }
+  .aviso:not(:empty) {
+    position: absolute; right: 0; bottom: calc(100% + 20px); z-index: 1; padding: 6px 12px;
+    background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 8px; box-shadow: var(--sombra);
+  }
+  .fila-entrada { width: 100%; max-width: 620px; margin-left: auto; }
+  .fin-barra { grid-template-columns: 1fr auto auto; }
+  .fin-barra .proximo { grid-column: auto; text-align: right; }
+  .fin-barra .btn-principal { grid-column: 3; }
+
+  .archivo-cabecera { justify-items: center; }
+  #archivo-meses { grid-template-columns: repeat(auto-fit, minmax(300px, 340px)); justify-content: center; gap: 30px 48px; }
+  .archivo-mes { width: 100%; }
+}
