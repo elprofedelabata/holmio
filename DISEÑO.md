@@ -108,6 +108,8 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 
 **Grano de papel:** el fondo general lleva un grano sutil, en los dos temas, para que parezca papel y no un color plano. Es una loseta PNG semitransparente (`img/grano-dia.png`, `img/grano-noche.png`, generadas con `herramientas/grano.py`) que se repite sin costuras y va en la variable `--grano`. Solo en el fondo (`body`, pantalla de carga, cabecera del archivo y menú): **las casillas, tarjetas y textos siguen planos** para no perder legibilidad. Regla: se percibe como papel, pero no compite con la tabla. El modo día necesita más fuerza (22) que el noche (7), porque sobre un fondo claro la misma variación se nota mucho menos. Sin madera ni otras texturas figurativas.
 
+**Desgaste de la tinta:** los rellenos sólidos (botones principales, casillas y fichas de fallo y acierto, casos del archivo y su leyenda) llevan saltaduras y rozaduras agresivas del color del papel, como tinta gastada (`img/desgaste-dia.png`, `img/desgaste-noche.png`, generadas con el mismo `herramientas/grano.py`). Va en el fondo del elemento, nunca sobre el texto, y un degradado del color del relleno limpia el centro: **la pieza se gasta por los bordes y lo escrito se sigue leyendo**. Cada pieza muestra un trozo distinto de la loseta para que no se repita el dibujo.
+
 ### 3.5 Tipografías
 - **Special Elite** (máquina de escribir): solo para títulos y el texto del informe del caso. No para la interfaz.
 - **IBM Plex Sans**: interfaz y textos.
