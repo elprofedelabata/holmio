@@ -32,12 +32,13 @@ LOSETAS = {
 }
 
 # color del papel que asoma; COBERTURA es la parte de la superficie gastada (0–1)
+# «alfas»: opacidad de cada nivel (sin desgaste, rozada, saltada). De noche, más baja:
+# el contraste entre el relleno claro y el fondo oscuro lo hace resaltar mucho más.
 DESGASTE = {
-    "img/desgaste-dia.png": {"color": (239, 230, 210)},
-    "img/desgaste-noche.png": {"color": (20, 24, 33)},
+    "img/desgaste-dia.png": {"color": (239, 230, 210), "alfas": (0, 120, 235)},
+    "img/desgaste-noche.png": {"color": (20, 24, 33), "alfas": (0, 80, 170)},
 }
 COBERTURA = 0.13
-ALFAS_DESGASTE = (0, 120, 235)
 RAYAS = 14  # rozaduras largas y finas
 
 
@@ -91,10 +92,10 @@ def mapa_de_desgaste():
     return np.maximum(niveles, roza.astype(np.uint8))
 
 
-def guardar_desgaste(ruta, niveles, color):
+def guardar_desgaste(ruta, niveles, color, alfas):
     im = Image.fromarray(niveles, mode="P")
-    im.putpalette(list(color) * len(ALFAS_DESGASTE))
-    im.save(ruta, transparency=bytes(ALFAS_DESGASTE), optimize=True)
+    im.putpalette(list(color) * len(alfas))
+    im.save(ruta, transparency=bytes(alfas), optimize=True)
 
 
 def guardar(ruta, mapa, color, fuerza):
@@ -112,7 +113,7 @@ def main():
         print(ruta)
     niveles = mapa_de_desgaste()
     for ruta, ajustes in DESGASTE.items():
-        guardar_desgaste(ruta, niveles, ajustes["color"])
+        guardar_desgaste(ruta, niveles, ajustes["color"], ajustes["alfas"])
         print(ruta)
 
 

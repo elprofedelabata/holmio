@@ -172,9 +172,9 @@ button { cursor: pointer; }
   width: 38px; height: 38px; border-radius: 10px;
   border: 1.5px solid var(--linea); background: transparent;
   display: grid; place-items: center; font-weight: 700; color: var(--texto);
+  transition: border-color .2s, box-shadow .2s, color .2s;
 }
 .btn-menu .ico-svg { width: 22px; height: 22px; stroke-width: 2; }
-.btn-menu:hover { border-color: var(--acento); }
 
 /* ---------- Menú lateral: una ficha de detective que entra por la derecha ----------
    Sigue el tema (papel de día, tinta de noche), con letra de máquina y el color de acento. */
@@ -204,8 +204,8 @@ button { cursor: pointer; }
   width: 38px; height: 38px; border: 0; border-radius: 10px; background: transparent;
   display: grid; place-items: center; color: var(--suave);
 }
-.menu-cerrar:hover, .menu-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
-.menu-cerrar .ico-svg { width: 20px; height: 20px; stroke-width: 2; }
+.menu-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
+.menu-cerrar .ico-svg { width: 20px; height: 20px; stroke-width: 2; transition: transform .25s; }
 
 .menu-cuerpo { flex: 1; overflow-y: auto; padding: 10px 0; display: flex; flex-direction: column; }
 .menu-seccion {
@@ -217,10 +217,11 @@ button { cursor: pointer; }
   display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 16px;
   width: 100%; padding: 13px 20px; border: 0; background: transparent; color: inherit; text-align: left;
   border-left: 3px solid transparent;
+  transition: background-color .15s, border-color .15s;
 }
-.menu-item:hover, .menu-item:focus-visible { background: var(--resalte); outline: none; }
+.menu-item:focus-visible { background: var(--resalte); outline: none; }
 .menu-item[aria-current="page"] { border-left-color: var(--acento); background: color-mix(in srgb, var(--acento) 10%, transparent); }
-.menu-ico { width: 28px; height: 28px; display: grid; place-items: center; color: var(--acento); }
+.menu-ico { width: 28px; height: 28px; display: grid; place-items: center; color: var(--acento); transition: transform .2s; }
 .menu-ico .ico-svg { width: 26px; height: 26px; stroke-width: 1.7; }
 .menu-texto { display: grid; gap: 1px; min-width: 0; }
 /* Título y subtítulo, siempre en una sola línea */
@@ -298,7 +299,7 @@ button { cursor: pointer; }
   display: grid; place-items: center;
   font-family: var(--f-simbolo); font-weight: 600; color: var(--cand-texto);
   background: var(--cand-fondo); box-shadow: inset 0 0 0 1.5px var(--cand-borde);
-  transition: transform .15s;
+  transition: transform .15s, box-shadow .15s;
 }
 .cal-caso:active { transform: scale(.94); }
 .cal-caso small { position: absolute; bottom: 3px; right: 5px; font-size: 9.5px; font-weight: 500; line-height: 1; opacity: .75; }
@@ -400,7 +401,7 @@ button { cursor: pointer; }
   background: var(--cand-fondo);
   color: var(--cand-texto);
   box-shadow: inset 0 0 0 1px var(--cand-borde);
-  transition: background-color .35s, color .35s, box-shadow .35s;
+  transition: background-color .35s, color .35s, box-shadow .35s, transform .15s;
 }
 .celda.off { background: var(--off-fondo); color: var(--off-texto); box-shadow: none; font-weight: 500; }
 .celda.fallo { background: var(--fallo-fondo); color: var(--fallo-texto); box-shadow: none; }
@@ -500,6 +501,13 @@ button { cursor: pointer; }
 .btn-principal {
   border: 0; border-radius: 10px; padding: 0 18px; min-height: 46px;
   background: var(--acento); color: var(--sobre-acento); font-weight: 700; font-size: 15px;
+  position: relative; overflow: hidden; transition: transform .15s, box-shadow .2s;
+}
+/* Haz de la lámpara: espera fuera del botón y lo cruza al pasar por encima */
+.btn-principal::after {
+  content: ""; position: absolute; top: -10%; bottom: -10%; left: -60%; width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 248, 234, .42), transparent);
+  transform: skewX(-20deg); pointer-events: none;
 }
 .btn-principal:active { transform: translateY(1px); }
 .btn-ancho { width: 100%; }
@@ -559,7 +567,7 @@ button { cursor: pointer; }
   animation-delay: calc(.25s + var(--i, 0) * .09s);
   transition: transform .2s, border-color .2s, opacity .25s, box-shadow .2s;
 }
-.opcion:hover, .opcion:focus-visible { border-color: var(--acento); transform: translateY(-2px); outline: none; }
+.opcion:focus-visible { border-color: var(--acento); transform: translateY(-2px); outline: none; }
 .opcion .ico {
   width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center;
   background: var(--resalte); color: var(--acento);
@@ -641,8 +649,8 @@ button { cursor: pointer; }
   width: 42px; height: 42px; border: 0; border-radius: 10px; background: transparent;
   display: grid; place-items: center; color: var(--suave); animation: none !important;
 }
-.fin-cerrar:hover, .fin-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
-.fin-cerrar .ico-svg { width: 22px; height: 22px; stroke-width: 2; }
+.fin-cerrar:focus-visible { color: var(--texto); background: var(--resalte); outline: none; }
+.fin-cerrar .ico-svg { width: 22px; height: 22px; stroke-width: 2; transition: transform .25s; }
 .resultado > * { animation: aparecer .4s cubic-bezier(.2, 1.1, .4, 1) backwards; }
 .resultado > :nth-child(3) { animation-delay: .35s; }
 .resultado > :nth-child(4) { animation-delay: .42s; }
@@ -683,6 +691,7 @@ button { cursor: pointer; }
 .btn-secundario {
   min-height: 44px; border-radius: 10px; background: transparent;
   border: 1.5px solid var(--linea); color: var(--texto); font-weight: 600; font-size: 15px;
+  transition: border-color .2s, box-shadow .2s, color .2s;
 }
 .resultado .proximo { color: var(--suave); }
 .resultado .cuenta-atras { color: var(--texto); }
@@ -706,8 +715,7 @@ button { cursor: pointer; }
   padding: 6px 0 6px 6px; transition: color .2s;
 }
 .diapos-saltar .ico-svg { width: 16px; height: 16px; stroke-width: 2.4; transition: transform .2s; }
-.diapos-saltar:hover, .diapos-saltar:focus-visible { color: var(--acento); }
-.diapos-saltar:hover .ico-svg { transform: translateX(2px); }
+.diapos-saltar:focus-visible { color: var(--acento); }
 
 /* Carrusel */
 .diapos { overflow: hidden; touch-action: pan-y; margin: 0 -36px; }
@@ -730,7 +738,7 @@ button { cursor: pointer; }
   transition: opacity .25s, transform .25s, color .2s;
 }
 .diapo-flecha .ico-svg { width: 18px; height: 18px; stroke-width: 2.6; }
-.diapo-flecha:hover, .diapo-flecha:focus-visible { color: var(--acento); opacity: 1; }
+.diapo-flecha:focus-visible { color: var(--acento); opacity: 1; }
 .diapo-anterior { left: -36px; }
 .diapo-siguiente { right: -36px; }
 .diapo-anterior:active { transform: translateY(-50%) translateX(-2px); }
@@ -774,7 +782,7 @@ button { cursor: pointer; }
   animation: barrido 3.4s ease-in-out .8s infinite;
 }
 @keyframes barrido { 0% { left: -60%; } 55%, 100% { left: 130%; } }
-.btn-noir:hover, .btn-noir:focus-visible {
+.btn-noir:focus-visible {
   outline: none;
   box-shadow:
     inset 0 0 0 4px #0e1016, inset 0 0 0 5px rgba(231, 173, 69, .6),
@@ -1014,7 +1022,62 @@ button { cursor: pointer; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 4) { --dy: -139px; }
 .btn-acusar { --dx: -18px; --dy: -60px; }
 
+/* ---------- Hover noir ----------
+   Solo con ratón: en el móvil el hover se quedaría pegado tras pulsar.
+   - Botones rellenos: el haz de la lámpara los cruza una vez.
+   - Casos y casillas: se acercan bajo la lupa, con el aro en lacre.
+   - Botones de contorno y tarjetas: se encienden con la luz ámbar.
+   - Menú y sugerencias: se marca la pestaña del expediente en lacre.
+   - Cerrar, flechas y enlaces: tinta de lacre o ámbar. */
+@media (hover: hover) {
+  .btn-principal:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--acento) 80%, transparent);
+  }
+  .btn-principal:hover::after { animation: haz-lampara .7s ease-out; }
+  .btn-acusar:hover .ico-svg { transform: rotate(-22deg); } /* levanta el mazo */
+  .btn-noir:hover {
+    box-shadow:
+      inset 0 0 0 4px #0e1016, inset 0 0 0 5px rgba(231, 173, 69, .6),
+      0 0 26px -2px rgba(231, 173, 69, .45);
+  }
+
+  .cal-caso:hover, .celda.con-pista:hover {
+    position: relative; z-index: 2; transform: scale(1.1);
+    box-shadow: 0 0 0 2px var(--lacre), 0 6px 14px -5px rgba(0, 0, 0, .55);
+  }
+
+  .btn-menu:hover, .btn-secundario:hover, .opcion:not(:disabled):hover {
+    border-color: var(--acento);
+    box-shadow: 0 0 18px -5px color-mix(in srgb, var(--acento) 75%, transparent);
+  }
+  .btn-menu:hover, .btn-secundario:hover { color: var(--acento); }
+  .opcion:not(:disabled):hover { transform: translateY(-2px); }
+
+  .menu-item:not([aria-disabled="true"]):hover { background: var(--resalte); border-left-color: var(--lacre); }
+  .menu-item:not([aria-disabled="true"]):hover .menu-ico { transform: translateX(2px); }
+  .desplegable li:hover { background: var(--resalte); }
+
+  .menu-cerrar:hover, .fin-cerrar:hover { color: var(--lacre); background: var(--resalte); }
+  .menu-cerrar:hover .ico-svg, .fin-cerrar:hover .ico-svg { transform: rotate(90deg); }
+  .diapos-saltar:hover { color: var(--acento); }
+  .diapos-saltar:hover .ico-svg { transform: translateX(2px); }
+  .diapo-flecha:hover { color: var(--acento); opacity: 1; }
+  .diapos-puntos button:not([aria-current="true"]):hover { background: var(--acento); }
+  .acerca a:hover { color: var(--lacre); text-underline-offset: 3px; }
+}
+@keyframes haz-lampara { from { left: -60%; } to { left: 130%; } }
+
+/* En pantallas táctiles no hay hover: la pieza se apaga un instante al pulsarla */
+@media (hover: none) {
+  .btn-principal:active, .btn-secundario:active, .btn-noir:active, .opcion:active,
+  .cal-caso:active, .celda.con-pista:active, .icono-btn:active, .menu-item:not([aria-disabled="true"]):active,
+  .desplegable li:active { filter: brightness(.88); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .btn-principal::after { display: none; }
+  .cal-caso:hover, .celda.con-pista:hover { transform: none; }
   .bocadillo.visible { animation: none; }
   .menu.cerrando, .interruptor, .interruptor::after,
   .celda, .toast, .opcion, .diapos-pista, .mini-celda, .mini-opcion, .dedo,
