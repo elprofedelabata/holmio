@@ -11,3 +11,6 @@ desktop.ini
 # Dependencias y builds (por si se usan en el futuro)
 node_modules/
 dist/
+
+# Borradores del contenido: llevan las soluciones por elemento
+contenido/

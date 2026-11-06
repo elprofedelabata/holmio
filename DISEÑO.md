@@ -270,7 +270,8 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - El orden viene de un **calendario predefinido** (fecha → elemento), no de un aleatorio puro, para:
   - evitar rachas raras (dos gases nobles seguidos, tres lantánidos en una semana),
   - poder repetir elementos en ciclos posteriores con **pistas principales nuevas**.
-- Con 118 elementos, el ciclo se repite cada ~4 meses. 🟡 Decidir si los superpesados (Z > 103) aparecen con menos frecuencia.
+- Con 118 elementos, el ciclo se repite cada ~4 meses. Mientras no haya informes nuevos, el segundo ciclo repetirá los mismos textos.
+- **Orden actual** (`js/casos.js`, en orden de calendario): nunca dos del mismo tipo seguidos ni más de dos de un tipo (salvo metales de transición) en una semana. Los elementos sintéticos no salen el primer mes, y los superpesados (Z > 103) aparecen uno cada seis días a partir del caso 30. El **caso nº 67 es el holmio**, como el número del sello.
 
 ### 11.1 Archivo de casos
 
@@ -336,6 +337,7 @@ Por elemento hacen falta:
 | Etimología | **Escrita a mano** |
 | Curiosidad(es) extra | **Escrita a mano** |
 
+- **Los 118 casos están escritos** (informe, etimología y curiosidad), contrastados con fuentes y revisados. El borrador, con sus fuentes, está en `contenido/`, fuera del repositorio para no duplicar soluciones.
 - Todas las pistas escritas se **revisan** antes de publicarse (un dato falso arruina el reto del día).
 - Formato: archivos JSON (datos de elementos + pistas + calendario).
 
@@ -356,7 +358,7 @@ Por elemento hacen falta:
 - [ ] Reglas exactas de posición y colocación de La/Ac–Lu/Lr (§7).
 - [x] Comportamiento del autocompletado (§9).
 - [x] Disposición de la interfaz con el teclado abierto (§10).
-- [ ] Frecuencia de los superpesados en el calendario (§11).
+- [x] Frecuencia de los superpesados en el calendario (§11): uno cada seis días desde el caso 30.
 - [ ] Stack técnico definitivo (§15).
 - [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js`, su import en `main.js` y la excepción de `holmio-demo-archivo` en «Borrar todos los datos», y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
 
