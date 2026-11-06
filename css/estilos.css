@@ -6,6 +6,8 @@
   /* Modo día */
   --fondo: #efe6d2;
   --tarjeta: #f8f2e4;
+  --carpeta: #dcc392;       /* cartulina manila del dossier */
+  --carpeta-borde: #c2a56e;
   --texto: #1a1d27;
   --suave: #6b6455;
   --linea: #d6c9ac;
@@ -41,6 +43,8 @@
   :root:not([data-theme="light"]) {
     --fondo: #141821;
     --tarjeta: #1c212d;
+    --carpeta: #3a3226;
+    --carpeta-borde: #52472f;
     --texto: #ece3cf;
     --suave: #9a937f;
     --linea: #2c3342;
@@ -69,6 +73,8 @@
 :root[data-theme="dark"] {
   --fondo: #141821;
   --tarjeta: #1c212d;
+  --carpeta: #3a3226;
+  --carpeta-borde: #52472f;
   --texto: #ece3cf;
   --suave: #9a937f;
   --linea: #2c3342;
@@ -326,24 +332,52 @@ button { cursor: pointer; }
 .acerca a { color: var(--acento); }
 .acerca form { margin-top: 4px; }
 
-.meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--suave); }
-#num-caso { font-family: var(--f-simbolo); font-weight: 600; letter-spacing: .04em; color: var(--lacre); }
+.meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; font-size: 13px; color: var(--suave); }
+#fecha-caso { padding: 0 2px 3px 0; }
 
 .app > * { flex: none; }
 .app > .contenido { flex: 1; min-height: 0; }
 .contenido { display: flex; flex-direction: column; gap: 10px; }
 
 /* ---------- Informe ---------- */
+/* El dossier: carpeta de cartulina con pestaña y, dentro, el informe como una hoja
+   mecanografiada sujeta con un clip. La carpeta no recorta para que el clip y la hoja de
+   detrás puedan asomar; quien hace scroll si el texto no cabe es solo la hoja. */
+.dossier { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#num-caso {
+  position: relative; z-index: 1; margin-bottom: -1px; padding: 4px 14px 3px;
+  background: var(--grano) 0 0 / 160px 160px, var(--carpeta);
+  border: 1px solid var(--carpeta-borde); border-bottom: 0; border-radius: 8px 8px 0 0;
+  font-family: var(--f-titulo); font-size: 14px; letter-spacing: .04em; color: var(--texto);
+}
+.carpeta {
+  position: relative; flex: 0 1 auto; min-height: 84px; display: flex; padding: 8px 8px 9px;
+  background: var(--grano) 0 0 / 160px 160px, var(--carpeta);
+  border: 1px solid var(--carpeta-borde); border-radius: 0 10px 10px 10px;
+  box-shadow: 0 3px 8px -5px rgba(0, 0, 0, .45);
+}
+/* Otra hoja del expediente, algo torcida, debajo del informe */
+.carpeta::before {
+  content: ""; position: absolute; inset: 10px 6px 6px 11px; border-radius: 2px;
+  background: var(--tarjeta); box-shadow: 0 1px 2px rgba(0, 0, 0, .3); transform: rotate(.7deg);
+}
+.clip {
+  position: absolute; z-index: 1; top: -5px; right: 18px; width: 14px; height: 35px;
+  fill: none; stroke: var(--suave); stroke-width: 1.6; stroke-linecap: round;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .3));
+}
 .informe {
-  background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 12px;
-  padding: 10px 12px; display: grid; gap: 4px; align-content: start;
-  flex: 0 1 auto; min-height: 64px; overflow-y: auto; overscroll-behavior: contain;
+  position: relative; flex: 1 1 auto; min-width: 0; min-height: 64px;
+  background: var(--tarjeta); border-radius: 2px; box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  padding: 8px 12px 10px; display: grid; gap: 5px; align-content: start;
+  overflow-y: auto; overscroll-behavior: contain;
 }
 /* Tabla centrada en el hueco libre bajo el informe */
 .tablero { flex: none; margin-block: auto; }
 .etiqueta {
-  font-family: var(--f-texto); font-size: 11px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--acento);
+  margin: 0; padding: 0 22px 3px 0; border-bottom: 1px solid var(--linea); /* sin texto bajo el clip */
+  font-family: var(--f-titulo); font-size: 12px; font-weight: 400;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--acento);
 }
 #informe-texto { font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; }
 
@@ -817,10 +851,10 @@ button { cursor: pointer; }
 .mini-celda.salta { animation: aparecer-pista .5s cubic-bezier(.2, 1.6, .4, 1); }
 
 .mini-informe {
-  width: min(270px, calc(100% - 12px)); padding: 6px 9px; border-radius: 8px;
-  background: var(--tarjeta); border: 1px solid var(--linea);
+  width: min(270px, calc(100% - 12px)); padding: 6px 9px; border-radius: 2px;
+  background: var(--tarjeta); box-shadow: 0 0 0 3px var(--carpeta), 0 0 0 4px var(--carpeta-borde);
 }
-.mini-etiqueta { display: block; font-size: 6.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--acento); }
+.mini-etiqueta { display: block; font-family: var(--f-titulo); font-size: 7px; letter-spacing: .12em; text-transform: uppercase; color: var(--acento); }
 .mini-informe p { font-family: var(--f-titulo); font-size: 9.5px; line-height: 1.35; min-height: 2.7em; }
 .mini-lupa {
   position: absolute; width: 34px; height: 34px; color: var(--lupa);
@@ -1087,6 +1121,8 @@ button { cursor: pointer; }
   .meta { display: none; }
   /* Con el teclado abierto: las fichas de acusación ceden su sitio a la tabla */
   .panel:has(#form-acusar:not([hidden])) .estado { display: none; }
-  .informe { padding: 8px 10px; min-height: 48px; }
+  .informe { padding: 6px 10px; min-height: 48px; }
+  .carpeta { min-height: 66px; padding: 5px 6px 6px; border-radius: 10px; }
+  .clip { display: none; }
   #informe-texto { font-size: 12.5px; }
 }

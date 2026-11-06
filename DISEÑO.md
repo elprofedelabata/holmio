@@ -110,6 +110,8 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 
 **Desgaste de la tinta:** los rellenos sólidos (casillas y fichas de fallo y acierto, casos del archivo y su leyenda; **los botones no**) llevan saltaduras y rozaduras agresivas del color del papel, como tinta gastada (`img/desgaste-dia.png`, `img/desgaste-noche.png`, generadas con el mismo `herramientas/grano.py`). Va en el fondo del elemento, nunca sobre el texto, y un degradado del color del relleno limpia el centro: **la pieza se gasta por los bordes y lo escrito se sigue leyendo**. Cada pieza muestra un trozo distinto de la loseta para que no se repita el dibujo. De noche va más suave, porque el contraste entre relleno claro y fondo oscuro lo hace resaltar mucho más.
 
+**El dossier:** el informe del caso es una hoja mecanografiada dentro de una carpeta de cartulina (manila de día, marrón oscuro de noche), sujeta con un clip y con otra hoja torcida debajo. La pestaña de la carpeta lleva el número de caso; la fecha queda a su derecha. Las pistas de texto se añaden a la misma hoja, que hace scroll por dentro si no cabe.
+
 **Botones principales:** relleno liso con un filete interior fino y letra de máquina (Special Elite), de la misma familia que el botón noir del tutorial.
 
 **Hover noir** (solo con ratón; en el móvil se quedaría pegado, así que allí la pieza se apaga un instante al pulsarla):

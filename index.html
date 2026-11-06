@@ -68,16 +68,21 @@
       <div id="archivo-meses"></div>
     </section>
 
-    <div class="meta">
-      <span id="num-caso">Caso nº —</span>
-      <span id="fecha-caso"></span>
-    </div>
-
     <main class="contenido">
-      <section class="informe" aria-labelledby="informe-titulo">
-        <h2 class="etiqueta" id="informe-titulo">Informe del caso</h2>
-        <p id="informe-texto"></p>
-        <div id="informe-extra"></div>
+      <!-- El dossier: carpeta con pestaña (nº de caso) y el informe como hoja sujeta con un clip -->
+      <section class="dossier" aria-labelledby="informe-titulo">
+        <div class="meta">
+          <span id="num-caso">Caso nº —</span>
+          <span id="fecha-caso"></span>
+        </div>
+        <div class="carpeta">
+          <svg class="clip" viewBox="0 0 16 40" aria-hidden="true"><path d="M13 9v22a5 5 0 0 1-10 0V7a4 4 0 0 1 8 0v20a2 2 0 0 1-4 0V11"/></svg>
+          <div class="informe">
+            <h2 class="etiqueta" id="informe-titulo">Informe del caso</h2>
+            <p id="informe-texto"></p>
+            <div id="informe-extra"></div>
+          </div>
+        </div>
       </section>
 
       <div class="tablero">
