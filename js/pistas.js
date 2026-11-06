@@ -2,7 +2,6 @@
 //
 // Cada tipo define:
 //   nombre             → para la tarjeta de elección
-//   icono              → emoji, solo para el texto de compartir
 //   svg                → id del icono SVG en index.html (i-<clave>), se añade abajo
 //   pregunta(ultimo)   → qué averiguarás si la eliges
 //   disponible(s)      → si tiene sentido para este elemento secreto
@@ -20,11 +19,10 @@ const cmp = (a, b) => Math.sign(a - b);
  * Vertical = periodo; horizontal = columna en la tabla larga de 32 columnas.
  * El «no» incluye la misma fila/columna, y así se explica en el texto.
  */
-function direccion({ icono, nombre, eje, signo, frase, siNo }) {
+function direccion({ nombre, eje, signo, frase, siNo }) {
   const valor = (el) => (eje === 'periodo' ? el.periodo : el.col32);
   const cumple = (el, u) => cmp(valor(el), valor(u)) === signo;
   return {
-    icono,
     nombre,
     pregunta: (u) => `¿Está ${frase} que ${u.simbolo}?`,
     disponible: () => true,
@@ -38,23 +36,22 @@ function direccion({ icono, nombre, eje, signo, frase, siNo }) {
 
 export const TIPOS_PISTA = {
   arriba: direccion({
-    icono: '⬆️', nombre: 'Arriba', eje: 'periodo', signo: -1,
+    nombre: 'Arriba', eje: 'periodo', signo: -1,
     frase: 'más arriba', siNo: 'mismo periodo o más abajo',
   }),
   abajo: direccion({
-    icono: '⬇️', nombre: 'Abajo', eje: 'periodo', signo: 1,
+    nombre: 'Abajo', eje: 'periodo', signo: 1,
     frase: 'más abajo', siNo: 'mismo periodo o más arriba',
   }),
   izquierda: direccion({
-    icono: '⬅️', nombre: 'Izquierda', eje: 'col32', signo: -1,
+    nombre: 'Izquierda', eje: 'col32', signo: -1,
     frase: 'más a la izquierda', siNo: 'misma columna o más a la derecha',
   }),
   derecha: direccion({
-    icono: '➡️', nombre: 'Derecha', eje: 'col32', signo: 1,
+    nombre: 'Derecha', eje: 'col32', signo: 1,
     frase: 'más a la derecha', siNo: 'misma columna o más a la izquierda',
   }),
   numero: {
-    icono: '#️⃣',
     nombre: 'Número atómico',
     pregunta: (u) => `¿Mayor o menor que el de ${u.simbolo} (${u.z})?`,
     disponible: () => true,
@@ -65,21 +62,18 @@ export const TIPOS_PISTA = {
     },
   },
   bloque: {
-    icono: '🧱',
     nombre: 'Bloque',
     pregunta: () => '¿En qué bloque está: s, p, d o f?',
     disponible: () => true,
     resolver: (s) => ({ texto: `Es del bloque ${s.bloque}`, filtro: (el) => el.bloque === s.bloque }),
   },
   tipo: {
-    icono: '🔩',
     nombre: 'Familia',
     pregunta: () => '¿Metal, no metal, gas noble…?',
     disponible: () => true,
     resolver: (s) => ({ texto: `Es un ${TIPOS[s.tipo]}`, filtro: (el) => el.tipo === s.tipo }),
   },
   estado: {
-    icono: '🌡️',
     nombre: 'Estado',
     pregunta: () => '¿Sólido, líquido o gas a 25 °C?',
     disponible: (s) => s.estado !== null,
@@ -90,7 +84,6 @@ export const TIPOS_PISTA = {
     }),
   },
   radiactivo: {
-    icono: '☢️',
     nombre: 'Radiactividad',
     pregunta: () => '¿Tiene algún isótopo estable?',
     disponible: () => true,
@@ -100,14 +93,12 @@ export const TIPOS_PISTA = {
     }),
   },
   etimologia: {
-    icono: '🔤',
     nombre: 'Etimología',
     pregunta: () => '¿De dónde viene su nombre?',
     disponible: (s, caso) => Boolean(caso.etimologia),
     resolver: (s, u, caso) => ({ texto: caso.etimologia }),
   },
   curiosidad: {
-    icono: '💡',
     nombre: 'Curiosidad',
     pregunta: () => 'Un dato más del expediente',
     disponible: (s, caso) => Boolean(caso.curiosidad),

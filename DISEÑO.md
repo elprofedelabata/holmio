@@ -305,16 +305,17 @@ Partidas sin límite para quien se queda con ganas tras el caso del día (`#prac
 El texto, que acompaña a la imagen o la sustituye:
 
 ```
-🔎 Holmio · Caso nº 12 · 4/6
-❌ ↕️
-❌ 🧱
-❌ 💡
-✅
-https://…
+🔎 ¡Caso cerrado! He resuelto el caso nº 12 de Holmio en 4 de 6 acusaciones.
+
+❌❌❌✅
+
+118 sospechosos. Un solo culpable. ¿Aceptas el caso?
+Pruébalo en https://…
 ```
 
-- Cada línea = una acusación; el icono indica la pista elegida tras ese fallo.
-- Si no se acierta: `X/6`.
+- Cada emoji es una acusación, todas en una sola línea. No se indica qué pista se eligió.
+- A la primera: «He resuelto el caso nº 12 de Holmio a la primera.»
+- Si no se acierta: «Se me ha fugado el culpable del caso nº 12 de Holmio.»
 
 ## 13. Estadísticas
 

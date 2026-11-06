@@ -106,13 +106,20 @@ export class Partida {
 
   /** Texto para compartir, sin desvelar la solución. */
   textoCompartir(url) {
-    const marcador = this.ganada ? `${this.intentos.length}/${MAX_INTENTOS}` : `X/${MAX_INTENTOS}`;
-    const lineas = this.intentos.map((z, i) => {
-      if (z === this.secreto.z) return '✅';
-      const pista = this.pistas[i];
-      const def = TIPOS_PISTA[pista?.tipo];
-      return def ? `❌ ${def.icono}` : '❌';
-    });
-    return [`🔎 Holmio · Caso nº ${this.caso.numero} · ${marcador}`, ...lineas, url].join('\n');
+    const n = this.intentos.length;
+    const caso = `caso nº ${this.caso.numero} de Holmio`;
+    let resultado = `🔎 Se me ha fugado el culpable del ${caso}.`;
+    if (this.ganada) {
+      resultado = `🔎 ¡Caso cerrado! He resuelto el ${caso} ${n === 1 ? 'a la primera' : `en ${n} de ${MAX_INTENTOS} acusaciones`}.`;
+    }
+    const marcador = this.intentos.map((z) => (z === this.secreto.z ? '✅' : '❌')).join('');
+    return [
+      resultado,
+      '',
+      marcador,
+      '',
+      '118 sospechosos. Un solo culpable. ¿Aceptas el caso?',
+      `Pruébalo en ${url}`,
+    ].join('\n');
   }
 }
