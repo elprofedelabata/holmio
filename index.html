@@ -160,12 +160,26 @@
       <button class="menu-item menu-item-suave" id="menu-acerca" type="button">
         <span class="menu-texto"><strong>Acerca de Holmio</strong></span>
       </button>
+      <button class="menu-item menu-item-suave" id="menu-borrar" type="button">
+        <span class="menu-texto"><strong>Borrar todos los datos</strong></span>
+      </button>
     </nav>
 
     <p class="menu-pie">Caso abierto desde 2026</p>
   </dialog>
 
   <!-- Acerca de -->
+  <!-- Confirmación de «Borrar todos los datos». El foco va al diálogo, no al botón de borrar -->
+  <dialog class="acerca" id="borrar" tabindex="-1" aria-labelledby="borrar-titulo">
+    <h2 id="borrar-titulo">¿Quemar el expediente?</h2>
+    <p>Se borrarán <strong>todos tus casos</strong>, tu progreso y tus ajustes en este dispositivo. Holmio volverá a empezar como el primer día.</p>
+    <p class="nota">Esto no se puede deshacer.</p>
+    <form method="dialog" class="acerca-botones">
+      <button class="btn-secundario" value="cancelar">Cancelar</button>
+      <button class="btn-principal btn-peligro" value="borrar">Borrar</button>
+    </form>
+  </dialog>
+
   <dialog class="acerca" id="acerca" tabindex="-1" aria-labelledby="acerca-titulo">
     <h2 id="acerca-titulo">Acerca de Holmio</h2>
     <p>Un juego diario de deducción: cada día, uno de los 118 elementos de la tabla periódica es el culpable y tienes <strong>seis acusaciones</strong> para descubrirlo.</p>

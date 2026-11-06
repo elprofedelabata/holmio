@@ -250,7 +250,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 - **Barra superior:** logo a la izquierda y **un solo botón de menú (☰)** a la derecha.
 - **Menú lateral** (entra por la derecha; sigue el tema día/noche, con letra de máquina y el color de acento). Se cierra con ✕, tocando fuera, deslizando a la derecha o con Esc.
   - **Modos de juego** (sin rótulo de sección): *Caso del día*, *Archivo de casos* (§11.1) y *Práctica libre* (de momento atenuada y sin función). El menú marca dónde estás. Cada opción es solo icono (grande, sin recuadro, en el color de acento) y título en una línea.
-  - **Utilidades:** *Cómo se juega* (icono de interrogación en un círculo), interruptor de *Modo noche* y *Acerca de Holmio* (qué es, origen del nombre y enlace al código).
+  - **Utilidades:** *Cómo se juega* (icono de interrogación en un círculo), interruptor de *Modo noche*, *Acerca de Holmio* (qué es, origen del nombre y enlace al código) y *Borrar todos los datos*, que pide confirmación («¿Quemar el expediente?»), borra casos, tema y tutorial visto y recarga la página.
   - Cuando existan el archivo y la práctica, se ofrecerán también en la **pantalla de resultado** y en el **panel inferior** al terminar el caso del día, que es cuando el jugador se queda con ganas.
 - **Teclado abierto (móvil):** mientras se escribe se ocultan la tabla y las fichas, y quedan solo el dossier y el campo, con el informe a la vista. La tabla vuelve al acusar o al cerrar el teclado. En ordenador no cambia nada.
 - **Ayuda («Cómo se juega»):** se abre la primera vez y desde el menú. Sobre fondo casi negro, un **carrusel de 6 diapositivas** que se navega **deslizando**, con las **flechas** (chevrones pequeños y discretos, sin círculo, en el margen del diálogo a media altura; sin flecha izquierda en la primera ni derecha en la última), con los **puntos** o con el teclado. «Saltar» arriba. En la última diapositiva los puntos dejan paso a un botón **noir** «Abrir el caso» (tinta, doble filete ámbar, letra de máquina y un barrido de luz de lámpara). Cada diapositiva tiene una **escena animada** hecha con piezas en miniatura del propio juego (se adaptan al tema) y un texto corto:
@@ -339,7 +339,7 @@ Por elemento hacen falta:
 - [x] Disposición de la interfaz con el teclado abierto (§10).
 - [ ] Frecuencia de los superpesados en el calendario (§11).
 - [ ] Stack técnico definitivo (§15).
-- [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js` y su import en `main.js`, y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
+- [ ] ⚠️ **Quitar el archivo de ejemplo** antes del lanzamiento: borrar `js/demo-archivo.js`, su import en `main.js` y la excepción de `holmio-demo-archivo` en «Borrar todos los datos», y poner `FECHA_CASO_1` en su fecha real (ahora adelantada al 1 de octubre).
 
 ## 17. Plan de trabajo
 

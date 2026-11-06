@@ -719,6 +719,23 @@ $('menu-acerca').addEventListener('click', () => cerrarMenu(() => {
   $('acerca').focus();
 }));
 
+// Borrar todos los datos: casos, tema y tutorial visto. Se recarga para empezar de cero.
+$('menu-borrar').addEventListener('click', () => cerrarMenu(() => {
+  $('borrar').showModal();
+  $('borrar').focus();
+}));
+$('borrar').addEventListener('close', () => {
+  if ($('borrar').returnValue !== 'borrar') return;
+  try {
+    Object.keys(localStorage)
+      .filter((clave) => clave.startsWith('holmio-'))
+      // ⚠️ TEMPORAL: sin esta marca, demo-archivo.js volvería a rellenar el archivo
+      .filter((clave) => clave !== 'holmio-demo-archivo')
+      .forEach((clave) => localStorage.removeItem(clave));
+  } catch {}
+  location.replace(location.pathname);
+});
+
 
 // ---------- Archivo de casos: calendario por meses ----------
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto',
