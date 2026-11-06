@@ -488,8 +488,8 @@ button { cursor: pointer; }
 .fichas li.nueva { animation: aparecer-pista .5s cubic-bezier(.2, 1.6, .4, 1); }
 
 .sospechosos { display: grid; justify-items: end; line-height: 1.05; }
-.sospechosos strong { font-family: var(--f-simbolo); font-size: 20px; font-weight: 600; color: var(--texto); }
-.sospechosos span { font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+.sospechosos strong { font-family: var(--f-titulo); font-size: 23px; font-weight: 400; color: var(--texto); }
+.sospechosos span { font-family: var(--f-titulo); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
 
 @media (max-width: 350px) {
   .fichas { gap: 4px; }
