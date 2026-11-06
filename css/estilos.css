@@ -1168,7 +1168,7 @@ button { cursor: pointer; }
 
 /* Pantallas bajas sin teclado (móvil en horizontal, ventanas pequeñas): compactar */
 @media (max-height: 560px) {
-  .panel:has(#form-acusar:not([hidden])) .estado { display: none; }
+  @media (max-width: 959px) { .panel:has(#form-acusar:not([hidden])) .estado { display: none; } }
   .app:not(.escribiendo) .meta, .app:not(.escribiendo) .clip { display: none; }
   .app:not(.escribiendo) .dossier { min-height: 66px; }
   .app:not(.escribiendo) .carpeta { min-height: 66px; padding: 5px 6px 6px; border-radius: 10px; }
@@ -1177,38 +1177,63 @@ button { cursor: pointer; }
 }
 
 /* ---------- Escritorio ----------
-   El móvil es una columna. Aquí se aprovecha el ancho: arriba la cabecera, en el centro el
-   dossier a la izquierda y la tabla a la derecha, y abajo el panel en una sola fila.
-   La tabla se limita también por la altura, para que quepa sin desplazarse. */
+   El móvil es una columna. Aquí la app es una rejilla: cabecera arriba, a la izquierda el
+   dossier con las fichas debajo, a la derecha la tabla, y abajo el campo centrado.
+   .contenido y .panel desaparecen como cajas (display: contents) para que sus hijos se
+   coloquen directamente en la rejilla. La tabla se limita también por la altura. */
 @media (min-width: 960px) {
-  .app { max-width: 1600px; padding: 14px 32px 0; gap: 14px; }
+  .app {
+    --ancho-dossier: 350px;
+    --hueco: 40px;
+    display: grid; max-width: 1800px; padding: 14px 32px 0; gap: 14px 0;
+    grid-template-columns: minmax(0, 1fr) var(--ancho-dossier) minmax(0, calc((100dvh - 200px) * 1.9 + var(--hueco))) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "cabecera cabecera cabecera cabecera"
+      ". dossier tablero ."
+      ". estado tablero ."
+      "entrada entrada entrada entrada";
+  }
+  .cabecera { grid-area: cabecera; }
   .logo-largo { height: 46px; }
+  .contenido, .panel { display: contents; }
 
-  .contenido { flex-direction: row; align-items: center; justify-content: center; gap: 40px; }
-  .dossier { flex: 0 0 350px; max-height: 100%; }
+  .dossier { grid-area: dossier; max-height: calc(100dvh - 320px); margin-top: 8px; }
   #informe-texto { font-size: 15.5px; line-height: 1.45; }
   .informe-extra { font-size: 14px; }
   .etiqueta { font-size: 13px; }
   #num-caso { font-size: 15px; }
   #fecha-caso { font-size: 19px; }
-  .tablero { flex: 1 1 0; min-width: 0; max-width: max(460px, calc((100dvh - 225px) * 1.8)); margin-block: 0; }
+
+  .tablero { grid-area: tablero; align-self: start; margin: 8px 0 0 var(--hueco); }
   .celda { font-size: clamp(10px, 1.75cqw, 20px); }
 
-  .panel { display: flex; align-items: center; gap: 32px; margin: 0; padding: 12px 0 16px; }
-  .estado { flex: none; gap: 28px; margin-bottom: 0; }
-  .fichas li { width: 40px; height: 40px; font-size: 15px; }
-  .acusar, .fin-barra { flex: 1; min-width: 0; }
-  .acusar { position: relative; }
+  .estado { grid-area: estado; align-self: start; flex-direction: column; align-items: stretch; gap: 10px; margin: 6px 0 0; }
+  #fichas { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  #fichas li { width: auto; height: auto; aspect-ratio: 1; font-size: 17px; }
+  .sospechosos { display: flex; justify-content: center; align-items: baseline; gap: 8px; }
+
+  .acusar, .fin-barra {
+    grid-area: entrada; position: relative; z-index: 10; /* su desplegable, por encima de la tabla */
+    padding: 12px 0 16px; border-top: 1px solid var(--linea);
+  }
   .aviso:not(:empty) {
-    position: absolute; right: 0; bottom: calc(100% + 20px); z-index: 1; padding: 6px 12px;
+    position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); z-index: 1;
+    padding: 6px 12px; white-space: nowrap;
     background: var(--tarjeta); border: 1px solid var(--linea); border-radius: 8px; box-shadow: var(--sombra);
   }
-  .fila-entrada { width: 100%; max-width: 620px; margin-left: auto; }
-  .fin-barra { grid-template-columns: 1fr auto auto; }
-  .fin-barra .proximo { grid-column: auto; text-align: right; }
-  .fin-barra .btn-principal { grid-column: 3; }
+  .fila-entrada { width: 100%; max-width: 620px; margin-inline: auto; }
+  .fin-barra { grid-template-columns: auto auto auto; justify-content: center; gap: 16px; }
+  .fin-barra .proximo { grid-column: auto; }
+  .fin-barra .btn-principal { grid-column: auto; }
 
+  .vista-archivo { grid-column: 1 / -1; grid-row: 2 / -1; min-height: 0; }
   .archivo-cabecera { justify-items: center; }
   #archivo-meses { grid-template-columns: repeat(auto-fit, minmax(300px, 340px)); justify-content: center; gap: 30px 48px; }
   .archivo-mes { width: 100%; }
+}
+/* Portátiles pequeños y tablets en horizontal: más sitio para la tabla */
+@media (min-width: 960px) and (max-width: 1200px) {
+  .app { --ancho-dossier: 290px; --hueco: 24px; padding-inline: 20px; }
+  #informe-texto { font-size: 14.5px; }
 }
