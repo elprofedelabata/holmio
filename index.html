@@ -7,18 +7,26 @@
   <meta name="description" content="Juego diario de deducción: lee el informe del caso, elige tus pistas y acusa al elemento químico culpable en 6 intentos.">
   <meta name="theme-color" content="#efe6d2">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <script>
+    // Aplica el tema antes de pintar, para evitar parpadeos. Por defecto, modo día.
+    // Va antes de la hoja de estilos para pedir ya el grano de papel: si esperase al CSS,
+    // la pantalla de carga se vería lisa hasta que llegase.
+    (function () {
+      let t = null;
+      try { t = localStorage.getItem('holmio-tema'); } catch {}
+      const tema = t === 'dark' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = tema;
+      const grano = document.createElement('link');
+      grano.rel = 'preload';
+      grano.as = 'image';
+      grano.href = tema === 'dark' ? 'img/grano-noche.png' : 'img/grano-dia.png';
+      document.head.append(grano);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
-  <script>
-    // Aplica el tema antes de pintar, para evitar parpadeos. Por defecto, modo día.
-    (function () {
-      let t = null;
-      try { t = localStorage.getItem('holmio-tema'); } catch {}
-      document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
-    })();
-  </script>
   <!-- Precarga de los módulos: se descargan en paralelo en vez de en cascada -->
   <link rel="modulepreload" href="js/elementos.js">
   <link rel="modulepreload" href="js/casos.js">
