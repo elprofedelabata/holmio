@@ -90,9 +90,6 @@
   color-scheme: dark;
 }
 
-/* ⚠️ TEMPORAL: ?grano=0 quita el grano para compararlo */
-:root[data-grano="no"] { --grano: none; }
-
 /* ---------- Base ---------- */
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }

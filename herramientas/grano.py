@@ -20,7 +20,7 @@ SEMILLA = 67  # número atómico del holmio
 
 # color del grano y opacidad máxima (0–255)
 LOSETAS = {
-    "img/grano-dia.png": {"color": (92, 70, 40), "fuerza": 13},
+    "img/grano-dia.png": {"color": (92, 70, 40), "fuerza": 22},
     "img/grano-noche.png": {"color": (236, 227, 207), "fuerza": 7},
 }
 
