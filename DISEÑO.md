@@ -352,7 +352,7 @@ Por elemento hacen falta:
 
 - [x] Nombre del juego → **Holmio** (§3.1).
 - [x] Temática y estilo → **detective**, modo noche + modo día (§3).
-- [ ] Dominio propio o URL de GitHub Pages (§3.1).
+- [x] Dirección: **holmio.elprofedelabata.es**, un subdominio de la web de El profe de la bata servido por GitHub Pages (§3.1).
 - [x] Pulir la paleta del modo día (§3.4).
 - [x] Dibujar el logo según §3.3.
 - [x] Lista final de tipos de pista (§6), y si se incluye la de número atómico.
