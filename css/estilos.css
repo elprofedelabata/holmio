@@ -678,9 +678,11 @@ button { cursor: pointer; }
 }
 
 /* Fin: barra del panel inferior (cuando se cierra la pantalla de resultado) */
-.fin-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fin-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.fin-barra .proximo { flex: 1 0 100%; }
 .fin-barra .btn-principal { margin-left: auto; }
 .fin-barra .btn-secundario { padding: 0 16px; }
+@media (max-width: 350px) { .fin-barra .btn-principal, .fin-barra .btn-secundario { padding: 0 12px; } }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
 
@@ -733,6 +735,7 @@ button { cursor: pointer; }
 }
 .fin-dato .ico { width: 16px; height: 16px; margin-top: 1px; color: var(--acento); }
 .fin-botones { display: grid; gap: 10px; width: 100%; max-width: 340px; }
+.fin-fila { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
 .btn-secundario {
   min-height: 44px; border-radius: 10px; background: transparent;
   border: 1.5px solid var(--linea); color: var(--texto);

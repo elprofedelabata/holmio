@@ -394,10 +394,12 @@ function renderFin() {
   // La cuenta atrás solo tiene sentido en el caso del día
   $('fin-proximo').hidden = esArchivo || Boolean(practica);
   $('barra-proximo').hidden = esArchivo || Boolean(practica);
-  // En práctica no se comparte: lo siguiente es otro caso
+  // En práctica no se comparte: lo siguiente es otro caso. Tras el caso del día, se invita a practicar.
   $('btn-compartir').hidden = Boolean(practica);
   $('btn-otro').hidden = !practica;
-  $('barra-otro').hidden = !practica;
+  $('btn-practicar').hidden = esArchivo || Boolean(practica);
+  $('barra-otro').hidden = esArchivo;
+  $('barra-otro').textContent = practica ? 'Otro caso' : 'Practicar';
 
   const tick = () => {
     const t = Math.floor(msHastaManana() / 1000);
@@ -443,7 +445,9 @@ $('btn-ver-tabla').addEventListener('click', () => {
 // Cerrar el resultado de cualquier otra forma (Esc) deja al jugador en el archivo.
 dlgFin.addEventListener('close', () => (resultadoDesdeArchivo = null));
 $('btn-ver-resultado').addEventListener('click', abrirFin);
-for (const id of ['btn-otro', 'barra-otro']) $(id).addEventListener('click', () => cargarPractica(true));
+$('btn-otro').addEventListener('click', () => cargarPractica(true));
+$('btn-practicar').addEventListener('click', () => irA('#practica'));
+$('barra-otro').addEventListener('click', () => (practica ? cargarPractica(true) : irA('#practica')));
 $('fin-cerrar').addEventListener('click', cerrarFin);
 // Tocar fuera del contenido (en el fondo oscurecido) también lo cierra.
 dlgFin.addEventListener('click', (e) => {
