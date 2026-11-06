@@ -1005,7 +1005,7 @@ button { cursor: pointer; }
 .archivo-leyenda .cerrado, .archivo-leyenda .fugado { background-image: var(--desgaste); background-size: 160px 160px; }
 .archivo-leyenda .cerrado { background-position: -6px -0px; }
 .archivo-leyenda .fugado { background-position: -63px -69px; }
-.cal-caso.cerrado small, .cal-caso.fugado small { opacity: .95; text-shadow: 0 0 2px var(--relleno), 0 0 2px var(--relleno), 0 0 4px var(--relleno); }
+.cal-caso.cerrado small, .cal-caso.fugado small, .fichas li.usado::before, .fichas li.bien::before { opacity: .95; text-shadow: 0 0 2px var(--relleno), 0 0 2px var(--relleno), 0 0 4px var(--relleno); }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(3n + 1) { --dx: -41px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(3n + 2) { --dx: -97px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 1) { --dy: -23px; }
