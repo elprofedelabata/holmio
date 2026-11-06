@@ -454,9 +454,20 @@ dlgFin.addEventListener('click', (e) => {
   if (e.target === dlgFin) cerrarFin();
 });
 
+// La primera vez que se entra en la práctica se explica antes de empezar.
+const VISTA_PRACTICA = 'holmio-visto-practica';
+const dlgPractica = $('practica-intro');
+dlgPractica.addEventListener('close', () => {
+  guardar(VISTA_PRACTICA, true);
+  if (practica) enfocarEntrada();
+});
+
 /** Al cargar: si la partida estaba a medias de algo, se vuelve a esa pantalla. */
 function abrirSegunFase() {
-  if (partida.fase === 'elegir') abrirElegir();
+  if (practica && !leer(VISTA_PRACTICA)) {
+    dlgPractica.showModal();
+    dlgPractica.focus();
+  } else if (partida.fase === 'elegir') abrirElegir();
   else if (partida.fase === 'fin') abrirFin();
 }
 
@@ -834,7 +845,7 @@ const fechaLarga = (f) => f.toLocaleDateString('es-ES', { weekday: 'long', day: 
 
 /** Pone en pantalla un caso, con la pestaña y el post-it de la carpeta. */
 function montarCaso(nuevo, datos, pestana, fecha) {
-  [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
+  [dlgElegir, dlgFin, dlgPractica].forEach((d) => d.open && d.close());
   caso = nuevo;
   partida = new Partida(caso, datos);
   render.fichasPintadas = undefined;
@@ -891,7 +902,7 @@ function mostrarVista(vista) {
 
 function enrutar() {
   if (location.hash === '#archivo') {
-    [dlgElegir, dlgFin].forEach((d) => d.open && d.close());
+    [dlgElegir, dlgFin, dlgPractica].forEach((d) => d.open && d.close());
     mostrarVista('archivo');
     renderArchivo();
     // Se abre desplazado del todo hacia abajo: el mes actual y el caso de hoy a la vista

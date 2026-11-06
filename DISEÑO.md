@@ -285,6 +285,7 @@ Implementado así en el prototipo (pendiente de confirmar tras probarlo):
 
 Partidas sin límite para quien se queda con ganas tras el caso del día (`#practica`, lógica en `js/practica.js`).
 
+- **Explicación:** la primera vez que se entra, una pantalla previa cuenta en qué consiste (sospechoso al azar, mismas reglas, sin límite) y abre el primer caso. Se recuerda con `holmio-visto-practica`.
 - **Sin informe:** cada partida sortea uno de los 118 elementos y se juega solo con las pistas de datos. Funciona con todos los elementos sin escribir contenido y nunca destripa un caso del día que aún no ha salido. Sin texto escrito no se ofrecen etimología ni curiosidad.
 - **Dificultad:** simulación de 7.080 partidas por estrategia, acusando a un candidato al azar: 56 % de victorias eligiendo pistas al azar y 82 % eligiendo la que más descarta. Elegir bien la pista es la habilidad que se practica.
 - **Dossier:** la pestaña dice «Práctica» y el post-it, «sin fecha».

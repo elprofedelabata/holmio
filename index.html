@@ -171,6 +171,27 @@
   </dialog>
 
   <!-- Acerca de -->
+  <!-- Se ve antes del primer caso de práctica -->
+  <dialog class="acerca" id="practica-intro" tabindex="-1" aria-labelledby="practica-titulo">
+    <h2 id="practica-titulo">Práctica libre</h2>
+    <p>Sin calendario y sin presión: aquí se entrena el olfato.</p>
+    <ul class="explica">
+      <li>
+        <span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-lupa"/></svg></span>
+        <span><strong>Un sospechoso al azar.</strong> Cualquiera de los 118 elementos, sin informe del caso.</span>
+      </li>
+      <li>
+        <span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-mazo"/></svg></span>
+        <span><strong>Las mismas reglas.</strong> Seis acusaciones y una pista tras cada fallo, aunque aquí solo hay pistas de datos.</span>
+      </li>
+      <li>
+        <span class="ico" aria-hidden="true"><svg class="ico-svg" viewBox="0 0 24 24"><use href="#i-infinito"/></svg></span>
+        <span><strong>Todos los que quieras.</strong> Al terminar, otro caso. No cuentan para el archivo.</span>
+      </li>
+    </ul>
+    <form method="dialog"><button class="btn-principal btn-ancho">Abrir el primer caso</button></form>
+  </dialog>
+
   <!-- Confirmación de «Borrar todos los datos». El foco va al diálogo, no al botón de borrar -->
   <dialog class="acerca" id="borrar" tabindex="-1" aria-labelledby="borrar-titulo">
     <h2 id="borrar-titulo">¿Quemar el expediente?</h2>
