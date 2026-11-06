@@ -463,7 +463,6 @@ button { cursor: pointer; }
 .fila-entrada .btn-acusar {
   flex: none; min-width: 0; min-height: 40px; height: 40px; padding: 0 16px;
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  letter-spacing: .02em;
 }
 .btn-acusar .ico-svg { width: 19px; height: 19px; stroke-width: 2.1; transition: transform .15s; transform-origin: 30% 80%; }
 .btn-acusar:active .ico-svg { transform: rotate(-22deg); }
@@ -498,16 +497,14 @@ button { cursor: pointer; }
   background: var(--tarjeta); padding: 11px 12px; font-size: 16px; /* 16px evita el zoom de iOS */
 }
 #entrada:focus { border-color: var(--acento); outline: none; }
+/* Botón principal: relleno liso, filete interior y letra de máquina, de la familia del
+   botón noir del tutorial */
 .btn-principal {
+  --filete: inset 0 0 0 3px var(--acento), inset 0 0 0 4px color-mix(in srgb, var(--sobre-acento) 55%, transparent);
   border: 0; border-radius: 10px; padding: 0 18px; min-height: 46px;
-  background: var(--acento); color: var(--sobre-acento); font-weight: 700; font-size: 15px;
-  position: relative; overflow: hidden; transition: transform .15s, box-shadow .2s;
-}
-/* Haz de la lámpara: espera fuera del botón y lo cruza al pasar por encima */
-.btn-principal::after {
-  content: ""; position: absolute; top: -10%; bottom: -10%; left: -60%; width: 40%;
-  background: linear-gradient(100deg, transparent, rgba(255, 248, 234, .42), transparent);
-  transform: skewX(-20deg); pointer-events: none;
+  background: var(--acento); color: var(--sobre-acento); box-shadow: var(--filete);
+  font-family: var(--f-titulo); font-weight: 400; font-size: 16px; letter-spacing: .05em;
+  transition: transform .18s ease-out, box-shadow .18s ease-out;
 }
 .btn-principal:active { transform: translateY(1px); }
 .btn-ancho { width: 100%; }
@@ -690,7 +687,8 @@ button { cursor: pointer; }
 .fin-botones { display: grid; gap: 10px; width: 100%; max-width: 340px; }
 .btn-secundario {
   min-height: 44px; border-radius: 10px; background: transparent;
-  border: 1.5px solid var(--linea); color: var(--texto); font-weight: 600; font-size: 15px;
+  border: 1.5px solid var(--linea); color: var(--texto);
+  font-family: var(--f-titulo); font-weight: 400; font-size: 16px; letter-spacing: .05em;
   transition: border-color .2s, box-shadow .2s, color .2s;
 }
 .resultado .proximo { color: var(--suave); }
@@ -856,7 +854,9 @@ button { cursor: pointer; }
 .mini-campo::after { content: ""; width: 1px; height: 13px; margin-left: 1px; background: var(--texto); animation: cursor .8s steps(1) infinite; }
 .mini-boton {
   display: grid; place-items: center; padding: 0 12px; border-radius: 7px;
-  background: var(--acento); color: var(--sobre-acento); font-weight: 700; font-size: 11.5px;
+  background: var(--acento); color: var(--sobre-acento);
+  box-shadow: inset 0 0 0 2px var(--acento), inset 0 0 0 2.6px color-mix(in srgb, var(--sobre-acento) 55%, transparent);
+  font-family: var(--f-titulo); font-size: 12px; letter-spacing: .05em;
 }
 .mini-desplegable {
   position: absolute; left: 0; right: 0; bottom: calc(100% + 5px); margin: 0; padding: 3px; list-style: none;
@@ -991,15 +991,13 @@ button { cursor: pointer; }
 @keyframes bocadillo { from { opacity: 0; transform: translateY(4px) scale(.96); } }
 
 /* ---------- Desgaste de la tinta ----------
-   Los rellenos sólidos llevan encima una loseta con saltaduras del color del papel.
+   Las casillas, fichas y casos con relleno llevan encima una loseta con saltaduras del color del papel.
    Va en el fondo del elemento, así que el texto no se toca. Encima, un degradado del
    color del relleno (--relleno) limpia el centro: la pieza se gasta por los bordes y
    lo que hay escrito se sigue leyendo. --dx y --dy mueven la loseta para que dos
    piezas vecinas no muestren el mismo trozo. */
-.btn-principal, .mini-boton { --relleno: var(--acento); }
 .celda.fallo, .mini-celda.fallo, .fichas li.usado, .mini-fichas li.usado, .cal-caso.fugado { --relleno: var(--fallo-fondo); }
 .celda.acierto, .fichas li.bien, .cal-caso.cerrado { --relleno: var(--acierto-fondo); }
-.btn-principal, .mini-boton,
 .celda.fallo, .celda.acierto, .mini-celda.fallo,
 .fichas li.usado, .fichas li.bien, .mini-fichas li.usado,
 .cal-caso.cerrado, .cal-caso.fugado {
@@ -1020,21 +1018,17 @@ button { cursor: pointer; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 2) { --dy: -71px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 3) { --dy: -113px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 4) { --dy: -139px; }
-.btn-acusar { --dx: -18px; --dy: -60px; }
 
 /* ---------- Hover noir ----------
    Solo con ratón: en el móvil el hover se quedaría pegado tras pulsar.
-   - Botones rellenos: el haz de la lámpara los cruza una vez.
+   - Botones rellenos: se levantan un poco, como un sello antes de caer.
    - Casos y casillas: se acercan bajo la lupa, con el aro en lacre.
    - Botones de contorno y tarjetas: se encienden con la luz ámbar.
    - Menú y sugerencias: se marca la pestaña del expediente en lacre.
    - Cerrar, flechas y enlaces: tinta de lacre o ámbar. */
 @media (hover: hover) {
-  .btn-principal:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--acento) 80%, transparent);
-  }
-  .btn-principal:hover::after { animation: haz-lampara .7s ease-out; }
+  .btn-principal:hover { transform: translateY(-2px); box-shadow: var(--filete), 0 6px 10px -6px rgba(0, 0, 0, .5); }
+  .btn-principal:hover:active { transform: translateY(1px); box-shadow: var(--filete); }
   .btn-acusar:hover .ico-svg { transform: rotate(-22deg); } /* levanta el mazo */
   .btn-noir:hover {
     box-shadow:
@@ -1066,7 +1060,6 @@ button { cursor: pointer; }
   .diapos-puntos button:not([aria-current="true"]):hover { background: var(--acento); }
   .acerca a:hover { color: var(--lacre); text-underline-offset: 3px; }
 }
-@keyframes haz-lampara { from { left: -60%; } to { left: 130%; } }
 
 /* En pantallas táctiles no hay hover: la pieza se apaga un instante al pulsarla */
 @media (hover: none) {
@@ -1076,7 +1069,7 @@ button { cursor: pointer; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-principal::after { display: none; }
+  .btn-principal:hover { transform: none; }
   .cal-caso:hover, .celda.con-pista:hover { transform: none; }
   .bocadillo.visible { animation: none; }
   .menu.cerrando, .interruptor, .interruptor::after,
