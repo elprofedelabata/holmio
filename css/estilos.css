@@ -330,7 +330,16 @@ button { cursor: pointer; }
 .acerca h2 { font-family: var(--f-titulo); font-weight: 400; font-size: 23px; }
 .acerca p { font-size: 14.5px; line-height: 1.45; }
 .acerca .nota { font-size: 12.5px; color: var(--suave); }
-.acerca a { color: var(--acento); }
+/* Créditos: el logo va sobre su círculo blanco, para que se vea igual en los dos temas */
+.credito {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 10px 0; border-block: 1px dashed var(--linea); color: var(--texto); text-decoration: none;
+}
+.credito img { display: block; width: 48px; height: 48px; border-radius: 50%; box-shadow: 0 0 0 1px var(--linea); transition: transform .2s; }
+.credito > span { display: grid; gap: 1px; line-height: 1.25; }
+.credito small { font-size: 12.5px; color: var(--suave); }
+.credito strong { font-family: var(--f-titulo); font-weight: 400; font-size: 17px; }
+.credito-web { font-size: 13px; color: var(--acento); }
 .acerca form { margin-top: 4px; display: flex; justify-content: center; }
 .explica { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: 14.5px; line-height: 1.4; }
 .explica li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; }
@@ -1128,7 +1137,8 @@ button { cursor: pointer; }
   .diapos-saltar:hover .ico-svg { transform: translateX(2px); }
   .diapo-flecha:hover { color: var(--acento); opacity: 1; }
   .diapos-puntos button:not([aria-current="true"]):hover { background: var(--acento); }
-  .acerca a:hover { color: var(--lacre); text-underline-offset: 3px; }
+  .credito:hover .credito-web { color: var(--lacre); }
+  .credito:hover img { transform: rotate(-6deg); }
 }
 
 /* En pantallas táctiles no hay hover: la pieza se apaga un instante al pulsarla */
