@@ -296,7 +296,7 @@ Partidas sin límite para quien se queda con ganas tras el caso del día (`#prac
 
 ## 12. Compartir
 
-**Imagen del dossier** (`js/imagen.js`): cuadrada, 1080 × 1080, dibujada en un lienzo en el propio dispositivo, siempre en colores de día. Lleva el logo, la carpeta con el número de caso, el post-it con la fecha, la frase del resultado en una línea («Culpable identificado en 4 de 6.» o «El culpable se ha fugado.»), las seis fichas con la pista elegida tras cada fallo, el sello estampado, el enganche («118 sospechosos. Un solo culpable. ¿Aceptas el caso?») y la dirección del juego.
+**Imagen del dossier** (`js/imagen.js`): cuadrada, 1080 × 1080, dibujada en un lienzo en el propio dispositivo, siempre en colores de día. Lleva el logo, una nota a boli sobre el dossier («Seguí las pistas hasta dar con el culpable.» o «Seguí las pistas, pero el culpable se me escapó.»), la carpeta con el número de caso, el post-it con la fecha, la frase del resultado en una línea («Culpable identificado en 4 de 6.» o «El culpable se ha fugado.»), las seis fichas con la pista elegida tras cada fallo, el sello estampado, el enganche («118 sospechosos. Un solo culpable. ¿Aceptas el caso?») y la dirección del juego.
 
 - **Nunca muestra al culpable** ni la tabla marcada: la posición lo delataría.
 - Se prepara al abrir el resultado, porque el navegador solo deja compartir justo tras pulsar.
