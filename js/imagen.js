@@ -156,20 +156,20 @@ export async function crearImagen({ numero, fecha, ganada, fichas, url }) {
   ctx.fillRect(0, 0, LADO, LADO);
   ctx.fillStyle = grano;
   ctx.fillRect(0, 0, LADO, LADO);
-  ctx.drawImage(logo, (LADO - 293) / 2, 34, 293, 76);
+  ctx.drawImage(logo, (LADO - 293) / 2, 28, 293, 76);
 
   // La nota del detective, a boli, justo encima del dossier
   const nota = ganada ? 'Seguí las pistas hasta dar con el culpable.' : 'Seguí las pistas, pero el culpable se me escapó.';
   ctx.textAlign = 'center';
   ctx.fillStyle = C.boli;
-  escribirLinea(ctx, nota, LADO / 2, 176, LADO - 112, 56, MANO, 600);
+  escribirLinea(ctx, nota, LADO / 2, 158, LADO - 112, 56, MANO, 600);
   ctx.textAlign = 'left';
 
   // Carpeta con su pestaña
   const X = 56;
   const ANCHO = LADO - 2 * X;
-  const PESTANA_Y = 206;
-  const CARPETA_Y = 264;
+  const PESTANA_Y = 222;
+  const CARPETA_Y = 280;
   const CARPETA_ALTO = 502;
   ctx.font = `400 44px ${MAQUINA}`;
   const pestanaAncho = ctx.measureText(`Caso nº ${numero}`).width + 88;
@@ -290,12 +290,12 @@ export async function crearImagen({ numero, fecha, ganada, fichas, url }) {
   ctx.textAlign = 'center';
   ctx.fillStyle = C.tinta;
   ctx.font = `400 42px ${MAQUINA}`;
-  ctx.fillText('118 sospechosos. Un solo culpable.', LADO / 2, 838);
+  ctx.fillText('118 sospechosos. Un solo culpable.', LADO / 2, 876);
   ctx.fillStyle = C.lacre;
-  ctx.fillText('¿Aceptas el caso?', LADO / 2, 896);
+  ctx.fillText('¿Aceptas el caso?', LADO / 2, 932);
   ctx.fillStyle = C.suave;
   ctx.font = `500 30px ${SANS}`;
-  ctx.fillText(url, LADO / 2, 996);
+  ctx.fillText(url, LADO / 2, 1016);
 
   const blob = await new Promise((ok) => lienzo.toBlob(ok, 'image/png'));
   return new File([blob], `holmio-caso-${numero}.png`, { type: 'image/png' });
