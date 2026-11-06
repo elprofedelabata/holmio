@@ -286,7 +286,7 @@ function abrirElegir() {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'btn-principal seguir';
-    b.textContent = 'Seguir acusando';
+    b.innerHTML = `${icono('i-mazo')}<span>Seguir acusando</span>`;
     b.addEventListener('click', () => {
       partida.pistas.push({ tipo: null, desde: u.z });
       persistir();
@@ -399,7 +399,7 @@ function renderFin() {
   $('btn-otro').hidden = !practica;
   $('btn-practicar').hidden = esArchivo || Boolean(practica);
   $('barra-otro').hidden = esArchivo;
-  $('barra-otro').textContent = practica ? 'Otro caso' : 'Practicar';
+  $('barra-otro').innerHTML = practica ? `${icono('i-otro')}<span>Otro caso</span>` : `${icono('i-infinito')}<span>Practicar</span>`;
 
   const tick = () => {
     const t = Math.floor(msHastaManana() / 1000);
@@ -669,10 +669,10 @@ $('btn-compartir').addEventListener('click', async () => {
     }
   }
   // El aviso va en el propio botón: el diálogo tapa cualquier aviso flotante.
-  const boton = $('btn-compartir');
+  const boton = $('btn-compartir').querySelector('span');
   try {
     await navigator.clipboard.writeText(texto);
-    boton.textContent = '¡Copiado! Pégalo donde quieras';
+    boton.textContent = '¡Copiado!';
   } catch {
     boton.textContent = 'No se pudo copiar';
   }

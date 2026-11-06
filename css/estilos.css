@@ -238,7 +238,9 @@ button { cursor: pointer; }
 .menu-texto strong, .menu-texto small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .menu-texto strong { font-family: var(--f-titulo); font-weight: 400; font-size: 17px; line-height: 1.2; }
 .menu-texto small { font-size: 12.5px; color: var(--suave); }
-.menu-item-suave { grid-template-columns: 1fr; padding-block: 8px; }
+.menu-item-suave { padding-block: 8px; }
+.menu-item-suave .menu-ico { color: var(--suave); }
+.menu-item-suave .menu-ico .ico-svg { width: 20px; height: 20px; }
 .menu-item-suave strong { font-family: var(--f-texto); font-size: 14px; font-weight: 600; color: var(--suave); }
 
 /* Interruptor del modo noche */
@@ -329,12 +331,12 @@ button { cursor: pointer; }
 .acerca p { font-size: 14.5px; line-height: 1.45; }
 .acerca .nota { font-size: 12.5px; color: var(--suave); }
 .acerca a { color: var(--acento); }
-.acerca form { margin-top: 4px; }
+.acerca form { margin-top: 4px; display: flex; justify-content: center; }
 .explica { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: 14.5px; line-height: 1.4; }
 .explica li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; }
 .explica .ico { width: 26px; height: 26px; color: var(--acento); }
 .explica strong { font-family: var(--f-titulo); font-weight: 400; font-size: 15.5px; }
-.acerca-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.acerca-botones { flex-wrap: wrap; gap: 10px; }
 .btn-peligro { --acento: var(--lacre); } /* el botón principal, en lacre */
 
 .meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; font-size: 13px; color: var(--suave); }
@@ -555,10 +557,12 @@ button { cursor: pointer; }
   border: 0; border-radius: 10px; padding: 0 18px; min-height: 46px;
   background: var(--acento); color: var(--sobre-acento); box-shadow: var(--filete);
   font-family: var(--f-titulo); font-weight: 400; font-size: 16px; letter-spacing: .05em;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   transition: transform .18s ease-out, box-shadow .18s ease-out;
 }
+/* Todos los botones llevan icono y miden lo que su contenido */
+.btn-principal .ico-svg, .btn-secundario .ico-svg { flex: none; width: 18px; height: 18px; stroke-width: 2.1; }
 .btn-principal:active { transform: translateY(1px); }
-.btn-ancho { width: 100%; }
 
 /* ---------- Elegir pista: pantalla completa, el juego se detiene ----------
    Sigue el tema: velo de papel de día, fondo casi negro de noche (--velo). */
@@ -686,7 +690,6 @@ button { cursor: pointer; }
 .fin-barra .proximo { flex: 1 0 100%; }
 .fin-barra .btn-principal { margin-left: auto; }
 .fin-barra .btn-secundario { padding: 0 16px; }
-@media (max-width: 350px) { .fin-barra .btn-principal, .fin-barra .btn-secundario { padding: 0 12px; } }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
 
@@ -738,11 +741,12 @@ button { cursor: pointer; }
   font-family: var(--f-titulo); font-size: 13.5px; line-height: 1.4; color: var(--texto);
 }
 .fin-dato .ico { width: 16px; height: 16px; margin-top: 1px; color: var(--acento); }
-.fin-botones { display: grid; gap: 10px; width: 100%; max-width: 340px; }
-.fin-fila { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
+.fin-botones { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.fin-fila { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .btn-secundario {
-  min-height: 44px; border-radius: 10px; background: transparent;
+  min-height: 44px; padding: 0 18px; border-radius: 10px; background: transparent;
   border: 1.5px solid var(--linea); color: var(--texto);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   font-family: var(--f-titulo); font-weight: 400; font-size: 16px; letter-spacing: .05em;
   transition: border-color .2s, box-shadow .2s, color .2s;
 }
@@ -816,7 +820,7 @@ button { cursor: pointer; }
 
 /* Botón noir: tinta, filete ámbar doble, letra de máquina y un barrido de luz de lámpara */
 .btn-noir {
-  position: relative; overflow: hidden; width: 100%; min-height: 52px;
+  position: relative; overflow: hidden; width: fit-content; margin-inline: auto; min-height: 52px; padding: 0 24px;
   display: flex; align-items: center; justify-content: center; gap: 12px;
   background: radial-gradient(120% 140% at 50% 0%, #1f2431 0%, #0e1016 70%);
   color: #f3ead6; border: 1.5px solid #e7ad45; border-radius: 10px;
@@ -907,8 +911,9 @@ button { cursor: pointer; }
   display: flex; align-items: center; padding: 0 9px; font-size: 12px;
 }
 .mini-campo::after { content: ""; width: 1px; height: 13px; margin-left: 1px; background: var(--texto); animation: cursor .8s steps(1) infinite; }
+.mini-boton .ico-svg { width: 12px; height: 12px; stroke-width: 2.2; }
 .mini-boton {
-  display: grid; place-items: center; padding: 0 12px; border-radius: 7px;
+  display: flex; align-items: center; gap: 4px; padding: 0 10px; border-radius: 7px;
   background: var(--acento); color: var(--sobre-acento);
   box-shadow: inset 0 0 0 2px var(--acento), inset 0 0 0 2.6px color-mix(in srgb, var(--sobre-acento) 55%, transparent);
   font-family: var(--f-titulo); font-size: 12px; letter-spacing: .05em;
@@ -1073,6 +1078,14 @@ button { cursor: pointer; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 2) { --dy: -71px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 3) { --dy: -113px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 4) { --dy: -139px; }
+
+/* Móviles estrechos: los botones que van en pareja deben caber en una sola fila */
+@media (max-width: 350px) {
+  .fin-barra { column-gap: 8px; }
+  .fin-barra .btn-principal, .fin-barra .btn-secundario,
+  .fin-fila .btn-secundario, .acerca-botones button { padding: 0 10px; gap: 6px; font-size: 14.5px; }
+  .btn-noir { padding: 0 8px; gap: 8px; font-size: 17px; }
+}
 
 /* ---------- Hover noir ----------
    Solo con ratón: en el móvil el hover se quedaría pegado tras pulsar.

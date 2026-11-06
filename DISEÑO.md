@@ -112,7 +112,7 @@ Dos temas **igual de cuidados**. **Por defecto, modo día**, sea cual sea el tem
 
 **El dossier:** el informe del caso es una hoja mecanografiada dentro de una carpeta de cartulina (manila de día, marrón oscuro de noche), con otra hoja torcida debajo. La pestaña de la carpeta lleva el número de caso, y la fecha va escrita a boli (Caveat, tinta azul) en un post-it amarillo sujeto a la carpeta con un clip. Las pistas de texto se añaden a la misma hoja, que hace scroll por dentro si no cabe.
 
-**Botones principales:** relleno liso con un filete interior fino y letra de máquina (Special Elite), de la misma familia que el botón noir del tutorial.
+**Botones principales:** relleno liso con un filete interior fino y letra de máquina (Special Elite), de la misma familia que el botón noir del tutorial. **Todos los botones llevan icono y miden lo que su contenido**, sin ocupar todo el ancho.
 
 **Hover noir** (solo con ratón; en el móvil se quedaría pegado, así que allí la pieza se apaga un instante al pulsarla):
 - **Botones rellenos:** se levantan un poco, como un sello antes de caer, y al pulsar bajan. El mazo de «Acusar» se alza.

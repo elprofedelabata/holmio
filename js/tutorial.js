@@ -121,7 +121,7 @@ const DIAPOSITIVAS = [
           <ol class="mini-fichas">${'<li></li>'.repeat(6)}</ol>
           <div class="mini-entrada">
             <ul class="mini-desplegable"><li><b>Hie</b>rro <i>Fe</i></li></ul>
-            <span class="mini-campo"></span><span class="mini-boton">Acusar</span>
+            <span class="mini-campo"></span><span class="mini-boton">${svg('i-mazo')}<span>Acusar</span></span>
           </div>
         </div>`;
       const d = dedo();
