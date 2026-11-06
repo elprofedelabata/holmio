@@ -686,9 +686,10 @@ button { cursor: pointer; }
 }
 
 /* Fin: barra del panel inferior (cuando se cierra la pantalla de resultado) */
-.fin-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
-.fin-barra .proximo { flex: 1 0 100%; }
-.fin-barra .btn-principal { margin-left: auto; }
+/* Rejilla y no flex: los dos botones nunca se parten en dos filas */
+.fin-barra { display: grid; grid-template-columns: auto auto; justify-content: space-between; align-items: center; gap: 8px 12px; }
+.fin-barra .proximo { grid-column: 1 / -1; }
+.fin-barra .btn-principal { grid-column: 2; }
 .fin-barra .btn-secundario { padding: 0 16px; }
 .proximo { font-size: 13px; color: var(--suave); }
 .cuenta-atras { font-family: var(--f-simbolo); font-weight: 600; color: var(--texto); }
@@ -1079,8 +1080,9 @@ button { cursor: pointer; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 3) { --dy: -113px; }
 :is(.celda, .fichas li, .cal-caso, .mini-celda, .mini-fichas li):nth-child(5n + 4) { --dy: -139px; }
 
-/* Móviles estrechos: los botones que van en pareja deben caber en una sola fila */
-@media (max-width: 350px) {
+/* Móviles estrechos (muchos Android miden 360 px): los botones en pareja deben caber
+   en una sola fila. A partir de 375 px ya caben con su tamaño normal */
+@media (max-width: 374px) {
   .fin-barra { column-gap: 8px; }
   .fin-barra .btn-principal, .fin-barra .btn-secundario,
   .fin-fila .btn-secundario, .acerca-botones button { padding: 0 10px; gap: 6px; font-size: 14.5px; }
