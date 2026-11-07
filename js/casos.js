@@ -2,7 +2,7 @@
 // nadie se destripe un caso por accidente al curiosear el código. No es seguridad: quien
 // quiera puede descodificarlos. Se generan con herramientas/casos.py.
 
-import { CASOS_CODIFICADOS } from './casos-datos.js';
+import { CASOS_CODIFICADOS, ORDENES_SIGUIENTES } from './casos-datos.js';
 
 function descodificar(texto, indice) {
   let x = (67 * (indice + 1)) >>> 0;
@@ -31,9 +31,15 @@ export function numeroDeCaso(fecha = fechaLocal()) {
   return Math.round((Date.UTC(a, m - 1, d) - Date.UTC(a1, m1 - 1, d1)) / DIA_MS) + 1;
 }
 
-/** Caso por número (1, 2, 3…). Tras el último, el calendario vuelve a empezar. */
+/**
+ * Caso por número (1, 2, 3…). El primer ciclo va en el orden de la lista; cada ciclo
+ * siguiente tiene el suyo, para que no se pueda predecir quién sale cada día.
+ */
 export function casoPorNumero(numero) {
-  const indice = (numero - 1) % CASOS_CODIFICADOS.length;
+  const total = CASOS_CODIFICADOS.length;
+  const vuelta = Math.floor((numero - 1) / total);
+  const posicion = (numero - 1) % total;
+  const indice = vuelta === 0 ? posicion : ORDENES_SIGUIENTES[(vuelta - 1) % ORDENES_SIGUIENTES.length][posicion];
   return { numero, ...descodificar(CASOS_CODIFICADOS[indice], indice) };
 }
 

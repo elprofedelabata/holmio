@@ -271,8 +271,9 @@ Reglas del juego:
 - El orden viene de un **calendario predefinido** (fecha → elemento), no de un aleatorio puro, para:
   - evitar rachas raras (dos gases nobles seguidos, tres lantánidos en una semana),
   - poder repetir elementos en ciclos posteriores con **pistas principales nuevas**.
-- Con 118 elementos, el ciclo se repite cada ~4 meses. Mientras no haya informes nuevos, el segundo ciclo repetirá los mismos textos.
-- **Orden actual** (`js/casos.js`, en orden de calendario): nunca dos del mismo tipo seguidos ni más de dos de un tipo (salvo metales de transición) en una semana. Los elementos sintéticos no salen el primer mes, y los superpesados (Z > 103) aparecen uno cada seis días a partir del caso 30. El **caso nº 67 es el holmio**, como el número del sello.
+- Con 118 elementos, el ciclo se repite cada ~4 meses (el segundo empieza el 5 de marzo de 2027). **Cada ciclo tiene un orden distinto** para que nadie pueda predecir al culpable: los textos se repiten, pero un caso nunca sale a menos de 15 posiciones de donde salió en el ciclo anterior ni a menos de 30 días de su última aparición. Hay 10 órdenes (unos tres años) y después se reutilizan los 9 últimos. Se generan con semilla fija en `herramientas/casos.py`: no cambiarlos tras el lanzamiento.
+- 🟡 Pendiente: informes nuevos para que los ciclos siguientes no repitan el mismo texto.
+- **Orden del primer ciclo**: nunca dos del mismo tipo seguidos ni más de dos de un tipo (salvo metales de transición) en una semana. Los elementos sintéticos no salen el primer mes, y los superpesados (Z > 103) aparecen uno cada seis días a partir del caso 30. El **caso nº 67 es el holmio**, como el número del sello.
 
 ### 11.1 Archivo de casos
 
